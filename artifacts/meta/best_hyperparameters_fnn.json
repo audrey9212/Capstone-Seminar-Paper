@@ -1,0 +1,23 @@
+{
+    "embedding_dim_ServiceArea": 8,
+    "embedding_dim_HandsetPrice": 8,
+    "embedding_dim_HandsetModels": 32,
+    "num_layers": 3,
+    "units_0": 192,
+    "use_bn_0": true,
+    "activation_0": "relu",
+    "dropout_0": 0.4,
+    "units_1": 448,
+    "use_bn_1": true,
+    "activation_1": "swish",
+    "dropout_1": 0.30000000000000004,
+    "learning_rate": 0.00018284252262511434,
+    "units_2": 128,
+    "use_bn_2": false,
+    "activation_2": "swish",
+    "dropout_2": 0.4,
+    "units_3": 64,
+    "use_bn_3": true,
+    "activation_3": "swish",
+    "dropout_3": 0.4
+}

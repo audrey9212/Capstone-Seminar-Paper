@@ -1,0 +1,18 @@
+project:
+  type: manuscript
+  output-dir: report/_output
+
+format:
+  html:
+    toc: true
+  pdf:
+    number-sections: true
+    toc: true
+
+# 關鍵：讓程式碼的工作目錄=專案根
+execute:
+  execute-dir: project
+  freeze: auto
+  cache: true
+  echo: true
+  warning: false
