@@ -7,7 +7,7 @@ book:
   title: "Predicting Telecom Customer Churn with Explainable Machine Learning"
   author: "Chih-Jung (Audrey) Chang (B2211687)"
   subtitle: "Instructor: Dr. Clinton Watkins"
-  date: "Dec 2025"
+  date: "2025-12"
   chapters:
     - index.qmd
     - report/01-introduction.qmd
