@@ -1,0 +1,6 @@
+{
+  "fixed_threshold": 0.3999999999999998,
+  "fixed_source": "04_best_threshold_rule.json",
+  "tuning_rule": "recall_0.7",
+  "tuning_description": "Recall >= 0.7, maximize F1 on validation set"
+}

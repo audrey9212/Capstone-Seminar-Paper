@@ -1,0 +1,152 @@
+<!--
+Chapter 7: Conclusion and Future Work (sections 7.1–7.2)
+This chapter summarizes findings in relation to the three research questions (RQ1–RQ3)
+and outlines future directions for semi-supervised learning, temporal modeling, and MLOps deployment.
+-->
+
+# Conclusion and Future Work {#sec-conclusion}
+
+## Conclusion {#sec-conclusion-summary}
+
+This thesis presented a comprehensive exploration of telecom customer churn prediction, balancing **predictive performance** with **interpretability** and practical actionability. A range of modeling approaches was investigated under consistent conditions, class imbalance challenges were tackled, and insights were extracted to guide retention strategy. Here I summarize the findings in relation to the three research questions posed in the Introduction (Chapter 1).
+
+### RQ1: Model Effectiveness {#sec-rq1-answer}
+
+**Results indicate** that gradient-boosted decision trees achieved the strongest overall performance among all model families tested. The champion single model was **XGBoost**, achieving a test ROC-AUC of **0.6637** and a test PR-AUC of **0.4454**. The best heterogeneous ensemble (Blend_WeightedAUC) achieved a slightly higher test ROC-AUC of **0.6688** and test PR-AUC of **0.4488**, but the marginal gain (+0.0050 ROC-AUC) suggests that XGBoost is the most practical choice for deployment. Both substantially outperformed the logistic regression baseline (test ROC-AUC = 0.5940, test PR-AUC = 0.3560).
+
+Heterogeneous ensemble methods (blending and OOF stacking) provided competitive but not decisively superior results. The best blending approach (Blend_WeightedAUC) reached a test ROC-AUC of **0.6688** and test PR-AUC of **0.4488**, while OOF stacking achieved test ROC-AUC of **0.6679** and test PR-AUC of **0.4490**. Ensemble methods slightly exceeded XGBoost on ROC-AUC, but the improvement was modest. This suggests that the gains from model combination derive primarily from variance reduction and diversity between linear and nonlinear base learners, rather than capturing fundamentally new predictive signals.
+
+The **Wide & Deep neural network**, a model architecture not commonly used in traditional churn studies, proved feasible on tabular telecom data. The best neural network variant (Wide & Deep with focal loss) achieved test ROC-AUC of **0.6615** and test PR-AUC of **0.4356**, demonstrating that deep learning approaches can capture churn patterns effectively, though they did not surpass gradient boosting methods in this dataset. The neural networks clustered in a narrow performance band (test ROC-AUC approximately 0.6440–0.6620), suggesting a performance ceiling for this architecture class on this feature set.
+
+These findings address RQ1 by demonstrating that **gradient-boosted trees represent the most effective single-model approach** for this churn prediction task. Ensemble methods provide modest additional benefits, with the trade-off between performance gain and implementation complexity favoring simpler single-model deployment in many production scenarios.
+
+### RQ2: Imbalance Robustness {#sec-rq2-answer}
+
+Class imbalance was a significant challenge, with churners comprising approximately 28.8% of the dataset. Various strategies **were implemented and evaluated** to ensure the models remained sensitive to the minority class:
+
+- **Class weighting** in training (giving higher weight to churn examples in the loss function)
+- Experimenting with **focal loss** for the neural networks (to focus learning on hard-to-predict churn cases)
+- Adjusting the **decision threshold** on the validation set to optimize recall/precision trade-offs rather than using the default 0.5000
+
+The findings indicate that these techniques did improve the model's ability to capture churners. At the fixed operating threshold of τ = 0.4400, LightGBM achieved the best balance with **precision = 0.3760, recall = 0.7310, and F1 = 0.4970**. XGBoost performed nearly identically with precision = 0.3670, recall = 0.7390, and F1 = 0.4900. This balance is **advantageous for retention contexts**, facilitating the detection of approximately 73–74% of actual churners while maintaining precision in the high-30s%, a trade-off suitable for targeted retention campaigns where the cost of contacting non-churners is acceptable.
+
+Experiments with **focal loss** produced competitive ranking metrics (ROC-AUC, PR-AUC) but exhibited threshold sensitivity: under the fixed threshold of τ = 0.4400, some focal-loss variants produced very few positive predictions, resulting in near-zero recall despite competitive AUC scores. This highlights that **loss function selection must be paired with appropriate threshold calibration** for deployment. The standard weighted cross-entropy loss proved more robust across operating points in this dataset.
+
+Thus, RQ2 is answered: **yes, specific imbalance-aware strategies made the churn predictions more robust and useful**, ensuring that the model's performance on the minority class (churn) was strong enough for practical use. However, threshold selection proved as critical as algorithmic imbalance handling for achieving practical deployment performance.
+
+### RQ3: Interpretability to Action {#sec-rq3-answer}
+
+The best models, despite their complexity, are demonstrated to not be "black boxes" when it comes to drawing insights. Using **SHAP values** and related interpretability tools, model outputs were translated into **actionable churn drivers**.
+
+The global SHAP analysis (see @sec-global-interpretability) highlighted features such as CurrentEquipmentDays, MonthlyMinutes, MonthsInService, PercChangeMinutes, and DroppedBlockedCalls as the primary churn drivers. These features map directly to actionable business levers:
+
+- **Device lifecycle timing** (CurrentEquipmentDays): Customers with longer equipment tenure show higher churn risk, supporting proactive upgrade offers
+- **Engagement patterns** (MonthlyMinutes): Low usage strongly correlates with churn, identifying disengaged customers for re-engagement campaigns
+- **Tenure effects** (MonthsInService): Newer customers exhibit higher vulnerability, informing onboarding and early retention strategies
+- **Service quality signals** (DroppedBlockedCalls): Call failures drive dissatisfaction and switching behavior
+
+SHAP dependence plots revealed non-linear effects that would be difficult to summarize with a single coefficient, such as the asymmetric risk pattern for MonthlyMinutes (low usage drives much stronger positive SHAP contributions than high usage provides negative contributions) and threshold-like upgrade cycle effects in CurrentEquipmentDays.
+
+Importantly, these interpretations were derived from the same model that produces the risk scores, ensuring consistency between what is deployed and what is explained. These insights were further used to craft an **action framework (the three-tier retention strategy)** described in @sec-business-impact, exemplifying how interpretability bridges the gap between prediction and decision. Consequently, regarding RQ3, the findings demonstrate that the model interpretation outputs were successfully converted into practical guidance, reinforcing the idea that churn prediction models should be judged not only by their AUC, but also by how well they inform next steps for retention efforts.
+
+### Engineering Trade-offs {#sec-engineering-tradeoffs}
+
+In evaluating the above points, it's worth noting an **engineering trade-off** that emerged. While ensemble methods achieved comparable performance to single models, they introduce significant operational complexity without proportionate performance gains. The marginal improvements (approximately 0.0010–0.0020 in PR-AUC) must be weighed against deployment and maintenance costs.
+
+| Consideration | Ensemble (Blending/Stacking) | XGBoost Only |
+|---------------|------------------------------|--------------|
+| Test ROC-AUC | 0.6679–0.6688 | 0.6637 |
+| Test PR-AUC | 0.4488–0.4490 | 0.4454 |
+| Inference Latency | Higher (multiple models) | Low |
+| Deployment Complexity | High | Low |
+| Maintenance Burden | Multiple model artifacts | Single artifact |
+| Interpretability | Requires aggregation | Direct SHAP analysis |
+| Threshold Calibration | More complex | Straightforward |
+
+: Comparison of deployment considerations between ensemble methods and single GBM models. {#tbl-deployment-tradeoffs}
+
+For a **real-time deployment** where latency and system simplicity are paramount, a single GBM model (XGBoost) represents the pragmatic choice, offering fast inference, straightforward integration, and essentially equivalent predictive performance. The ensemble approach might be justified in batch-scoring scenarios where the slight PR-AUC lift translates to meaningful business value at scale, but the complexity trade-off generally favors single-model deployment.
+
+This highlights that the "best" model on paper isn't always the best in practice; **model selection must consider deployment constraints, maintainability, and interpretability requirements** as well as raw performance. In this case, XGBoost is the recommended production choice: it delivers strong test performance while maintaining operational simplicity.
+
+Ultimately, this thesis showed that advanced models can be harnessed for churn prediction without making the results opaque. A balance was achieved where **performance, interpretability, and practical utility coexist**, which is a promising outcome for deploying the model in a real telecom business environment.
+
+
+## Future Work {#sec-future-work}
+
+Building on this study's findings and acknowledging its limitations (see @sec-limitations), several avenues for **future work** are identified to further enhance telecom churn prediction and its deployment.
+
+### Incorporating Semi-Supervised Learning {#sec-future-ssl}
+
+One promising direction is to leverage unlabeled or partially labeled data through **semi-supervised techniques**. The current study attempted pseudo-labeling using the XGBoost teacher model on real holdout data, but achieved minimal coverage: at conservative confidence thresholds (0.0500/0.9500), only 2 samples out of 20,000 met the criteria, with approximately 100% remaining "uncertain." This result highlights that **confidence calibration and threshold selection are critical** for successful semi-supervised learning.
+
+Future work could explore:
+
+1. **Relaxed confidence thresholds** with curriculum learning to gradually incorporate pseudo-labels
+2. **Self-training with consistency regularization** (e.g., MixMatch, FixMatch) that does not rely solely on hard pseudo-label thresholds
+3. **Contrastive learning approaches** that learn representations from unlabeled data before fine-tuning on labeled examples
+4. **Teacher ensemble methods** using multiple diverse teachers to provide more calibrated confidence estimates
+
+::: {.callout-note}
+## Connection to Current Work
+
+The autoencoder experiments in this thesis (see @sec-autoencoder-interpretation) showed that learned latent representations did not significantly improve downstream classification beyond the original feature set (augmented features achieved ROC-AUC = 0.6451 vs. baseline 0.6465). However, the autoencoder architecture remains valuable as an **engineering capability**: it provides a reusable representation learning component and a clear interface for future semi-supervised variants if better confidence calibration or more unlabeled data becomes available.
+:::
+
+### Sequence Modeling and Temporal Features {#sec-future-temporal}
+
+As identified in the limitations (@sec-limitations), the analysis would benefit from true **temporal modeling**. The current dataset provides snapshot features representing customer state at a single point in time, limiting the model's ability to capture behavioral trends that precede churn.
+
+**Potential approaches include:**
+
+1. **Recurrent Neural Networks (LSTMs)**: Can learn patterns like "gradual decline in data usage over 6 months" or "a spike in dropped calls last month" that precede churn
+
+2. **Transformer-based architectures**: Could capture complex patterns of seasonality or multi-feature interactions over time for **multivariate time series** of customer behavior
+
+3. **Feature engineering for trends**: Even without full sequence models, computing rolling statistics (e.g., 3-month moving averages, month-over-month deltas) from historical data could provide temporal signals within the current tabular framework
+
+4. **Event-based modeling**: Treating customer interactions (calls, complaints, plan changes) as discrete events and using event sequence models
+
+The PercChangeMinutes feature in the current dataset provides a glimpse of temporal value: it emerged as a top SHAP feature, with declining usage patterns strongly associated with higher churn risk. This suggests that **richer temporal features would likely improve predictive performance** and enable earlier intervention.
+
+### Real-time Inference and MLOps Deployment {#sec-future-mlops}
+
+From an operational standpoint, future efforts should focus on deploying the churn model in a production environment with **real-time or near-real-time inference** capabilities. The engineering foundation established in this thesis, including MLflow experiment tracking, modular pipeline design, and reproducible preprocessing, provides a starting point for production deployment.
+
+Key MLOps components for production deployment include:
+
+| Component | Description | Priority |
+|-----------|-------------|----------|
+| **Automated Data Pipelines** | Feed the model with fresh data continuously | High |
+| **Model Serving Infrastructure** | API or microservice for real-time predictions | High |
+| **Feature Store** | Ensure training-serving consistency for features | High |
+| **Data Drift Detection** | Monitor input feature distributions | Medium |
+| **Concept Drift Detection** | Monitor prediction distribution and model performance | Medium |
+| **Retraining Schedules** | Refresh the model periodically (e.g., quarterly) | Medium |
+| **A/B Testing Framework** | Validate ROI assumptions with actual campaign results | Medium |
+| **Shadow Mode Deployment** | Run new models alongside production for comparison | Low |
+
+: Key components of an MLOps pipeline for churn prediction deployment, prioritized by implementation order. {#tbl-mlops-components}
+
+The preprocessing bug discovered during this research, a 1000x scale mismatch between training and holdout data that caused catastrophic model performance degradation (train/validation loss ratios exceeding 285x), underscores the critical importance of **training-serving consistency**. Production systems must implement:
+
+- Unified preprocessing pipelines that share code between training and inference
+- Feature signature validation to catch schema mismatches early
+- Automated sanity checks (e.g., feature distribution comparisons) before model scoring
+
+One critical aspect is **drift monitoring**. Over time, the profile of churners may change; for instance, if the company launches a new product or a competitor changes their strategy, the factors influencing churn could shift. The SHAP-based interpretability framework developed in this thesis provides a foundation for monitoring: tracking changes in feature importance distributions over time can serve as an early warning system for concept drift.
+
+### Calibration and Threshold Optimization {#sec-future-calibration}
+
+The experiments revealed that **probability calibration** and **threshold selection** significantly impact operational performance, particularly for models trained with focal loss. Future work should explore:
+
+1. **Isotonic regression or Platt scaling** for post-hoc calibration
+2. **Cost-sensitive threshold optimization** incorporating business parameters (intervention cost, customer LTV, save rate)
+3. **Dynamic thresholds** that adapt to changing business constraints or resource availability
+4. **Calibration monitoring** in production to detect when model probabilities become unreliable
+
+---
+
+In conclusion, the journey of building this churn prediction system has shown both the substantial value such models can deliver and the complexity of making them truly effective in practice. The key findings, indicating that gradient-boosted trees (with XGBoost achieving test ROC-AUC = 0.6637) outperform other model families, that the best ensemble offers only a modest lift (test ROC-AUC = 0.6688), that class imbalance handling requires both algorithmic strategies and threshold tuning, and that SHAP-based interpretability enables actionable business insights, provide a solid foundation for production deployment.
+
+By addressing the above future directions, from advanced modeling techniques like semi-supervised learning and sequence modeling to the practicalities of real-time deployment and drift monitoring, the model's performance and longevity can be further enhanced. Ultimately, the goal is to evolve the churn prediction solution into a **long-term, self-improving asset** for the telecom provider, one that not only predicts which customers might leave, but continuously learns from new data and helps the business prevent churn in an ever-changing environment.

@@ -1,0 +1,18 @@
+{
+  "experiment": "wide_and_deep",
+  "train_auc": 0.6983330948659499,
+  "val_auc": 0.649779052509216,
+  "test_auc": 0.6496047975031494,
+  "test_pr_auc": 0.4207603015988933,
+  "test_brier": 0.2364000529050827,
+  "best_threshold_val": 0.45999999999999985,
+  "test_precision_at_best_threshold": 0.35221754613143413,
+  "test_recall_at_best_threshold": 0.7396329027872196,
+  "test_f1_at_best_threshold": 0.47719298245614034,
+  "best_epoch": 44,
+  "train_time_sec": 41.890098333358765,
+  "loss_type": "bce_weighted",
+  "pos_weight": 2.469878494349562,
+  "focal_alpha": 0.0,
+  "focal_gamma": 0.0
+}

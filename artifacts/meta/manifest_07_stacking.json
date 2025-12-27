@@ -1,0 +1,191 @@
+{
+  "fixed_threshold": 0.43999999999999984,
+  "features_n": 34,
+  "features": [
+    "ActiveSubs",
+    "AdjustmentsToCreditRating",
+    "AgeHH1",
+    "CurrentEquipmentDays",
+    "DroppedBlockedCalls",
+    "MonthlyMinutes",
+    "MonthsInService",
+    "OutboundCalls",
+    "OverageMinutes",
+    "PercChangeMinutes",
+    "PercChangeRevenues",
+    "ReferralsMadeBySubscriber",
+    "CreditRating_2-High",
+    "CreditRating_3-Good",
+    "CreditRating_4-Medium",
+    "CreditRating_5-Low",
+    "CreditRating_6-VeryLow",
+    "CreditRating_7-Lowest",
+    "HandsetRefurbished_Yes",
+    "HandsetWebCapable_Yes",
+    "HasCreditCard_Yes",
+    "Homeownership_Unknown",
+    "NewCellphoneUser_Yes",
+    "NonUSTravel_Yes",
+    "Occupation_Crafts",
+    "Occupation_Homemaker",
+    "Occupation_Other",
+    "Occupation_Professional",
+    "Occupation_Retired",
+    "Occupation_Self",
+    "Occupation_Student",
+    "PrizmCode_Rural",
+    "PrizmCode_Suburban",
+    "PrizmCode_Town"
+  ],
+  "base_models": {
+    "Logistic": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/logit_baseline.pkl",
+    "XGBoost": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_xgb_baseline.pkl",
+    "LightGBM": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_lgbm_small.pkl",
+    "RandomForest": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_rf_baseline.pkl"
+  },
+  "base_model_metrics": {
+    "Logistic": {
+      "val_auc": 0.5882860228965279,
+      "test_auc": 0.5939871453494397,
+      "model_path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/logit_baseline.pkl"
+    },
+    "XGBoost": {
+      "val_auc": 0.6571464007689294,
+      "test_auc": 0.6636811037983663,
+      "model_path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_xgb_baseline.pkl"
+    },
+    "LightGBM": {
+      "val_auc": 0.6502394299326513,
+      "test_auc": 0.6699733650802321,
+      "model_path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_lgbm_small.pkl"
+    },
+    "RandomForest": {
+      "val_auc": 0.6490161841090658,
+      "test_auc": 0.6534278382240095,
+      "model_path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_rf_baseline.pkl"
+    }
+  },
+  "results": {
+    "Blend_SimpleAvg": {
+      "val": {
+        "roc_auc": 0.6578847630973729,
+        "pr_auc": 0.43215862939319954,
+        "f1_fixed": 0.48754748839172646,
+        "recall_fixed": 0.7851801495581238,
+        "best_threshold": 0.44104712643311716,
+        "f1_best": 0.4878358366828855,
+        "recall_best": 0.7838205302515295
+      },
+      "test": {
+        "roc_auc": 0.6683219177441544,
+        "pr_auc": 0.44717090454781794,
+        "f1_fixed": 0.49230769230769234,
+        "recall_fixed": 0.7831407205982325,
+        "best_threshold": 0.4227070791987791,
+        "f1_best": 0.49651782056534205,
+        "recall_best": 0.8239292997960571
+      }
+    },
+    "Blend_WeightedAUC": {
+      "weights": {
+        "Logistic": 0.08828702289652787,
+        "XGBoost": 0.15714740076892939,
+        "LightGBM": 0.15024042993265127,
+        "RandomForest": 0.1490171841090658
+      },
+      "val": {
+        "roc_auc": 0.6582761119676805,
+        "pr_auc": 0.4348339467147051,
+        "f1_fixed": 0.4839948783610755,
+        "recall_fixed": 0.7709041468388851,
+        "best_threshold": 0.4359554854420057,
+        "f1_best": 0.48752642706131083,
+        "recall_best": 0.7838205302515295
+      },
+      "test": {
+        "roc_auc": 0.6688472081972249,
+        "pr_auc": 0.44877405615479843,
+        "f1_fixed": 0.49082667817828624,
+        "recall_fixed": 0.7729435757987764,
+        "best_threshold": 0.423937861147161,
+        "f1_best": 0.49595015576323986,
+        "recall_best": 0.8116927260367097
+      }
+    },
+    "Blend_NNLS": {
+      "weights": {
+        "Logistic": 0.06513312034996416,
+        "XGBoost": 0.5865795712823169,
+        "LightGBM": 0.17514868739326583,
+        "RandomForest": 0.17313862097445312
+      },
+      "val": {
+        "roc_auc": 0.6586558625445085,
+        "pr_auc": 0.4371314442239464,
+        "f1_fixed": 0.48304528549551523,
+        "recall_fixed": 0.7505098572399728,
+        "best_threshold": 0.4222176592736146,
+        "f1_best": 0.48655409631019386,
+        "recall_best": 0.7933378653976887
+      },
+      "test": {
+        "roc_auc": 0.6672395350655695,
+        "pr_auc": 0.44876065485934685,
+        "f1_fixed": 0.4925176056338028,
+        "recall_fixed": 0.760707002039429,
+        "best_threshold": 0.4174354535936405,
+        "f1_best": 0.4969646221477916,
+        "recall_best": 0.8069340584636302
+      }
+    },
+    "Blend_RankAvg": {
+      "val": {
+        "roc_auc": 0.6548977348532834,
+        "pr_auc": 0.41689534579496645,
+        "f1_fixed": 0.4473844282238443,
+        "recall_fixed": 1.0,
+        "best_threshold": 2029.0,
+        "f1_best": 0.48804652164548784,
+        "recall_best": 0.770224337185588
+      },
+      "test": {
+        "roc_auc": 0.6649509298651194,
+        "pr_auc": 0.43400177584521893,
+        "f1_fixed": 0.4473844282238443,
+        "recall_fixed": 1.0,
+        "best_threshold": 1616.25,
+        "f1_best": 0.49415957236190855,
+        "recall_best": 0.8484024473147519
+      }
+    },
+    "Stacking_OOF": {
+      "val": {
+        "roc_auc": 0.6585819701908892,
+        "pr_auc": 0.4366967215355059,
+        "f1_fixed": 0.28780487804878047,
+        "recall_fixed": 0.20054384772263767,
+        "best_threshold": 0.2240241850083572,
+        "f1_best": 0.48723145520875566,
+        "recall_best": 0.8171312032630863
+      },
+      "test": {
+        "roc_auc": 0.6679180352341191,
+        "pr_auc": 0.44895347222945836,
+        "f1_fixed": 0.29754453538757825,
+        "recall_fixed": 0.21006118286879674,
+        "best_threshold": 0.22571248640669536,
+        "f1_best": 0.49481972648155825,
+        "recall_best": 0.8116927260367097
+      }
+    }
+  },
+  "tables": {
+    "leaderboard": "artifacts/tables/07_ensemble_leaderboard.csv",
+    "base_pred_val": "artifacts/tables/07_base_pred_val.csv",
+    "base_pred_test": "artifacts/tables/07_base_pred_test.csv",
+    "diversity_corr_val": "artifacts/tables/07_diversity_corr_val.csv"
+  },
+  "meta": {
+    "blend_weights": "artifacts/meta/07_blend_weights.json"
+  }
+}

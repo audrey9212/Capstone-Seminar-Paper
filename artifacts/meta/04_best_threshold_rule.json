@@ -1,0 +1,9 @@
+{
+  "model": "xgb_optuna",
+  "rule": "maximize F1 subject to recall >= 0.70",
+  "best_threshold": 0.43999999999999984,
+  "min_recall_constraint": 0.7,
+  "val_precision": 0.35357917570498915,
+  "val_recall": 0.7756628144119646,
+  "val_f1": 0.48573861217539377
+}

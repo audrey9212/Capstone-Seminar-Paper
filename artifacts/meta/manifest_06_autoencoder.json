@@ -1,0 +1,37 @@
+{
+  "script": "06_autoencoder.py",
+  "timestamp": "2025-12-26T12:13:26.634976",
+  "config": {
+    "model_type": "DAE",
+    "input_dim": 11,
+    "latent_dim": 32,
+    "hidden_dims": [
+      128,
+      64
+    ],
+    "best_val_loss": 0.05060301832854748,
+    "train_size": 60837,
+    "labeled_size": 40837,
+    "unlabeled_size": 20000,
+    "feature_signature": "122f9167e8cbe982",
+    "use_real_holdout": true,
+    "seed": 42
+  },
+  "use_real_holdout": true,
+  "core_tables": [
+    "06_autoencoder_ablation.csv"
+  ],
+  "core_figures": [
+    "06_ablation_comparison.png",
+    "06_dae_loss_curve.png"
+  ],
+  "appendix_tables": [
+    "06_threshold_table_val.csv",
+    "06_pseudolabel_results.csv"
+  ],
+  "appendix_figures": [
+    "06_latent_tsne.png",
+    "06_recon_error_by_label.png",
+    "06_pseudo_confidence_dist.png"
+  ]
+}

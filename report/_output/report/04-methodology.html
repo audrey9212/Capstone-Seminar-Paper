@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Methodology – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../report/05-experiments-results.html" rel="next">
+<link href="../report/03-data-and-problem.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/04-methodology.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Abstract</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/02-literature-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/03-data-and-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/04-methodology.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/05-experiments-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/06-discussion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/07-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/97-acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/98-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99-appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-preprocess" id="toc-sec-preprocess" class="nav-link active" data-scroll-target="#sec-preprocess"><span class="header-section-number">5.1</span> Data Preprocessing Pipeline</a></li>
+  <li><a href="#sec-eval-protocol" id="toc-sec-eval-protocol" class="nav-link" data-scroll-target="#sec-eval-protocol"><span class="header-section-number">5.2</span> Experimental Design and Evaluation Protocol</a></li>
+  <li><a href="#sec-logit" id="toc-sec-logit" class="nav-link" data-scroll-target="#sec-logit"><span class="header-section-number">5.3</span> Baseline Model: Regularized Logistic Regression</a></li>
+  <li><a href="#sec-trees" id="toc-sec-trees" class="nav-link" data-scroll-target="#sec-trees"><span class="header-section-number">5.4</span> Tree and Gradient-Boosted Tree Models</a>
+  <ul class="collapse">
+  <li><a href="#decision-tree-baseline-cart" id="toc-decision-tree-baseline-cart" class="nav-link" data-scroll-target="#decision-tree-baseline-cart"><span class="header-section-number">5.4.1</span> Decision Tree Baseline (CART)</a></li>
+  <li><a href="#random-forest-ensemble" id="toc-random-forest-ensemble" class="nav-link" data-scroll-target="#random-forest-ensemble"><span class="header-section-number">5.4.2</span> Random Forest Ensemble</a></li>
+  <li><a href="#gradient-boosted-frameworks-xgboost-and-lightgbm" id="toc-gradient-boosted-frameworks-xgboost-and-lightgbm" class="nav-link" data-scroll-target="#gradient-boosted-frameworks-xgboost-and-lightgbm"><span class="header-section-number">5.4.3</span> Gradient-Boosted Frameworks: XGBoost and LightGBM</a></li>
+  <li><a href="#bayesian-hyperparameter-optimization" id="toc-bayesian-hyperparameter-optimization" class="nav-link" data-scroll-target="#bayesian-hyperparameter-optimization"><span class="header-section-number">5.4.4</span> Bayesian Hyperparameter Optimization</a></li>
+  <li><a href="#reproducibility-and-model-artifacts" id="toc-reproducibility-and-model-artifacts" class="nav-link" data-scroll-target="#reproducibility-and-model-artifacts"><span class="header-section-number">5.4.5</span> Reproducibility and Model Artifacts</a></li>
+  </ul></li>
+  <li><a href="#sec-deep-learning" id="toc-sec-deep-learning" class="nav-link" data-scroll-target="#sec-deep-learning"><span class="header-section-number">5.5</span> Deep Learning Architecture</a>
+  <ul class="collapse">
+  <li><a href="#sec-dl-input" id="toc-sec-dl-input" class="nav-link" data-scroll-target="#sec-dl-input"><span class="header-section-number">5.5.1</span> Input representation and dataset construction</a></li>
+  <li><a href="#sec-mlp" id="toc-sec-mlp" class="nav-link" data-scroll-target="#sec-mlp"><span class="header-section-number">5.5.2</span> Embedding MLP model</a></li>
+  <li><a href="#sec-wide-deep" id="toc-sec-wide-deep" class="nav-link" data-scroll-target="#sec-wide-deep"><span class="header-section-number">5.5.3</span> Wide &amp; Deep model</a></li>
+  <li><a href="#sec-loss-imbalance" id="toc-sec-loss-imbalance" class="nav-link" data-scroll-target="#sec-loss-imbalance"><span class="header-section-number">5.5.4</span> Training objective and handling class imbalance</a></li>
+  <li><a href="#sec-dl-tuning" id="toc-sec-dl-tuning" class="nav-link" data-scroll-target="#sec-dl-tuning"><span class="header-section-number">5.5.5</span> Optimization, regularization, and model selection</a></li>
+  </ul></li>
+  <li><a href="#sec-uae" id="toc-sec-uae" class="nav-link" data-scroll-target="#sec-uae"><span class="header-section-number">5.6</span> Unsupervised and Semi-supervised Extension</a>
+  <ul class="collapse">
+  <li><a href="#denoising-autoencoder-dae" id="toc-denoising-autoencoder-dae" class="nav-link" data-scroll-target="#denoising-autoencoder-dae"><span class="header-section-number">5.6.1</span> Denoising Autoencoder (DAE)</a></li>
+  <li><a href="#downstream-usage-latent-feature-augmentation" id="toc-downstream-usage-latent-feature-augmentation" class="nav-link" data-scroll-target="#downstream-usage-latent-feature-augmentation"><span class="header-section-number">5.6.2</span> Downstream Usage: Latent Feature Augmentation</a></li>
+  <li><a href="#pseudo-labeling-extension" id="toc-pseudo-labeling-extension" class="nav-link" data-scroll-target="#pseudo-labeling-extension"><span class="header-section-number">5.6.3</span> Pseudo-Labeling Extension</a></li>
+  </ul></li>
+  <li><a href="#sec-stacking" id="toc-sec-stacking" class="nav-link" data-scroll-target="#sec-stacking"><span class="header-section-number">5.7</span> Heterogeneous Stacking Ensemble</a>
+  <ul class="collapse">
+  <li><a href="#base-learners" id="toc-base-learners" class="nav-link" data-scroll-target="#base-learners"><span class="header-section-number">5.7.1</span> Base Learners</a></li>
+  <li><a href="#blending-strategies" id="toc-blending-strategies" class="nav-link" data-scroll-target="#blending-strategies"><span class="header-section-number">5.7.2</span> Blending Strategies</a></li>
+  <li><a href="#out-of-fold-oof-stacking" id="toc-out-of-fold-oof-stacking" class="nav-link" data-scroll-target="#out-of-fold-oof-stacking"><span class="header-section-number">5.7.3</span> Out-of-Fold (OOF) Stacking</a></li>
+  <li><a href="#meta-learner-weights-visualization" id="toc-meta-learner-weights-visualization" class="nav-link" data-scroll-target="#meta-learner-weights-visualization"><span class="header-section-number">5.7.4</span> Meta-Learner Weights Visualization</a></li>
+  <li><a href="#inference-pipeline" id="toc-inference-pipeline" class="nav-link" data-scroll-target="#inference-pipeline"><span class="header-section-number">5.7.5</span> Inference Pipeline</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-methodology" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+Chapter 4: Methodology (sections 4.1–4.7)
+This chapter explains preprocessing, baseline modeling, tree/GBM approaches, deep learning architectures,
+the autoencoder extension, and ensemble design.
+-->
+<section id="sec-preprocess" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sec-preprocess"><span class="header-section-number">5.1</span> Data Preprocessing Pipeline</h2>
+<p>The preprocessing pipeline transforms the raw Cell2Cell features into a modeling-ready format while strictly preventing data leakage between training, validation, and test splits. All pipeline parameters are estimated on the training set only and then applied unchanged to validation and test sets.</p>
+<p>Feature scoping and leakage control. Feature inclusion is governed by a feature registry that records which columns are retained and how they should be treated for different model families. This registry-driven approach avoids per-notebook, ad hoc column selection and makes the modeling dataset auditable. As part of scoping, identifier fields and target fields are excluded from the feature set. In addition, retention-intervention variables are removed because they plausibly reflect post-outcome actions (for example, contact with a retention team or accepted retention offers) and can introduce leakage if used as predictors.</p>
+<p>Training-only fitting of preprocessing parameters. To avoid leakage through preprocessing, all transformation parameters are estimated using the training split only, and then reused unchanged to transform validation and test sets (details of the splitting protocol are described in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>). For numeric variables, the pipeline computes training-set medians for imputation and training-set means and standard deviations for standardization. For categorical variables, it constructs a training-derived mapping from category strings to integer codes, reserving a default code for missing or unseen categories. The fitted parameters are saved for reproducibility and reusability across subsequent experiments.</p>
+<p>Two output representations. Because different model families have different input requirements, the pipeline outputs two feature representations:</p>
+<ol type="1">
+<li><p><strong>Base representation</strong>: A one-hot encoded feature matrix suitable for logistic regression and tree-based models, which require fixed-width numeric input without embedding layers.</p></li>
+<li><p><strong>Deep representation</strong>: A structured output separating continuous features (as a float tensor), categorical features (as integer indices for embedding lookup), and binary features (as a separate float tensor). This format feeds directly into PyTorch data loaders for neural network training.</p></li>
+</ol>
+<p>Overall, this preprocessing design functions as a stable “data contract” for the rest of the thesis: later sections can focus on modeling and evaluation choices while relying on a consistent, leakage-aware, and reproducible transformation of raw telecom records into model inputs.</p>
+<div id="cell-fig-preprocess-pipeline" class="cell" data-message="false" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="fig-preprocess-pipeline" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Flowchart of preprocessing steps: feature scoping, train-only fitting, and dual output representations.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-preprocess-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-methodology_files/figure-html/fig-preprocess-pipeline-output-1.png" alt="Flowchart of preprocessing steps: feature scoping, train-only fitting, and dual output representations." width="490" height="241" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-preprocess-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.1: Preprocessing pipeline overview showing data flow from raw features to model-ready representations.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-eval-protocol" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sec-eval-protocol"><span class="header-section-number">5.2</span> Experimental Design and Evaluation Protocol</h2>
+<p>All modeling experiments in this thesis follow a unified evaluation protocol to ensure fair comparison across model families. The core design choices are described below.</p>
+<p><strong>Data splitting strategy.</strong> The labeled dataset was divided into three non-overlapping subsets: a training set (70%), a validation set (15%), and a test set (15%). Stratified sampling was applied to maintain consistent churn prevalence (approximately 28.8%) across splits. The training set is used for model fitting and hyperparameter search; the validation set guides early stopping, threshold selection, and model selection decisions; the test set is reserved for final, unbiased performance reporting. No model selection or tuning decisions were made based on test-set results.</p>
+<p><strong>Primary evaluation metrics.</strong> Model ranking and selection were based primarily on two threshold-independent metrics:</p>
+<ol type="1">
+<li><p><strong>ROC-AUC (Area Under the Receiver Operating Characteristic Curve)</strong>: Measures the probability that a randomly chosen positive (churner) is ranked higher than a randomly chosen negative (non-churner). This metric is standard for binary classification and is insensitive to class imbalance when used for ranking purposes.</p></li>
+<li><p><strong>PR-AUC (Area Under the Precision–Recall Curve)</strong>: Also known as Average Precision, this metric is more sensitive to performance on the minority class (churners) and is particularly relevant when class imbalance is present.</p></li>
+</ol>
+<p><strong>Fixed operating threshold for decision-level metrics.</strong> To enable consistent comparison of decision-level performance (precision, recall, F1), a single operating threshold (<span class="math inline">\(\tau = 0.4400\)</span>) was selected on the validation set during the main tree-based model selection and then applied to all models uniformly. This fixed-threshold policy avoids per-model “best threshold” cherry-picking and reflects realistic deployment scenarios where a single, stable decision rule is applied across all customers.</p>
+<p><strong>Cross-validation for hyperparameter search.</strong> Where applicable (logistic regression, XGBoost with Optuna), hyperparameters were tuned using stratified 5-fold cross-validation on the training set, with ROC-AUC as the optimization objective. The best hyperparameters were then used to refit a final model on the full training set before evaluation on validation and test sets.</p>
+<p><strong>Reproducibility controls.</strong> All experiments used fixed random seeds (42) for data splitting, model initialization, and stochastic optimization. Model artifacts, including fitted parameters, training curves, and prediction outputs, were saved to enable exact reproduction of results.</p>
+</section>
+<section id="sec-logit" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-logit"><span class="header-section-number">5.3</span> Baseline Model: Regularized Logistic Regression</h2>
+<p>A regularized logistic regression model was developed as the supervised baseline for this churn prediction task. Logistic regression offers a transparent, interpretable starting point: its linear decision boundary and directly interpretable coefficients make it straightforward to identify which features contribute most to churn prediction before introducing more complex, non-linear methods.</p>
+<p>The logistic regression model was trained on the same cleaned, leakage-controlled feature scope defined in the project’s feature registry, using the subset of predictors designated for the GLM family (i.e., features marked as retained for the linear baseline). Because categorical variables had already been expanded into a consistent one-hot feature space in the “base” representation created during preprocessing, the logistic regression stage operated directly on this fixed design matrix. Feature inclusion followed the registry logic: when a raw feature corresponded to a categorical variable, its associated one-hot columns were included as a group (via prefix-based matching), ensuring that the linear baseline used the complete encoded information for each retained categorical predictor while excluding disallowed or leaky fields.</p>
+<p>Model fitting used L1/L2-regularized logistic regression with a controlled hyperparameter search restricted to the most impactful regularization choices. Specifically, the inverse regularization strength and the penalty type (L1 vs.&nbsp;L2) were tuned using a grid search. The search was evaluated via stratified 5-fold cross-validation on the training split, using ROC-AUC as the selection criterion, consistent with the overall evaluation protocol described in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>. The hyperparameter search space was intentionally constrained to regularization strength (<span class="math inline">\(C\)</span>) and penalty type. This restricted scope ensures the baseline remains interpretable and stable, avoiding the risk of over-engineering.</p>
+<p>After selecting the best hyperparameters under cross-validation, the final baseline model was refitted on the full training split and then evaluated under the common experimental protocol (validation used for operating-point selection; test reserved for final reporting). Threshold selection and any constraint-based operating-point choice were handled outside the training objective and followed the unified decision rule described in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>, so that the baseline and later models were compared under the same deployment-style evaluation assumptions.</p>
+</section>
+<section id="sec-trees" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="sec-trees"><span class="header-section-number">5.4</span> Tree and Gradient-Boosted Tree Models</h2>
+<p>Tree-based methods were the primary non-linear modeling family for this structured telecom dataset. The modeling strategy progressed from a simple, interpretable tree to ensemble methods that improve generalization, and finally to gradient-boosted frameworks that typically deliver the strongest ranking performance on tabular data. Data splitting, metric definitions, and the shared threshold policy follow the experimental protocol in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>.</p>
+<p>All tree models were trained on the same base, one-hot encoded representation produced by the preprocessing pipeline (<a href="#sec-preprocess" class="quarto-xref"><span>Section 5.1</span></a>). To keep the tree family comparable and leakage-safe, input columns were selected using the project’s feature registry (features explicitly marked as allowed for tree models). Categorical predictors were represented by their one-hot expansions in a shared column space. When a raw feature was retained, all corresponding dummy columns were included together (via prefix matching), ensuring consistent inclusion of encoded categorical information across the tree family.</p>
+<section id="decision-tree-baseline-cart" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="decision-tree-baseline-cart"><span class="header-section-number">5.4.1</span> Decision Tree Baseline (CART)</h3>
+<p>A single classification tree was used as a simple non-linear reference point. Because unpruned trees can overfit on tabular data, this baseline used explicit structural constraints, including a bounded maximum depth and minimum sample requirements for splits and leaves. These constraints provide controlled flexibility while preserving interpretability at the segment and rule level. Class imbalance was handled through balanced class weights so that splits were not dominated by the majority (non-churn) class. This model serves as a minimum viable non-linear benchmark and tests whether a small set of hierarchical rules can capture churn signals beyond a linear baseline.</p>
+</section>
+<section id="random-forest-ensemble" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="random-forest-ensemble"><span class="header-section-number">5.4.2</span> Random Forest Ensemble</h3>
+<p>To improve stability and generalization beyond a single tree, a random forest classifier was trained as a bagging-based ensemble. Random forests reduce variance by averaging many decorrelated trees trained on bootstrap samples, and they typically provide stronger ranking quality than a single CART without requiring sensitive tuning. The implementation used a fixed configuration with a substantial number of trees and moderate depth control, along with feature subsampling to encourage diversity between trees. Class imbalance was addressed through balanced class weights, mirroring the single-tree setup. The forest is treated as a strong classical ensemble baseline rather than the primary optimized model.</p>
+</section>
+<section id="gradient-boosted-frameworks-xgboost-and-lightgbm" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="gradient-boosted-frameworks-xgboost-and-lightgbm"><span class="header-section-number">5.4.3</span> Gradient-Boosted Frameworks: XGBoost and LightGBM</h3>
+<p>Gradient boosting was implemented with XGBoost as the main boosted framework. The baseline XGBoost configuration used moderate tree depth, a standard learning rate, and row and column subsampling to provide competitive performance without heavy search. Because boosting optimizes a differentiable loss over all observations, imbalance was handled through positive-class reweighting using a prevalence-based weight derived from the training set. This keeps the dataset intact while aligning the objective with churn detection asymmetry.</p>
+<p>LightGBM was trained as a complementary boosted reference model. LightGBM uses a histogram-based algorithm and leaf-wise growth strategy, offering a different bias profile and computational behavior from XGBoost. In this study it was configured as a compact model with a fixed parameter set (rather than a full Bayesian search), including a moderate learning rate, a controlled number of estimators, and explicit regularization. Imbalance handling again used prevalence-based positive-class weighting.</p>
+</section>
+<section id="bayesian-hyperparameter-optimization" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="bayesian-hyperparameter-optimization"><span class="header-section-number">5.4.4</span> Bayesian Hyperparameter Optimization</h3>
+<p>To obtain a high-quality boosted model under a reproducible and auditable search process, XGBoost was tuned using Bayesian optimization with Optuna. The tuning objective was mean ROC-AUC under stratified cross-validation on the training split, consistent with <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>. A Tree-structured Parzen Estimator sampler proposed hyperparameters, and a median-based pruning rule stopped unpromising trials early to improve compute efficiency without changing the evaluation criterion.</p>
+<p>The search space covered key capacity and regularization controls, including number of estimators, tree depth, learning rate (sampled on a log scale), row subsampling, column subsampling, minimum child weight, split regularization via gamma, and L1/L2 regularization. The best hyperparameters selected by cross-validated ROC-AUC were used to refit a final XGBoost model on the full training split before entering the shared validation and test evaluation pipeline.</p>
+</section>
+<section id="reproducibility-and-model-artifacts" class="level3" data-number="5.4.5">
+<h3 data-number="5.4.5" class="anchored" data-anchor-id="reproducibility-and-model-artifacts"><span class="header-section-number">5.4.5</span> Reproducibility and Model Artifacts</h3>
+<p>Across all tree and boosted models, the implementation was designed for deterministic reruns under the same data splits and feature registry constraints. Tuned parameters, fitted models, and evaluation summaries were saved as artifacts (serialized models and JSON metadata) to ensure that the methodology is auditable and that later stages such as ensembling and interpretation can reuse the same fitted estimators rather than retraining them implicitly.</p>
+</section>
+</section>
+<section id="sec-deep-learning" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="sec-deep-learning"><span class="header-section-number">5.5</span> Deep Learning Architecture</h2>
+<p>Neural network models were developed to test whether learned representations and higher-order non-linear interactions could provide incremental gains beyond tree-based methods on customer churn prediction. Unlike GBDTs, which learn interactions through recursive partitioning, neural models can combine continuous covariates and categorical embeddings in a unified latent space and potentially capture smooth interaction effects. All neural models were implemented in PyTorch and trained/evaluated under the common experimental protocol in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>.</p>
+<section id="sec-dl-input" class="level3" data-number="5.5.1">
+<h3 data-number="5.5.1" class="anchored" data-anchor-id="sec-dl-input"><span class="header-section-number">5.5.1</span> Input representation and dataset construction</h3>
+<p>Neural models used the “deep” feature representation produced by the preprocessing stage, which separates variables into three semantic types to match common tabular deep learning practice:</p>
+<section id="continuous-features-float-tensors." class="level4" data-number="5.5.1.1">
+<h4 data-number="5.5.1.1" class="anchored" data-anchor-id="continuous-features-float-tensors."><span class="header-section-number">5.5.1.1</span> Continuous features (float tensors).</h4>
+<p>A fixed set of numeric variables was provided as continuous inputs. These features were preprocessed in a leakage-safe manner using training-derived parameters (imputation and standardization), resulting in approximately zero-mean, unit-variance scaled inputs. Standardization improves optimization stability for gradient-based training and reduces sensitivity to feature scale differences.</p>
+</section>
+<section id="categorical-features-integer-index-tensors." class="level4" data-number="5.5.1.2">
+<h4 data-number="5.5.1.2" class="anchored" data-anchor-id="categorical-features-integer-index-tensors."><span class="header-section-number">5.5.1.2</span> Categorical features (integer-index tensors).</h4>
+<p>High-cardinality and ordinal variables were mapped to integer indices suitable for embedding lookup. Each categorical column was encoded using a training-derived vocabulary so that unseen categories at inference time can be mapped to a reserved index. This representation allows the network to learn dense, low-dimensional representations for each category rather than relying on sparse one-hot vectors.</p>
+</section>
+<section id="binary-features-float-tensors." class="level4" data-number="5.5.1.3">
+<h4 data-number="5.5.1.3" class="anchored" data-anchor-id="binary-features-float-tensors."><span class="header-section-number">5.5.1.3</span> Binary features (float tensors).</h4>
+<p>Binary indicators (e.g., yes/no flags, converted to 0/1) were passed directly as float inputs, preserving their semantic status while avoiding unnecessary embedding overhead for two-level variables.</p>
+<p>This three-part input structure is assembled by a custom PyTorch Dataset class that returns aligned tensors for each batch, enabling modular experimentation with different network heads while keeping the data pipeline consistent.</p>
+</section>
+</section>
+<section id="sec-mlp" class="level3" data-number="5.5.2">
+<h3 data-number="5.5.2" class="anchored" data-anchor-id="sec-mlp"><span class="header-section-number">5.5.2</span> Embedding MLP model</h3>
+<p>The first neural architecture is an <strong>Embedding MLP</strong> that learns dense representations for categorical features and concatenates them with continuous and binary inputs before passing through a multi-layer perceptron. This design follows common practice for tabular deep learning, where categorical embeddings can capture richer interactions than one-hot encoding while keeping the model end-to-end differentiable.</p>
+<section id="embedding-layer." class="level4" data-number="5.5.2.1">
+<h4 data-number="5.5.2.1" class="anchored" data-anchor-id="embedding-layer."><span class="header-section-number">5.5.2.1</span> Embedding layer.</h4>
+<p>Each categorical feature is mapped to a learnable embedding vector. The embedding dimension for each feature is set heuristically (e.g., <span class="math inline">\(\min(50, \text{cardinality} // 2)\)</span>) to balance expressiveness and regularization. All embeddings are concatenated into a single vector per sample.</p>
+</section>
+<section id="mlp-trunk." class="level4" data-number="5.5.2.2">
+<h4 data-number="5.5.2.2" class="anchored" data-anchor-id="mlp-trunk."><span class="header-section-number">5.5.2.2</span> MLP trunk.</h4>
+<p>The concatenated representation (embeddings + continuous + binary) is passed through a feedforward network with ReLU activations and dropout regularization between layers. A typical configuration uses three hidden layers with decreasing width (e.g., 256 → 128 → 64), though the exact architecture can be varied experimentally.</p>
+</section>
+<section id="output-head." class="level4" data-number="5.5.2.3">
+<h4 data-number="5.5.2.3" class="anchored" data-anchor-id="output-head."><span class="header-section-number">5.5.2.3</span> Output head.</h4>
+<p>A final linear layer with a single output unit produces a logit, which is passed through a sigmoid activation to yield a churn probability. For training, the loss is computed directly on the logit (using <code>BCEWithLogitsLoss</code> or focal loss variants), which is numerically more stable than applying sigmoid before loss computation.</p>
+<div id="cell-fig-embedding-mlp" class="cell" data-message="false" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-embedding-mlp" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Diagram showing embedding lookup, concatenation, and MLP layers.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-embedding-mlp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-methodology_files/figure-html/fig-embedding-mlp-output-1.png" alt="Diagram showing embedding lookup, concatenation, and MLP layers." width="490" height="266" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-embedding-mlp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.2: Embedding MLP architecture: categorical embeddings are concatenated with continuous/binary features and passed through a multi-layer perceptron.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-wide-deep" class="level3" data-number="5.5.3">
+<h3 data-number="5.5.3" class="anchored" data-anchor-id="sec-wide-deep"><span class="header-section-number">5.5.3</span> Wide &amp; Deep model</h3>
+<p>The second architecture is a <strong>Wide &amp; Deep</strong> network inspired by the approach introduced by Google for recommendation systems. The key idea is to combine a “wide” linear component (which memorizes feature interactions explicitly) with a “deep” neural component (which generalizes through learned representations). This hybrid structure can capture both low-order, interpretable effects and high-order, non-linear interactions.</p>
+<section id="wide-component." class="level4" data-number="5.5.3.1">
+<h4 data-number="5.5.3.1" class="anchored" data-anchor-id="wide-component."><span class="header-section-number">5.5.3.1</span> Wide component.</h4>
+<p>A linear layer directly connects the concatenated input features (continuous + binary + flattened embeddings or one-hot encoded categoricals) to the output logit. This component acts like a logistic regression and can memorize specific feature combinations that are predictive of churn.</p>
+</section>
+<section id="deep-component." class="level4" data-number="5.5.3.2">
+<h4 data-number="5.5.3.2" class="anchored" data-anchor-id="deep-component."><span class="header-section-number">5.5.3.2</span> Deep component.</h4>
+<p>The same input representation is passed through an MLP trunk (similar to the Embedding MLP described above) to produce a learned representation that captures non-linear interactions. The final hidden layer output is concatenated with the wide component’s linear contribution before the output layer.</p>
+</section>
+<section id="output-combination." class="level4" data-number="5.5.3.3">
+<h4 data-number="5.5.3.3" class="anchored" data-anchor-id="output-combination."><span class="header-section-number">5.5.3.3</span> Output combination.</h4>
+<p>The wide and deep contributions are summed (or concatenated and passed through a final linear layer) to produce the final logit. This architecture allows the model to benefit from both memorization (wide) and generalization (deep), which can be particularly useful for tabular data with both dense and sparse predictive patterns.</p>
+<div id="cell-fig-wide-deep" class="cell" data-message="false" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="fig-wide-deep" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Diagram showing parallel wide and deep pathways merging at output.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wide-deep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-methodology_files/figure-html/fig-wide-deep-output-1.png" alt="Diagram showing parallel wide and deep pathways merging at output." width="490" height="259" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wide-deep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.3: Wide &amp; Deep architecture combining a linear ‘wide’ path with a non-linear ‘deep’ path for churn prediction.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-loss-imbalance" class="level3" data-number="5.5.4">
+<h3 data-number="5.5.4" class="anchored" data-anchor-id="sec-loss-imbalance"><span class="header-section-number">5.5.4</span> Training objective and handling class imbalance</h3>
+<p>Class imbalance (approximately 29% churn vs.&nbsp;71% non-churn) can bias neural network training toward the majority class if not addressed. Two approaches were implemented and compared:</p>
+<section id="weighted-binary-cross-entropy-bce." class="level4" data-number="5.5.4.1">
+<h4 data-number="5.5.4.1" class="anchored" data-anchor-id="weighted-binary-cross-entropy-bce."><span class="header-section-number">5.5.4.1</span> Weighted Binary Cross-Entropy (BCE).</h4>
+<p>The standard BCE loss is modified by assigning a higher weight to positive (churn) samples. If <span class="math inline">\(w_{\text{pos}}\)</span> denotes the positive-class weight, the loss for a single sample becomes:</p>
+<p><span class="math display">\[
+\mathcal{L}_{\text{weighted-BCE}} = -w_{\text{pos}} \cdot y \log(\hat{p}) - (1 - y) \log(1 - \hat{p})
+\]</span></p>
+<p>The weight <span class="math inline">\(w_{\text{pos}}\)</span> is typically set to the inverse class frequency ratio (e.g., <span class="math inline">\(w_{\text{pos}} = \frac{N_{\text{neg}}}{N_{\text{pos}}}\)</span>) so that the total contribution of positive and negative samples is balanced. This approach directly addresses the numerical dominance of majority-class gradients during training.</p>
+</section>
+<section id="focal-loss." class="level4" data-number="5.5.4.2">
+<h4 data-number="5.5.4.2" class="anchored" data-anchor-id="focal-loss."><span class="header-section-number">5.5.4.2</span> Focal Loss.</h4>
+<p>An alternative is focal loss, which down-weights easy examples (those classified correctly with high confidence) and focuses training on hard examples:</p>
+<p><span class="math display">\[
+\mathcal{L}_{\text{focal}} = -\alpha_t (1 - p_t)^\gamma \log(p_t)
+\]</span></p>
+<p>where <span class="math inline">\(p_t = \hat{p}\)</span> if <span class="math inline">\(y = 1\)</span> else <span class="math inline">\(1 - \hat{p}\)</span>, <span class="math inline">\(\alpha_t\)</span> is a class-balancing weight, and <span class="math inline">\(\gamma &gt; 0\)</span> is the focusing parameter. Higher <span class="math inline">\(\gamma\)</span> increases the focus on hard-to-classify examples. Focal loss was originally proposed for object detection but has shown benefits for imbalanced tabular classification as well.</p>
+<p>Importantly, both approaches preserve the original data distribution (no oversampling) and fit naturally into the probabilistic scoring framework required by <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a> (ROC/PR evaluation and validation-based thresholding).</p>
+</section>
+</section>
+<section id="sec-dl-tuning" class="level3" data-number="5.5.5">
+<h3 data-number="5.5.5" class="anchored" data-anchor-id="sec-dl-tuning"><span class="header-section-number">5.5.5</span> Optimization, regularization, and model selection</h3>
+<p>All neural models were trained using the Adam optimizer with a learning rate selected from a small grid (e.g., <span class="math inline">\(\{10^{-3}, 10^{-4}\}\)</span>). Training proceeded for a maximum number of epochs with early stopping based on validation ROC-AUC: if the validation metric did not improve for a specified patience window, training was halted and the best checkpoint was restored.</p>
+<p>Regularization was applied through dropout (applied after each hidden layer) and optional weight decay. Batch normalization was not used in the main experiments to keep the architecture simple and to avoid potential issues with small batch sizes during inference.</p>
+<p>Model selection among neural architectures (Embedding MLP vs.&nbsp;Wide &amp; Deep) and loss functions (weighted BCE vs.&nbsp;focal loss) was performed by comparing validation ROC-AUC. The best-performing configuration was then evaluated on the held-out test set for final reporting.</p>
+<p><strong>Artifacts and reproducibility.</strong> All models output churn risk scores that were evaluated using the unified metrics and thresholding procedure in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>. Artifacts, including training curves, saved model weights, and prediction files, were recorded to enable reproducibility and to support downstream interpretation and ensemble construction in later sections.</p>
+</section>
+</section>
+<section id="sec-uae" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="sec-uae"><span class="header-section-number">5.6</span> Unsupervised and Semi-supervised Extension</h2>
+<p>Beyond purely supervised learning, I investigated whether unlabeled customer records could be exploited to improve churn prediction through (i) unsupervised representation learning and (ii) confidence-based pseudo-labeling. The core idea is that, even without labels, the marginal distribution of customer behavior may contain useful structure (e.g., common usage profiles and atypical patterns) that can be distilled into a compact latent representation and transferred to the downstream churn model. Consistent with <a href="#sec-preprocess" class="quarto-xref"><span>Section 5.1</span></a>, this extension operates on the same cleaned feature schema, while <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a> defines the evaluation protocol used to compare all variants.</p>
+<section id="denoising-autoencoder-dae" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="denoising-autoencoder-dae"><span class="header-section-number">5.6.1</span> Denoising Autoencoder (DAE)</h3>
+<p>A denoising autoencoder was trained on the numeric feature subset (all continuous columns) without using churn labels. The DAE consists of:</p>
+<ol type="1">
+<li><strong>Encoder</strong>: A feedforward network that maps the (corrupted) input features to a lower-dimensional latent representation <span class="math inline">\(\mathbf{z}\)</span>.</li>
+<li><strong>Decoder</strong>: A symmetric feedforward network that reconstructs the original (uncorrupted) input from <span class="math inline">\(\mathbf{z}\)</span>.</li>
+<li><strong>Noise injection</strong>: During training, input features are corrupted by additive Gaussian noise or masking dropout. The model is trained to reconstruct the clean input, which encourages the encoder to learn robust, denoised representations.</li>
+</ol>
+<p>The reconstruction loss (mean squared error between input and output) is minimized using Adam optimizer with early stopping based on validation reconstruction loss.</p>
+<p><strong>Label-Free Training.</strong> The DAE is trained without using churn labels, and can therefore incorporate both labeled and unlabeled records in a leakage-safe manner (labels are never accessed). Model selection is performed using a held-out validation split and early stopping based on validation reconstruction loss, selecting the epoch that best balances fit and generalization of the learned representation. Once trained, the encoder is treated as a deterministic feature extractor that produces a latent vector for each customer.</p>
+</section>
+<section id="downstream-usage-latent-feature-augmentation" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="downstream-usage-latent-feature-augmentation"><span class="header-section-number">5.6.2</span> Downstream Usage: Latent Feature Augmentation</h3>
+<p>After training, the encoder is frozen and used to extract latent representations for all samples (train, validation, test, and unlabeled holdout). These latent features are then concatenated with the original feature set to form an augmented input representation for the downstream supervised model (e.g., XGBoost). The hypothesis is that the learned latent space may capture useful structure (e.g., customer segments, anomaly patterns) that improves discrimination when combined with the original features.</p>
+<p>Both variants are evaluated against the supervised baseline using the identical split and metric definitions in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>, ensuring that any observed change can be attributed to representation learning rather than differences in preprocessing or evaluation.</p>
+</section>
+<section id="pseudo-labeling-extension" class="level3" data-number="5.6.3">
+<h3 data-number="5.6.3" class="anchored" data-anchor-id="pseudo-labeling-extension"><span class="header-section-number">5.6.3</span> Pseudo-Labeling Extension</h3>
+<p>To test whether unlabeled data can provide additional training signal, a pseudo-labeling strategy was implemented:</p>
+<ol type="1">
+<li><strong>Teacher model</strong>: An Optuna-tuned XGBoost model trained on labeled data serves as the teacher.</li>
+<li><strong>Confidence thresholding</strong>: The teacher scores the unlabeled holdout set. Samples with predicted probability <span class="math inline">\(p \geq 0.95\)</span> are pseudo-labeled as churners; samples with <span class="math inline">\(p \leq 0.05\)</span> are pseudo-labeled as non-churners. Samples in between are discarded as uncertain.</li>
+<li><strong>Student training</strong>: A new model is trained on the union of labeled data and high-confidence pseudo-labeled data.</li>
+</ol>
+<p>This conservative threshold strategy prioritizes label quality over quantity, accepting only pseudo-labels where the teacher is highly confident.</p>
+</section>
+</section>
+<section id="sec-stacking" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="sec-stacking"><span class="header-section-number">5.7</span> Heterogeneous Stacking Ensemble</h2>
+<p>To improve robustness beyond any single model family, I implemented a heterogeneous ensemble that combines complementary inductive biases through probability-level aggregation. Rather than relying on a single “best” learner, the ensemble treats each trained model as a noisy but informative estimator of churn risk, and then learns (or prescribes) a principled rule for combining their probability outputs. This section describes the ensemble design and training protocol; performance comparisons are reported later under the common evaluation policy defined in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>.</p>
+<section id="base-learners" class="level3" data-number="5.7.1">
+<h3 data-number="5.7.1" class="anchored" data-anchor-id="base-learners"><span class="header-section-number">5.7.1</span> Base Learners</h3>
+<p>The ensemble uses the following base learners, all trained on the same feature representation and data splits:</p>
+<ol type="1">
+<li><strong>Logistic Regression</strong> (linear baseline)</li>
+<li><strong>XGBoost</strong> (Optuna-tuned gradient boosting)</li>
+<li><strong>LightGBM</strong> (histogram-based gradient boosting)</li>
+<li><strong>Random Forest</strong> (bagging-based ensemble)</li>
+<li><strong>Wide &amp; Deep Neural Network</strong> (best neural configuration)</li>
+</ol>
+<p>These models span different inductive biases: linear vs.&nbsp;non-linear, tree-based vs.&nbsp;neural, single-model vs.&nbsp;ensemble. The diversity in model families is expected to provide complementary error profiles, which is the key requirement for ensemble benefit.</p>
+</section>
+<section id="blending-strategies" class="level3" data-number="5.7.2">
+<h3 data-number="5.7.2" class="anchored" data-anchor-id="blending-strategies"><span class="header-section-number">5.7.2</span> Blending Strategies</h3>
+<p>Three blending strategies were evaluated:</p>
+<ol type="1">
+<li><p><strong>Simple Average</strong>: Equal-weight averaging of predicted probabilities: <span class="math inline">\(\hat{p}_{\text{blend}} = \frac{1}{K} \sum_{k=1}^{K} \hat{p}_k\)</span></p></li>
+<li><p><strong>AUC-Weighted Average</strong>: Weights proportional to each model’s validation ROC-AUC: <span class="math inline">\(w_k = \frac{\text{AUC}_k}{\sum_j \text{AUC}_j}\)</span></p></li>
+<li><p><strong>NNLS-Optimized Weights</strong>: Non-negative least squares regression on validation predictions to find optimal weights that minimize squared error relative to true labels.</p></li>
+</ol>
+</section>
+<section id="out-of-fold-oof-stacking" class="level3" data-number="5.7.3">
+<h3 data-number="5.7.3" class="anchored" data-anchor-id="out-of-fold-oof-stacking"><span class="header-section-number">5.7.3</span> Out-of-Fold (OOF) Stacking</h3>
+<p><strong>Leakage Control via OOF.</strong> The key methodological requirement for stacking is leakage control, as the meta-learner must be trained on base predictions that are out-of-sample with respect to the base learners. I therefore used a <span class="math inline">\(K\)</span>-fold Out-of-Fold (OOF) protocol on the training split. For each fold <span class="math inline">\(k\)</span>, each base estimator is fit on the <span class="math inline">\(K - 1\)</span> training folds and used to predict probabilities on the held-out fold. Concatenating held-out predictions across folds yields an OOF prediction matrix <span class="math inline">\(Z_{OOF}\)</span> where every row corresponds to a training instance and every column to a base learner, with the guarantee that each entry was generated by a model that did not train on that instance.</p>
+<p><strong>Meta-Learner Training.</strong> A Ridge logistic regression meta-learner is trained on <span class="math inline">\(Z_{OOF}\)</span> to learn optimal combination weights. The meta-learner’s coefficients indicate the relative contribution of each base learner to the final ensemble prediction.</p>
+<div id="cell-fig-stacking" class="cell" data-message="false" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-stacking" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Diagram showing K-fold OOF prediction generation and meta-learner training.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stacking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-methodology_files/figure-html/fig-stacking-output-1.png" alt="Diagram showing K-fold OOF prediction generation and meta-learner training." width="490" height="317" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.4: OOF stacking architecture: base learners produce out-of-fold predictions that are combined by a meta-learner.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="meta-learner-weights-visualization" class="level3" data-number="5.7.4">
+<h3 data-number="5.7.4" class="anchored" data-anchor-id="meta-learner-weights-visualization"><span class="header-section-number">5.7.4</span> Meta-Learner Weights Visualization</h3>
+<p>After training, the meta-learner coefficients can be visualized to understand the relative contribution of each base model. Positive coefficients indicate models that contribute positively to the ensemble prediction; larger coefficients indicate stronger contributions.</p>
+<div id="cell-fig-stacking-weights" class="cell" data-message="false" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-stacking-weights" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Bar chart of meta-learner coefficients for each base model.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stacking-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="04-methodology_files/figure-html/fig-stacking-weights-output-1.png" alt="Bar chart of meta-learner coefficients for each base model." width="490" height="249" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacking-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.5: Meta-learner coefficients showing the contribution of each base model to the stacking ensemble.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="inference-pipeline" class="level3" data-number="5.7.5">
+<h3 data-number="5.7.5" class="anchored" data-anchor-id="inference-pipeline"><span class="header-section-number">5.7.5</span> Inference Pipeline</h3>
+<p>At inference time, all base models are applied to the test set to produce a prediction matrix <span class="math inline">\(Z_{\text{test}}\)</span>. The meta-learner then combines these predictions to produce final ensemble probabilities. The operating threshold (<span class="math inline">\(\tau = 0.4400\)</span>) is applied to these ensemble probabilities to generate binary churn predictions for evaluation.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../report/03-data-and-problem.html" class="pagination-link" aria-label="Data and Problem Setup">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../report/05-experiments-results.html" class="pagination-link" aria-label="Experiments and Results">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

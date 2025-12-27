@@ -1,0 +1,29 @@
+{
+  "run_name": "04_trees_gbm",
+  "figures_main": [
+    "04_best_roc_pr_point_test.png"
+  ],
+  "figures_appendix": [
+    "04_xgb_optuna_optimization_history.png",
+    "04_xgb_optuna_parallel_coordinate.png",
+    "04_xgb_optuna_param_importances.png",
+    "04_all_tree_roc_pr_test.png"
+  ],
+  "tables_main": [
+    "04_tree_leaderboard.csv"
+  ],
+  "tables_appendix": [
+    "04_best_threshold_table_val.csv"
+  ],
+  "all_figures": [
+    "04_xgb_optuna_optimization_history.png",
+    "04_xgb_optuna_parallel_coordinate.png",
+    "04_xgb_optuna_param_importances.png",
+    "04_best_roc_pr_point_test.png",
+    "04_all_tree_roc_pr_test.png"
+  ],
+  "all_tables": [
+    "04_tree_leaderboard.csv",
+    "04_best_threshold_table_val.csv"
+  ]
+}

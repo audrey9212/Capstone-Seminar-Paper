@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Experiments and Results – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../report/06-discussion.html" rel="next">
+<link href="../report/04-methodology.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/05-experiments-results.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Abstract</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/02-literature-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/03-data-and-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/04-methodology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/05-experiments-results.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/06-discussion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/07-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/97-acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/98-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99-appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-benchmark-summary" id="toc-sec-benchmark-summary" class="nav-link active" data-scroll-target="#sec-benchmark-summary"><span class="header-section-number">6.1</span> Overall Benchmark Summary</a></li>
+  <li><a href="#sec-logit-baseline" id="toc-sec-logit-baseline" class="nav-link" data-scroll-target="#sec-logit-baseline"><span class="header-section-number">6.2</span> Baseline Performance (Logistic Regression)</a></li>
+  <li><a href="#sec-tree-gbm-results" id="toc-sec-tree-gbm-results" class="nav-link" data-scroll-target="#sec-tree-gbm-results"><span class="header-section-number">6.3</span> Tree and GBM Results</a>
+  <ul class="collapse">
+  <li><a href="#gradient-boosted-decision-trees" id="toc-gradient-boosted-decision-trees" class="nav-link" data-scroll-target="#gradient-boosted-decision-trees"><span class="header-section-number">6.3.1</span> Gradient-Boosted Decision Trees</a></li>
+  <li><a href="#hyperparameter-optimization-diagnostics" id="toc-hyperparameter-optimization-diagnostics" class="nav-link" data-scroll-target="#hyperparameter-optimization-diagnostics"><span class="header-section-number">6.3.2</span> Hyperparameter Optimization Diagnostics</a></li>
+  </ul></li>
+  <li><a href="#sec-nn-results" id="toc-sec-nn-results" class="nav-link" data-scroll-target="#sec-nn-results"><span class="header-section-number">6.4</span> Deep Learning Results (PyTorch)</a>
+  <ul class="collapse">
+  <li><a href="#architecture-comparison" id="toc-architecture-comparison" class="nav-link" data-scroll-target="#architecture-comparison"><span class="header-section-number">6.4.1</span> Architecture Comparison</a></li>
+  <li><a href="#lossimbalance-ablation" id="toc-lossimbalance-ablation" class="nav-link" data-scroll-target="#lossimbalance-ablation"><span class="header-section-number">6.4.2</span> Loss/Imbalance Ablation</a></li>
+  <li><a href="#training-dynamics" id="toc-training-dynamics" class="nav-link" data-scroll-target="#training-dynamics"><span class="header-section-number">6.4.3</span> Training Dynamics</a></li>
+  </ul></li>
+  <li><a href="#sec-autoencoder-results" id="toc-sec-autoencoder-results" class="nav-link" data-scroll-target="#sec-autoencoder-results"><span class="header-section-number">6.5</span> Unsupervised/Semi-Supervised Extension (Autoencoder + Pseudo-Label)</a>
+  <ul class="collapse">
+  <li><a href="#dae-convergence-and-reconstruction" id="toc-dae-convergence-and-reconstruction" class="nav-link" data-scroll-target="#dae-convergence-and-reconstruction"><span class="header-section-number">6.5.1</span> DAE Convergence and Reconstruction</a></li>
+  <li><a href="#pseudo-label-confidence-and-coverage" id="toc-pseudo-label-confidence-and-coverage" class="nav-link" data-scroll-target="#pseudo-label-confidence-and-coverage"><span class="header-section-number">6.5.2</span> Pseudo-Label Confidence and Coverage</a></li>
+  <li><a href="#downstream-impact-ablation-summary" id="toc-downstream-impact-ablation-summary" class="nav-link" data-scroll-target="#downstream-impact-ablation-summary"><span class="header-section-number">6.5.3</span> Downstream Impact (Ablation Summary)</a></li>
+  </ul></li>
+  <li><a href="#sec-ensemble-results" id="toc-sec-ensemble-results" class="nav-link" data-scroll-target="#sec-ensemble-results"><span class="header-section-number">6.6</span> Ensemble Results (Blending vs.&nbsp;OOF Stacking)</a>
+  <ul class="collapse">
+  <li><a href="#blending-results" id="toc-blending-results" class="nav-link" data-scroll-target="#blending-results"><span class="header-section-number">6.6.1</span> Blending Results</a></li>
+  <li><a href="#oof-stacking-results" id="toc-oof-stacking-results" class="nav-link" data-scroll-target="#oof-stacking-results"><span class="header-section-number">6.6.2</span> OOF Stacking Results</a></li>
+  <li><a href="#ensemble-diversity-analysis" id="toc-ensemble-diversity-analysis" class="nav-link" data-scroll-target="#ensemble-diversity-analysis"><span class="header-section-number">6.6.3</span> Ensemble Diversity Analysis</a></li>
+  </ul></li>
+  <li><a href="#sec-operating-point" id="toc-sec-operating-point" class="nav-link" data-scroll-target="#sec-operating-point"><span class="header-section-number">6.7</span> Operating Point Analysis (Threshold Policy in Practice)</a>
+  <ul class="collapse">
+  <li><a href="#confusion-matrix-analysis" id="toc-confusion-matrix-analysis" class="nav-link" data-scroll-target="#confusion-matrix-analysis"><span class="header-section-number">6.7.1</span> Confusion Matrix Analysis</a></li>
+  </ul></li>
+  <li><a href="#sec-results-summary" id="toc-sec-results-summary" class="nav-link" data-scroll-target="#sec-results-summary"><span class="header-section-number">6.8</span> Summary of Key Findings</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-experiments-results" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+Chapter 5: Experiments and Results (sections 5.1–5.7)
+This chapter presents benchmark results across all model families, from baseline logistic regression
+through tree/GBM models, deep learning, unsupervised extensions, and ensemble methods.
+Figures are linked to precomputed artifacts under artifacts/figures/ (generated by scripts 03–08).
+-->
+<section id="sec-benchmark-summary" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sec-benchmark-summary"><span class="header-section-number">6.1</span> Overall Benchmark Summary</h2>
+<p>All models were evaluated on the held-out test set using threshold-independent ranking metrics (ROC-AUC and PR-AUC) alongside threshold-dependent decision metrics (precision, recall, and F1) at a fixed operating point. <a href="#tbl-model-leaderboard" class="quarto-xref">Table&nbsp;<span>6.1</span></a> reports the complete benchmark results, while <a href="#fig-model-comparison" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> summarizes the corresponding ROC and precision–recall (PR) curves. Because the churn rate in the test set is 28.8%, a non-informative baseline achieves a PR-AUC of approximately 0.2880; all trained models exceeded this baseline by a substantial margin.</p>
+<p>Across the supervised model families, gradient-boosted decision trees delivered the strongest overall performance. Using the validation-set ROC-AUC criterion defined in <a href="04-methodology.html#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>, XGBoost was selected as the champion model (validation ROC-AUC = 0.6583, validation PR-AUC = 0.4344). On the test set, the champion XGBoost model achieved ROC-AUC = 0.6637 and PR-AUC = 0.4454. At the fixed operating threshold of 0.4400, it reached precision = 0.3670, recall = 0.7390, and F1 = 0.4904 (the corresponding confusion matrix is reported in <a href="#sec-operating-point" class="quarto-xref"><span>Section 6.7</span></a>). Notably, LightGBM achieved the highest test ROC-AUC among the single supervised models (test ROC-AUC = 0.6700, test PR-AUC = 0.4476), indicating that the two leading GBM approaches were closely matched on this dataset.</p>
+<p>The remaining baselines formed clear lower tiers. Random Forest achieved ROC-AUC = 0.6534 and PR-AUC = 0.4271, while the logistic regression baseline yielded ROC-AUC = 0.5940 and PR-AUC = 0.3560. The deep learning models clustered in a narrow band: their test ROC-AUC values ranged from approximately 0.6440 to 0.6620, and test PR-AUC ranged from approximately 0.4080 to 0.4360. The best neural model by ranking metrics was a Wide &amp; Deep variant with focal loss (test ROC-AUC = 0.6615, test PR-AUC = 0.4356). Under the fixed threshold of 0.4400, several focal-loss neural variants produced very few positive predictions, resulting in near-zero recall and F1 despite competitive AUC/PR-AUC; therefore, ranking metrics provide the fairest comparison at this aggregate level, while threshold-based outcomes are interpreted separately in <a href="#sec-operating-point" class="quarto-xref"><span>Section 6.7</span></a>.</p>
+<div class="cell" data-message="false" data-execution_count="1">
+<div id="tbl-model-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="1">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: Model leaderboard showing validation and test performance across all model families.
+</figcaption>
+<div aria-describedby="tbl-model-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">val_roc_auc</th>
+<th style="text-align: right;">val_pr_auc</th>
+<th style="text-align: right;">test_roc_auc</th>
+<th style="text-align: right;">test_pr_auc</th>
+<th style="text-align: right;">test_brier</th>
+<th style="text-align: right;">test_f1</th>
+<th style="text-align: right;">test_recall</th>
+<th style="text-align: right;">test_precision</th>
+<th style="text-align: right;">threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">XGBoost</td>
+<td style="text-align: right;">0.657146</td>
+<td style="text-align: right;">0.435915</td>
+<td style="text-align: right;">0.663681</td>
+<td style="text-align: right;">0.445441</td>
+<td style="text-align: right;">0.223314</td>
+<td style="text-align: right;">0.490413</td>
+<td style="text-align: right;">0.738953</td>
+<td style="text-align: right;">0.366982</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_wide_deep_focal</td>
+<td style="text-align: right;">0.653063</td>
+<td style="text-align: right;">0.429338</td>
+<td style="text-align: right;">0.661457</td>
+<td style="text-align: right;">0.435612</td>
+<td style="text-align: right;">0.197007</td>
+<td style="text-align: right;">0.0174614</td>
+<td style="text-align: right;">0.00883753</td>
+<td style="text-align: right;">0.722222</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LightGBM</td>
+<td style="text-align: right;">0.650239</td>
+<td style="text-align: right;">0.4311</td>
+<td style="text-align: right;">0.669973</td>
+<td style="text-align: right;">0.447632</td>
+<td style="text-align: right;">0.219983</td>
+<td style="text-align: right;">0.49688</td>
+<td style="text-align: right;">0.730795</td>
+<td style="text-align: right;">0.376401</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_wide_and_deep</td>
+<td style="text-align: right;">0.649779</td>
+<td style="text-align: right;">0.418712</td>
+<td style="text-align: right;">0.649605</td>
+<td style="text-align: right;">0.42076</td>
+<td style="text-align: right;">0.2364</td>
+<td style="text-align: right;">0.482441</td>
+<td style="text-align: right;">0.7845</td>
+<td style="text-align: right;">0.348325</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RandomForest</td>
+<td style="text-align: right;">0.649016</td>
+<td style="text-align: right;">0.421517</td>
+<td style="text-align: right;">0.653428</td>
+<td style="text-align: right;">0.428959</td>
+<td style="text-align: right;">0.228971</td>
+<td style="text-align: right;">0.480699</td>
+<td style="text-align: right;">0.804215</td>
+<td style="text-align: right;">0.342799</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_focal_loss</td>
+<td style="text-align: right;">0.648666</td>
+<td style="text-align: right;">0.421622</td>
+<td style="text-align: right;">0.661197</td>
+<td style="text-align: right;">0.434519</td>
+<td style="text-align: right;">0.197579</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05_nn_dense_baseline</td>
+<td style="text-align: right;">0.646737</td>
+<td style="text-align: right;">0.425746</td>
+<td style="text-align: right;">0.65528</td>
+<td style="text-align: right;">0.421941</td>
+<td style="text-align: right;">0.234346</td>
+<td style="text-align: right;">0.489779</td>
+<td style="text-align: right;">0.806254</td>
+<td style="text-align: right;">0.35172</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_baseline</td>
+<td style="text-align: right;">0.642545</td>
+<td style="text-align: right;">0.408729</td>
+<td style="text-align: right;">0.648944</td>
+<td style="text-align: right;">0.419172</td>
+<td style="text-align: right;">0.232875</td>
+<td style="text-align: right;">0.487391</td>
+<td style="text-align: right;">0.781781</td>
+<td style="text-align: right;">0.354064</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05_nn_wide_and_deep_deeper</td>
+<td style="text-align: right;">0.642242</td>
+<td style="text-align: right;">0.414346</td>
+<td style="text-align: right;">0.647519</td>
+<td style="text-align: right;">0.411018</td>
+<td style="text-align: right;">0.232793</td>
+<td style="text-align: right;">0.482227</td>
+<td style="text-align: right;">0.765466</td>
+<td style="text-align: right;">0.351985</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_strong_weight</td>
+<td style="text-align: right;">0.64173</td>
+<td style="text-align: right;">0.411761</td>
+<td style="text-align: right;">0.644192</td>
+<td style="text-align: right;">0.408117</td>
+<td style="text-align: right;">0.271837</td>
+<td style="text-align: right;">0.478787</td>
+<td style="text-align: right;">0.901428</td>
+<td style="text-align: right;">0.325959</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06_teacher</td>
+<td style="text-align: right;">0.63778</td>
+<td style="text-align: right;">0.418322</td>
+<td style="text-align: right;">0.645056</td>
+<td style="text-align: right;">0.427104</td>
+<td style="text-align: right;">0.193299</td>
+<td style="text-align: right;">0.262616</td>
+<td style="text-align: right;">0.173351</td>
+<td style="text-align: right;">0.541401</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logistic</td>
+<td style="text-align: right;">0.588286</td>
+<td style="text-align: right;">0.347494</td>
+<td style="text-align: right;">0.593987</td>
+<td style="text-align: right;">0.355974</td>
+<td style="text-align: right;">0.24378</td>
+<td style="text-align: right;">0.456037</td>
+<td style="text-align: right;">0.840925</td>
+<td style="text-align: right;">0.312848</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><a href="#fig-model-comparison" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> visually corroborates these findings. The ROC curves for the leading models (LightGBM and XGBoost) lie consistently above the other model families across most false-positive rates, and the PR curves show a clear separation from the prevalence baseline (approximately 0.2880), with the top models maintaining higher precision at comparable recall. In addition to single-model benchmarks, heterogeneous ensemble experiments (<a href="#sec-ensemble-results" class="quarto-xref"><span>Section 6.6</span></a>) produced performance comparable to the best GBMs, with the best ensembles reaching approximately 0.6690 test ROC-AUC and 0.4490 test PR-AUC, representing a modest lift relative to the champion XGBoost model.</p>
+<div id="cell-fig-model-comparison" class="cell" data-message="false" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-model-comparison" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Side-by-side ROC and PR curves showing model comparison.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-model-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-model-comparison-output-1.png" alt="Side-by-side ROC and PR curves showing model comparison." width="490" height="223" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: ROC and Precision–Recall curves comparing all model families on the test set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Note: Models were selected based on Validation ROC-AUC (as shown in the leaderboard in appendix). The plots below display performance on the held-out Test Set to provide an unbiased evaluation of generalization. Small discrepancies between ranking and plotting order are expected.</p>
+</section>
+<section id="sec-logit-baseline" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-logit-baseline"><span class="header-section-number">6.2</span> Baseline Performance (Logistic Regression)</h2>
+<p>To provide a simple and interpretable reference point, a regularized logistic regression model was first evaluated as the supervised baseline. On the held-out test set, the baseline achieved a ROC-AUC of 0.5940 and a PR-AUC (average precision) of 0.3560, indicating modest but meaningful discrimination despite the class imbalance (<a href="#tbl-logit-metrics" class="quarto-xref">Table&nbsp;<span>6.2</span></a>). For context, the test-set churn prevalence is 0.2880, so the baseline PR-AUC is clearly above the prevalence level expected from random ranking; this relationship is also visible in the precision–recall curve where the model stays above the horizontal prevalence line across a wide recall range (<a href="99-appendix.html#sec-appendix-b3" class="quarto-xref"><span>Section A.3.3</span></a>).</p>
+<div class="cell" data-message="false" data-execution_count="3">
+<div id="tbl-logit-metrics" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="3">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-logit-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.2: Logistic regression baseline performance metrics on validation and test sets.
+</figcaption>
+<div aria-describedby="tbl-logit-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">split</th>
+<th style="text-align: right;">threshold</th>
+<th style="text-align: right;">roc_auc</th>
+<th style="text-align: right;">pr_auc</th>
+<th style="text-align: right;">brier_score</th>
+<th style="text-align: right;">precision</th>
+<th style="text-align: right;">recall</th>
+<th style="text-align: right;">f1_score</th>
+<th style="text-align: right;">true_negatives</th>
+<th style="text-align: right;">false_positives</th>
+<th style="text-align: right;">false_negatives</th>
+<th style="text-align: right;">true_positives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Train</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.593797</td>
+<td style="text-align: right;">0.354992</td>
+<td style="text-align: right;">0.24399</td>
+<td style="text-align: right;">0.314526</td>
+<td style="text-align: right;">0.847396</td>
+<td style="text-align: right;">0.458771</td>
+<td style="text-align: right;">7333</td>
+<td style="text-align: right;">21735</td>
+<td style="text-align: right;">1796</td>
+<td style="text-align: right;">9973</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Validation</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.588286</td>
+<td style="text-align: right;">0.347494</td>
+<td style="text-align: right;">0.244917</td>
+<td style="text-align: right;">0.311646</td>
+<td style="text-align: right;">0.836846</td>
+<td style="text-align: right;">0.45416</td>
+<td style="text-align: right;">915</td>
+<td style="text-align: right;">2719</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: right;">1231</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Test</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.593987</td>
+<td style="text-align: right;">0.355974</td>
+<td style="text-align: right;">0.24378</td>
+<td style="text-align: right;">0.312848</td>
+<td style="text-align: right;">0.840925</td>
+<td style="text-align: right;">0.456037</td>
+<td style="text-align: right;">917</td>
+<td style="text-align: right;">2717</td>
+<td style="text-align: right;">234</td>
+<td style="text-align: right;">1237</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The baseline exhibited stable performance across data splits. On the validation set, the model reached ROC-AUC = 0.5880 and PR-AUC = 0.3480, closely matching test-set results and providing a consistent lower-bound benchmark for subsequent model families. In addition to ranking metrics, decision-level performance is reported at the operating threshold used for downstream comparisons (threshold = 0.4400). At this threshold, the test-set confusion matrix contained 917 true negatives, 2,717 false positives, 234 false negatives, and 1,237 true positives, corresponding to recall = 0.8410, precision = 0.3130, and F1 = 0.4560. Detailed ROC curves, PR curves, and confusion matrices for the logistic regression baseline are provided in <a href="99-appendix.html#sec-appendix-b3" class="quarto-xref"><span>Section A.3.3</span></a>.</p>
+<p>Finally, probability accuracy was summarized via the Brier score, which was 0.2440 on the test set; the corresponding reliability diagram provides a visual check of calibration quality (<a href="#fig-logit-calibration" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>). Overall, this baseline establishes a conservative performance floor against which the gains from nonlinear models (tree/GBM, neural networks) and ensembling can be quantified.</p>
+<div id="cell-fig-logit-calibration" class="cell" data-message="false" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="fig-logit-calibration" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Reliability diagram showing probability calibration quality.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logit-calibration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-logit-calibration-output-1.png" alt="Reliability diagram showing probability calibration quality." width="418" height="317" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-calibration-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: Calibration (reliability) diagram for logistic regression with Brier score annotation.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-tree-gbm-results" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-tree-gbm-results"><span class="header-section-number">6.3</span> Tree and GBM Results</h2>
+<p>As a first step beyond the linear baseline, two tree-based benchmarks were evaluated: a single decision tree and a random forest. <a href="#tbl-tree-leaderboard" class="quarto-xref">Table&nbsp;<span>6.3</span></a> reports ROC-AUC and PR-AUC on both validation and test sets, and <a href="#fig-tree-rocpr-test" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> visualizes the corresponding ROC and PR curves on the test set.</p>
+<div class="cell" data-message="false" data-execution_count="5">
+<div id="tbl-tree-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="5">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tree-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.3: Performance summary of tree-based models on validation and test sets.
+</figcaption>
+<div aria-describedby="tbl-tree-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">split</th>
+<th style="text-align: right;">roc_auc</th>
+<th style="text-align: right;">pr_auc</th>
+<th style="text-align: right;">brier_score</th>
+<th style="text-align: right;">threshold</th>
+<th style="text-align: right;">precision</th>
+<th style="text-align: right;">recall</th>
+<th style="text-align: right;">f1_score</th>
+<th style="text-align: right;">true_negatives</th>
+<th style="text-align: right;">false_positives</th>
+<th style="text-align: right;">false_negatives</th>
+<th style="text-align: right;">true_positives</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">dt_baseline</td>
+<td style="text-align: left;">val</td>
+<td style="text-align: right;">0.631703</td>
+<td style="text-align: right;">0.403643</td>
+<td style="text-align: right;">0.238156</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.370782</td>
+<td style="text-align: right;">0.590075</td>
+<td style="text-align: right;">0.455404</td>
+<td style="text-align: right;">2161</td>
+<td style="text-align: right;">1473</td>
+<td style="text-align: right;">603</td>
+<td style="text-align: right;">868</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dt_baseline</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">0.625077</td>
+<td style="text-align: right;">0.393425</td>
+<td style="text-align: right;">0.238209</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.367982</td>
+<td style="text-align: right;">0.57036</td>
+<td style="text-align: right;">0.447347</td>
+<td style="text-align: right;">2193</td>
+<td style="text-align: right;">1441</td>
+<td style="text-align: right;">632</td>
+<td style="text-align: right;">839</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rf_baseline</td>
+<td style="text-align: left;">val</td>
+<td style="text-align: right;">0.649016</td>
+<td style="text-align: right;">0.421517</td>
+<td style="text-align: right;">0.231366</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.365991</td>
+<td style="text-align: right;">0.662814</td>
+<td style="text-align: right;">0.471584</td>
+<td style="text-align: right;">1945</td>
+<td style="text-align: right;">1689</td>
+<td style="text-align: right;">496</td>
+<td style="text-align: right;">975</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rf_baseline</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">0.653428</td>
+<td style="text-align: right;">0.428959</td>
+<td style="text-align: right;">0.228971</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.373933</td>
+<td style="text-align: right;">0.655337</td>
+<td style="text-align: right;">0.476167</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">1614</td>
+<td style="text-align: right;">507</td>
+<td style="text-align: right;">964</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">xgb_baseline</td>
+<td style="text-align: left;">val</td>
+<td style="text-align: right;">0.657146</td>
+<td style="text-align: right;">0.435915</td>
+<td style="text-align: right;">0.226199</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.385664</td>
+<td style="text-align: right;">0.596193</td>
+<td style="text-align: right;">0.468358</td>
+<td style="text-align: right;">2237</td>
+<td style="text-align: right;">1397</td>
+<td style="text-align: right;">594</td>
+<td style="text-align: right;">877</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">xgb_baseline</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">0.663681</td>
+<td style="text-align: right;">0.445441</td>
+<td style="text-align: right;">0.223314</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.39354</td>
+<td style="text-align: right;">0.588035</td>
+<td style="text-align: right;">0.471518</td>
+<td style="text-align: right;">2301</td>
+<td style="text-align: right;">1333</td>
+<td style="text-align: right;">606</td>
+<td style="text-align: right;">865</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">xgb_optuna</td>
+<td style="text-align: left;">val</td>
+<td style="text-align: right;">0.657618</td>
+<td style="text-align: right;">0.437372</td>
+<td style="text-align: right;">0.23188</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.382098</td>
+<td style="text-align: right;">0.658736</td>
+<td style="text-align: right;">0.483654</td>
+<td style="text-align: right;">2067</td>
+<td style="text-align: right;">1567</td>
+<td style="text-align: right;">502</td>
+<td style="text-align: right;">969</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">xgb_optuna</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">0.669062</td>
+<td style="text-align: right;">0.44394</td>
+<td style="text-align: right;">0.227888</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.390638</td>
+<td style="text-align: right;">0.658056</td>
+<td style="text-align: right;">0.490251</td>
+<td style="text-align: right;">2124</td>
+<td style="text-align: right;">1510</td>
+<td style="text-align: right;">503</td>
+<td style="text-align: right;">968</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lgbm_small</td>
+<td style="text-align: left;">val</td>
+<td style="text-align: right;">0.650239</td>
+<td style="text-align: right;">0.4311</td>
+<td style="text-align: right;">0.224585</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.388305</td>
+<td style="text-align: right;">0.577838</td>
+<td style="text-align: right;">0.464481</td>
+<td style="text-align: right;">2295</td>
+<td style="text-align: right;">1339</td>
+<td style="text-align: right;">621</td>
+<td style="text-align: right;">850</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lgbm_small</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">0.669973</td>
+<td style="text-align: right;">0.447632</td>
+<td style="text-align: right;">0.219983</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.401504</td>
+<td style="text-align: right;">0.580557</td>
+<td style="text-align: right;">0.474708</td>
+<td style="text-align: right;">2361</td>
+<td style="text-align: right;">1273</td>
+<td style="text-align: right;">617</td>
+<td style="text-align: right;">854</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>On the held-out test set, the decision tree achieved ROC-AUC = 0.6250 and PR-AUC = 0.3930 (validation: ROC-AUC = 0.6320, PR-AUC = 0.4040), showing that even shallow, rule-like splits can capture churn-related interactions absent in a linear boundary. However, performance improved noticeably when variance was reduced through bagging. The random forest increased test-set discrimination to ROC-AUC = 0.6530 and PR-AUC = 0.4290 (validation: ROC-AUC = 0.6360, PR-AUC = 0.4120), and its PR curve dominates the single-tree baseline across most recall levels in <a href="#fig-tree-rocpr-test" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>. These gains indicate that churn signals are distributed across multiple weak patterns, and an ensemble of diverse trees aggregates them more reliably than a single fitted tree. Importantly, the validation-to-test gaps for both DT and RF were small in magnitude for ROC-AUC and PR-AUC, suggesting that the improvements are not driven by a split-specific artifact. At the default decision threshold of 0.5000, both DT and RF yielded test-set F1 scores in the mid-0.4700 range (DT F1 = 0.4770, RF F1 = 0.4700), reinforcing that these baselines improve ranking but still leave substantial room for improvement in the precision–recall trade-off.</p>
+<div id="cell-fig-tree-rocpr-test" class="cell" data-message="false" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div id="fig-tree-rocpr-test" class="quarto-float quarto-figure quarto-figure-center anchored" alt="ROC and PR curves comparing Decision Tree, Random Forest, XGBoost, and LightGBM.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-tree-rocpr-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-tree-rocpr-test-output-1.png" alt="ROC and PR curves comparing Decision Tree, Random Forest, XGBoost, and LightGBM." width="490" height="185" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tree-rocpr-test-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: ROC and Precision–Recall curves for tree/GBM models on the test set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="gradient-boosted-decision-trees" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="gradient-boosted-decision-trees"><span class="header-section-number">6.3.1</span> Gradient-Boosted Decision Trees</h3>
+<p>Gradient-boosted decision trees delivered the strongest ranking performance among the classical ML families. As summarized in <a href="#tbl-tree-leaderboard" class="quarto-xref">Table&nbsp;<span>6.3</span></a> and visible in <a href="#fig-tree-rocpr-test" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>, the XGBoost baseline improved test discrimination to ROC-AUC = 0.6640 and PR-AUC = 0.4450 (validation: ROC-AUC = 0.6510, PR-AUC = 0.4350). Applying Optuna hyperparameter search to XGBoost produced a modest additional lift in ROC-AUC on the test set (0.6690 versus 0.6640) while maintaining a very similar PR-AUC (0.4440 versus 0.4450). LightGBM performed comparably and achieved the best overall ranking on the test set in this experiment (ROC-AUC = 0.6700, PR-AUC = 0.4480; validation PR-AUC = 0.4330). Relative to the logistic regression baseline (test PR-AUC = 0.3560), the best GBM models provide an absolute PR-AUC gain of roughly 0.0900, which is material given the 0.2880 churn prevalence.</p>
+<p>When evaluated at a common default operating point (threshold = 0.5000), the Optuna-tuned XGBoost achieved the highest F1 among the tree family (F1 = 0.4900), reflecting a better precision–recall trade-off than the DT/RF baselines under the same decision rule. Because deployment typically requires an explicit operating point, a recall-constrained threshold sweep was performed on the validation set for the tuned XGBoost model, which selected threshold = 0.4400 as the best F1-achieving rule under the recall constraint. <a href="#fig-xgb-operating-point" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> highlights this operating point directly on the ROC and PR curves for the tuned model, making the ranking–decision connection explicit. In addition to higher AUC metrics, the boosted models also achieved slightly lower Brier scores (approximately 0.2200 on the test set), suggesting better probability calibration than the single-tree baselines even before explicit calibration methods are applied.</p>
+<div id="cell-fig-xgb-operating-point" class="cell" data-message="false" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div id="fig-xgb-operating-point" class="quarto-float quarto-figure quarto-figure-center anchored" alt="ROC and PR curves with operating point marker.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-xgb-operating-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-xgb-operating-point-output-1.png" alt="ROC and PR curves with operating point marker." width="490" height="185" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-xgb-operating-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: Tuned XGBoost ROC/PR curves with the selected operating threshold (0.4400) highlighted on the test set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="hyperparameter-optimization-diagnostics" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="hyperparameter-optimization-diagnostics"><span class="header-section-number">6.3.2</span> Hyperparameter Optimization Diagnostics</h3>
+<p>The Optuna diagnostics were inspected to verify that the hyperparameter search behaved sensibly and to summarize which settings drove performance. The optimization history shows rapid improvement in the early trials followed by a clear plateau, consistent with quickly locating a strong region of the hyperparameter space and then encountering diminishing returns. The parallel-coordinate visualization indicates that the better trials concentrate within a relatively narrow band of configurations, rather than appearing as isolated outliers, which reduces the likelihood that the selected model is the result of chance. The hyperparameter-importance summary further suggests that performance is most sensitive to the learning rate, while tree depth and regularization terms play a secondary role. This pattern aligns with the small empirical gap between the untuned and tuned XGBoost models: tuning improves ROC-AUC slightly, but the overall precision–recall ranking remains of similar magnitude. Full Optuna diagnostic plots, including the optimization history, parallel-coordinate visualization, and hyperparameter importance rankings, are provided in <a href="99-appendix.html#sec-appendix-c3" class="quarto-xref"><span>Section A.4.5</span></a>.</p>
+</section>
+</section>
+<section id="sec-nn-results" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-nn-results"><span class="header-section-number">6.4</span> Deep Learning Results (PyTorch)</h2>
+<p>This section reports neural network experiments implemented in PyTorch, focusing on (i) architecture comparisons and (ii) loss-function/imbalance handling ablations. Results are summarized in <a href="#tbl-nn-leaderboard" class="quarto-xref">Table&nbsp;<span>6.4</span></a>, with the best model’s test curves shown in <a href="#fig-nn-best-rocpr" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> and its training dynamics summarized in <a href="#fig-nn-curves-best" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>. Additional training curves for alternative architectures (MLP baseline, embedding MLP, and deeper Wide &amp; Deep variants) are provided in <a href="99-appendix.html#sec-appendix-d2" class="quarto-xref"><span>Section A.5.2</span></a> and <a href="99-appendix.html#sec-appendix-d3" class="quarto-xref"><span>Section A.5.3</span></a>.</p>
+<div class="cell" data-message="false" data-execution_count="8">
+<div id="tbl-nn-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="8">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.4: PyTorch neural network results (test metrics at validation-selected thresholds).
+</figcaption>
+<div aria-describedby="tbl-nn-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 9%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">experiment</th>
+<th style="text-align: right;">train_auc</th>
+<th style="text-align: right;">val_auc</th>
+<th style="text-align: right;">test_auc</th>
+<th style="text-align: right;">test_pr_auc</th>
+<th style="text-align: right;">test_brier</th>
+<th style="text-align: right;">best_threshold_val</th>
+<th style="text-align: right;">test_precision_at_best_threshold</th>
+<th style="text-align: right;">test_recall_at_best_threshold</th>
+<th style="text-align: right;">test_f1_at_best_threshold</th>
+<th style="text-align: right;">best_epoch</th>
+<th style="text-align: right;">train_time_sec</th>
+<th style="text-align: left;">loss_type</th>
+<th style="text-align: right;">pos_weight</th>
+<th style="text-align: right;">focal_alpha</th>
+<th style="text-align: right;">focal_gamma</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">wide_deep_focal</td>
+<td style="text-align: right;">0.685802</td>
+<td style="text-align: right;">0.653063</td>
+<td style="text-align: right;">0.661457</td>
+<td style="text-align: right;">0.435612</td>
+<td style="text-align: right;">0.197007</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">0.364389</td>
+<td style="text-align: right;">0.717879</td>
+<td style="text-align: right;">0.483406</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">52.0644</td>
+<td style="text-align: left;">focal</td>
+<td style="text-align: right;">2.46988</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">wide_and_deep</td>
+<td style="text-align: right;">0.698333</td>
+<td style="text-align: right;">0.649779</td>
+<td style="text-align: right;">0.649605</td>
+<td style="text-align: right;">0.42076</td>
+<td style="text-align: right;">0.2364</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">0.352218</td>
+<td style="text-align: right;">0.739633</td>
+<td style="text-align: right;">0.477193</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">41.8901</td>
+<td style="text-align: left;">bce_weighted</td>
+<td style="text-align: right;">2.46988</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">embedding_focal_loss</td>
+<td style="text-align: right;">0.686024</td>
+<td style="text-align: right;">0.648666</td>
+<td style="text-align: right;">0.661197</td>
+<td style="text-align: right;">0.434519</td>
+<td style="text-align: right;">0.197579</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">0.342906</td>
+<td style="text-align: right;">0.811693</td>
+<td style="text-align: right;">0.482132</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">42.9464</td>
+<td style="text-align: left;">focal</td>
+<td style="text-align: right;">2.46988</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">dense_baseline</td>
+<td style="text-align: right;">0.677815</td>
+<td style="text-align: right;">0.646737</td>
+<td style="text-align: right;">0.65528</td>
+<td style="text-align: right;">0.421941</td>
+<td style="text-align: right;">0.234346</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.369023</td>
+<td style="text-align: right;">0.723997</td>
+<td style="text-align: right;">0.488868</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">48.8865</td>
+<td style="text-align: left;">bce_weighted</td>
+<td style="text-align: right;">2.46988</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">embedding_baseline</td>
+<td style="text-align: right;">0.683021</td>
+<td style="text-align: right;">0.642545</td>
+<td style="text-align: right;">0.648944</td>
+<td style="text-align: right;">0.419172</td>
+<td style="text-align: right;">0.232875</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.346409</td>
+<td style="text-align: right;">0.816451</td>
+<td style="text-align: right;">0.486432</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">30.1891</td>
+<td style="text-align: left;">bce_weighted</td>
+<td style="text-align: right;">2.46988</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">wide_and_deep_deeper</td>
+<td style="text-align: right;">0.695702</td>
+<td style="text-align: right;">0.642242</td>
+<td style="text-align: right;">0.647519</td>
+<td style="text-align: right;">0.411018</td>
+<td style="text-align: right;">0.232793</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">0.359181</td>
+<td style="text-align: right;">0.727396</td>
+<td style="text-align: right;">0.480899</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">35.4544</td>
+<td style="text-align: left;">bce_weighted</td>
+<td style="text-align: right;">2.46988</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">embedding_strong_weight</td>
+<td style="text-align: right;">0.688739</td>
+<td style="text-align: right;">0.64173</td>
+<td style="text-align: right;">0.644192</td>
+<td style="text-align: right;">0.408117</td>
+<td style="text-align: right;">0.271837</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">0.354619</td>
+<td style="text-align: right;">0.743712</td>
+<td style="text-align: right;">0.480246</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">34.5281</td>
+<td style="text-align: left;">bce_weighted</td>
+<td style="text-align: right;">3.70482</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<section id="architecture-comparison" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="architecture-comparison"><span class="header-section-number">6.4.1</span> Architecture Comparison</h3>
+<p>Across the neural network candidates, the top-ranked models in terms of discrimination are the focal-loss variants: wide_deep_focal and embedding_focal_loss. On the test set, wide_deep_focal achieves ROC-AUC = 0.6610 and PR-AUC = 0.4360, narrowly outperforming the other NN configurations on ranking metrics. The embedding-only focal model is extremely close (ROC-AUC = 0.6610, PR-AUC = 0.4350), suggesting that learned categorical representations provide most of the gains, while the additional “wide” pathway mainly stabilizes decision performance rather than dramatically shifting AUC.</p>
+<p>In contrast, the purely dense baseline (dense_baseline, without embedding-driven representation learning) trails in ranking quality (ROC-AUC = 0.6550, PR-AUC = 0.4220), and the weighted-BCE Wide &amp; Deep (wide_and_deep) is lower still (ROC-AUC = 0.6500, PR-AUC = 0.4210). Increasing depth (wide_and_deep_deeper) does not help and slightly reduces test ranking metrics (ROC-AUC = 0.6480, PR-AUC = 0.4110), consistent with diminishing returns under the available signal and regularization constraints.</p>
+<div id="cell-fig-nn-best-rocpr" class="cell" data-message="false" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div id="fig-nn-best-rocpr" class="quarto-float quarto-figure quarto-figure-center anchored" alt="ROC and PR curves for the best neural network model.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-best-rocpr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-nn-best-rocpr-output-1.png" alt="ROC and PR curves for the best neural network model." width="490" height="185" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-best-rocpr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.5: Best neural model (Wide &amp; Deep with Focal Loss) ROC/PR curves with selected operating threshold on the test set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Decision-level metrics (computed at the best validation-selected threshold per model) are broadly similar across the stronger NN candidates, with F1 concentrated around 0.4800–0.4900. For the best-ranking model wide_deep_focal, the chosen threshold is 0.3100, producing precision = 0.3640, recall = 0.7180, and F1 = 0.4830 on test. The embedding-only focal model selects a similar threshold (0.3000) but shifts toward higher sensitivity (recall = 0.8120) at lower precision (0.3430), yielding F1 = 0.4820. Interestingly, the dense baseline attains the highest F1 among NN variants (F1 = 0.4890) but with weaker AUC/PR-AUC, illustrating that “best F1” can be achieved via a favorable threshold even when the underlying ranking quality is lower. Probability accuracy further differentiates the models: focal-loss networks show a markedly improved Brier score of approximately 0.1970, compared with 0.2330–0.2360 for weighted-BCE variants, indicating better-calibrated probabilities in addition to stronger discrimination.</p>
+</section>
+<section id="lossimbalance-ablation" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="lossimbalance-ablation"><span class="header-section-number">6.4.2</span> Loss/Imbalance Ablation</h3>
+<p>Focal Loss provides the clearest performance lift in this NN setup. Holding the general architecture fixed, switching Wide &amp; Deep from weighted BCE (wide_and_deep) to focal (wide_deep_focal) improves ROC-AUC from 0.6500 to 0.6610 and PR-AUC from 0.4210 to 0.4360, while substantially lowering the Brier score (0.2360 to 0.1970). A similar pattern holds for embedding-only models: ROC-AUC improves from 0.6490 to 0.6610 and PR-AUC from 0.4190 to 0.4350 when moving from embedding_baseline to embedding_focal_loss. In contrast, aggressively increasing the positive-class weight (embedding_strong_weight) under weighted BCE reduces ranking quality (ROC-AUC = 0.6440, PR-AUC = 0.4080), suggesting that extreme reweighting can over-correct and degrade generalization. Overall, focal loss appears to provide a more effective imbalance strategy by focusing learning on harder examples rather than uniformly amplifying the minority class.</p>
+<p>The focal loss formulation down-weights easy examples and focuses training on hard-to-classify instances:</p>
+<p><span class="math display">\[
+\mathcal{L}_{\text{focal}} = -\alpha_t (1 - p_t)^\gamma \log(p_t)
+\]</span></p>
+<p>where <span class="math inline">\(p_t\)</span> is the model’s estimated probability for the true class, <span class="math inline">\(\alpha_t\)</span> is a class-balancing weight, and <span class="math inline">\(\gamma \geq 0\)</span> is the focusing parameter. When <span class="math inline">\(\gamma = 0\)</span>, focal loss reduces to standard cross-entropy. Higher values of <span class="math inline">\(\gamma\)</span> increase the relative loss for hard examples (where <span class="math inline">\(p_t\)</span> is small), encouraging the model to focus on difficult cases.</p>
+</section>
+<section id="training-dynamics" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="training-dynamics"><span class="header-section-number">6.4.3</span> Training Dynamics</h3>
+<div id="cell-fig-nn-curves-best" class="cell" data-message="false" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div id="fig-nn-curves-best" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Learning curves showing training dynamics.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-curves-best-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-nn-curves-best-output-1.png" alt="Learning curves showing training dynamics." width="490" height="185" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-curves-best-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.6: Training versus validation loss and AUC curves for the best neural network model (Wide &amp; Deep with Focal Loss).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Training curves (<a href="#fig-nn-curves-best" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>) show that the best focal model continues to reduce training loss while validation loss plateaus, and validation AUC stabilizes in the mid-0.6400 range after roughly the mid-training period; early stopping selects epoch 62 for wide_deep_focal. Across variants, deeper/wider configurations tend to widen the train–validation gap without improving validation AUC, consistent with the small benefit observed from the deeper Wide &amp; Deep model. Additional learning curves for alternative architectures and imbalance settings are provided in <a href="99-appendix.html#sec-appendix-d2" class="quarto-xref"><span>Section A.5.2</span></a> (best model training dynamics) and <a href="99-appendix.html#sec-appendix-d3" class="quarto-xref"><span>Section A.5.3</span></a> (alternative architecture comparisons).</p>
+</section>
+</section>
+<section id="sec-autoencoder-results" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="sec-autoencoder-results"><span class="header-section-number">6.5</span> Unsupervised/Semi-Supervised Extension (Autoencoder + Pseudo-Label)</h2>
+<p>To explore whether unlabeled data can improve churn prediction, a denoising autoencoder (DAE) was trained on the feature space and evaluated for two downstream uses: (i) using the learned latent representation as features, and (ii) using an Optuna-tuned XGBoost teacher to generate pseudo-labels on a real unlabeled holdout set.</p>
+<section id="dae-convergence-and-reconstruction" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="dae-convergence-and-reconstruction"><span class="header-section-number">6.5.1</span> DAE Convergence and Reconstruction</h3>
+<p>The DAE showed stable optimization behavior with early stopping at epoch 16 (<a href="#fig-dae-loss" class="quarto-xref">Figure&nbsp;<span>6.7</span></a>). Training reconstruction loss dropped quickly in the first few epochs and then plateaued, while the validation curve remained flat after the best epoch, indicating the encoder learned a consistent low-dimensional structure without late-epoch divergence. Note that validation loss is lower than training loss, which is expected here because noise is injected during training (denoising objective), making the training reconstruction task harder than the clean validation reconstruction.</p>
+<div id="cell-fig-dae-loss" class="cell" data-message="false" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div id="fig-dae-loss" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Training and validation reconstruction loss over epochs.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dae-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-dae-loss-output-1.png" alt="Training and validation reconstruction loss over epochs." width="490" height="251" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dae-loss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.7: DAE reconstruction loss curves with early-stopping epoch marked.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pseudo-label-confidence-and-coverage" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="pseudo-label-confidence-and-coverage"><span class="header-section-number">6.5.2</span> Pseudo-Label Confidence and Coverage</h3>
+<p>Using the XGBoost teacher trained on labeled data, the real unlabeled holdout was scored and a conservative high-confidence rule was applied (assign churn if <span class="math inline">\(p \geq 0.9500\)</span>, non-churn if <span class="math inline">\(p \leq 0.0500\)</span>). <a href="#fig-pseudolabel-confidence" class="quarto-xref">Figure&nbsp;<span>6.8</span></a> shows the teacher’s probability distribution concentrates in the mid-range (roughly <span class="math inline">\(p \approx 0.1500\)</span>–<span class="math inline">\(0.4500\)</span>), producing almost no extreme probabilities. As a result, pseudo-label coverage was effectively zero: only 2 samples met the low-confidence (non-churn) criterion and 0 samples met the high-confidence (churn) criterion, with 19,998/20,000 (approximately 100%) remaining “uncertain.” This is a key practical finding: with strict thresholds designed to minimize label noise, the teacher did not provide enough pseudo-labeled examples to form a meaningful semi-supervised training signal on this dataset split.</p>
+<div id="cell-fig-pseudolabel-confidence" class="cell" data-message="false" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div id="fig-pseudolabel-confidence" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Histogram of predicted probabilities showing pseudo-label coverage.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pseudolabel-confidence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-pseudolabel-confidence-output-1.png" alt="Histogram of predicted probabilities showing pseudo-label coverage." width="490" height="207" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pseudolabel-confidence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.8: Teacher probability distribution on the unlabeled holdout and pseudo-label coverage at thresholds 0.0500/0.9500.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="downstream-impact-ablation-summary" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="downstream-impact-ablation-summary"><span class="header-section-number">6.5.3</span> Downstream Impact (Ablation Summary)</h3>
+<p><a href="#tbl-ae-ablation" class="quarto-xref">Table&nbsp;<span>6.5</span></a> reports the predictive utility of the learned latent features via a controlled ablation. Using the same evaluation protocol, the baseline (X only) achieved ROC-AUC = 0.6465 and PR-AUC = 0.4254. Using latent-only (Z only) reduced performance to ROC-AUC = 0.6252 and PR-AUC = 0.3872, implying the compressed representation retains substantial but not complete churn-relevant information. Finally, augmenting features (X+Z) essentially matched the baseline ranking metrics (ROC-AUC = 0.6451, PR-AUC = 0.4271), yielding only a marginal PR-AUC increase. Under tuned thresholds (selected on validation), baseline and augmented variants also delivered very similar operating-point metrics (F1 around 0.4800 with recall around 0.7300), consistent with the conclusion that latent features provide, at best, a small incremental signal in this configuration.</p>
+<div class="cell" data-message="false" data-execution_count="13">
+<div id="tbl-ae-ablation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="13">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ae-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.5: Downstream impact of DAE latent features (baseline vs.&nbsp;latent-only vs.&nbsp;augmented).
+</figcaption>
+<div aria-describedby="tbl-ae-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">version</th>
+<th style="text-align: left;">split</th>
+<th style="text-align: right;">n_features</th>
+<th style="text-align: right;">roc_auc</th>
+<th style="text-align: right;">pr_auc</th>
+<th style="text-align: right;">brier_score</th>
+<th style="text-align: right;">threshold_fixed</th>
+<th style="text-align: right;">precision_fixed</th>
+<th style="text-align: right;">recall_fixed</th>
+<th style="text-align: right;">f1_fixed</th>
+<th style="text-align: right;">threshold_tuned</th>
+<th style="text-align: right;">precision_tuned</th>
+<th style="text-align: right;">recall_tuned</th>
+<th style="text-align: right;">f1_tuned</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Baseline (X only)</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.646541</td>
+<td style="text-align: right;">0.425392</td>
+<td style="text-align: right;">0.19332</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.530303</td>
+<td style="text-align: right;">0.14276</td>
+<td style="text-align: right;">0.22496</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.353871</td>
+<td style="text-align: right;">0.730116</td>
+<td style="text-align: right;">0.476698</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Latent-only (Z only)</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">0.625202</td>
+<td style="text-align: right;">0.387228</td>
+<td style="text-align: right;">0.197288</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.470149</td>
+<td style="text-align: right;">0.085656</td>
+<td style="text-align: right;">0.144911</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.339952</td>
+<td style="text-align: right;">0.768185</td>
+<td style="text-align: right;">0.471324</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Augmented (X + Z)</td>
+<td style="text-align: left;">test</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0.645056</td>
+<td style="text-align: right;">0.427104</td>
+<td style="text-align: right;">0.193299</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.541401</td>
+<td style="text-align: right;">0.173351</td>
+<td style="text-align: right;">0.262616</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">0.35947</td>
+<td style="text-align: right;">0.719918</td>
+<td style="text-align: right;">0.479511</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Additional diagnostics, including latent t-SNE visualization (<a href="99-appendix.html#fig-latent-tsne" class="quarto-xref">Figure&nbsp;<span>A.16</span></a> in <a href="99-appendix.html#sec-appendix-e2" class="quarto-xref"><span>Section A.6.2</span></a>) and reconstruction-error distribution plots (<a href="99-appendix.html#fig-recon-error" class="quarto-xref">Figure&nbsp;<span>A.15</span></a> in <a href="99-appendix.html#sec-appendix-e1" class="quarto-xref"><span>Section A.6.1</span></a>), are provided to support the qualitative assessment of representation structure and error overlap between churn/non-churn groups.</p>
+</section>
+</section>
+<section id="sec-ensemble-results" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="sec-ensemble-results"><span class="header-section-number">6.6</span> Ensemble Results (Blending vs.&nbsp;OOF Stacking)</h2>
+<p>To test whether combining heterogeneous learners could yield incremental gains beyond the best single model, several ensemble strategies were evaluated built on the same base predictors (Logistic Regression, XGBoost, LightGBM, Random Forest). <a href="#tbl-ensemble-leaderboard" class="quarto-xref">Table&nbsp;<span>6.6</span></a> summarizes validation and test ranking performance.</p>
+<div class="cell" data-message="false" data-execution_count="14">
+<div id="tbl-ensemble-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="14">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.6: Ensemble performance comparison on validation and test sets (ROC-AUC and PR-AUC).
+</figcaption>
+<div aria-describedby="tbl-ensemble-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 15%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">val_roc_auc</th>
+<th style="text-align: right;">val_pr_auc</th>
+<th style="text-align: right;">test_roc_auc</th>
+<th style="text-align: right;">test_pr_auc</th>
+<th style="text-align: right;">fixed_threshold</th>
+<th style="text-align: right;">val_best_threshold</th>
+<th style="text-align: right;">test_best_threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Blend_WeightedAUC</td>
+<td style="text-align: right;">0.658276</td>
+<td style="text-align: right;">0.434834</td>
+<td style="text-align: right;">0.668847</td>
+<td style="text-align: right;">0.448774</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.435955</td>
+<td style="text-align: right;">0.423938</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blend_SimpleAvg</td>
+<td style="text-align: right;">0.657885</td>
+<td style="text-align: right;">0.432159</td>
+<td style="text-align: right;">0.668322</td>
+<td style="text-align: right;">0.447171</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.441047</td>
+<td style="text-align: right;">0.422707</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Stacking_OOF</td>
+<td style="text-align: right;">0.658582</td>
+<td style="text-align: right;">0.436697</td>
+<td style="text-align: right;">0.667918</td>
+<td style="text-align: right;">0.448953</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.224024</td>
+<td style="text-align: right;">0.225712</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Blend_NNLS</td>
+<td style="text-align: right;">0.658656</td>
+<td style="text-align: right;">0.437131</td>
+<td style="text-align: right;">0.66724</td>
+<td style="text-align: right;">0.448761</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.422218</td>
+<td style="text-align: right;">0.417435</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Blend_RankAvg</td>
+<td style="text-align: right;">0.654898</td>
+<td style="text-align: right;">0.416895</td>
+<td style="text-align: right;">0.664951</td>
+<td style="text-align: right;">0.434002</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">2029</td>
+<td style="text-align: right;">1616.25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<section id="blending-results" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="blending-results"><span class="header-section-number">6.6.1</span> Blending Results</h3>
+<p>Overall, blending delivered the strongest and most stable results, with Blend_WeightedAUC achieving the highest test ROC-AUC (0.6688) and a test PR-AUC of 0.4488. A simple unweighted average (Blend_SimpleAvg) performed nearly identically (test ROC-AUC 0.6683; PR-AUC 0.4472), suggesting that most of the ensemble benefit comes from variance reduction rather than finely tuned weights. The NNLS-constrained blend (Blend_NNLS) also matched this band (test ROC-AUC 0.6672; PR-AUC 0.4488).</p>
+<p>Compared with the best single tree/GBM model from <a href="#sec-tree-gbm-results" class="quarto-xref"><span>Section 6.3</span></a>, these ensembles largely preserve discrimination while providing a small but consistent PR-AUC lift, which is most relevant under class imbalance. For operating-point comparability across all model families, the fixed threshold = 0.4400 is maintained for the main cross-section comparisons; tuned thresholds and blending weights for each ensemble are detailed in <a href="99-appendix.html#sec-appendix-f4" class="quarto-xref"><span>Section A.7.4</span></a> (<a href="99-appendix.html#tbl-ensemble-comparison" class="quarto-xref">Table&nbsp;<span>A.15</span></a>).</p>
+</section>
+<section id="oof-stacking-results" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="oof-stacking-results"><span class="header-section-number">6.6.2</span> OOF Stacking Results</h3>
+<p>OOF stacking (Stacking_OOF) performed competitively but not decisively better than blending: it reached test ROC-AUC 0.6679 and the highest test PR-AUC 0.4490 among the listed ensembles. Notably, its optimal threshold is much lower (approximately 0.2260) than the blending variants (approximately 0.4200), which is consistent with the meta-learner producing probabilities on a different scale (or less calibrated) even when ranking quality is similar. This makes stacking attractive for ranking, but it requires explicit threshold re-selection or calibration if deployed as a decision rule (see <a href="99-appendix.html#sec-appendix-h4" class="quarto-xref"><span>Section A.9.4</span></a> and <a href="99-appendix.html#tbl-optimal-thresholds" class="quarto-xref">Table&nbsp;<span>A.18</span></a> for threshold sensitivity analysis). In this dataset, the near-tie between stacking and blending suggests that the relationship between base model scores is close to linear, so a learned meta-combination provides limited additional upside over robust averaging.</p>
+<p>The stacking meta-learner combines base model predictions <span class="math inline">\(z(x)\)</span> using logistic regression:</p>
+<p><span class="math display">\[
+z(x) = \big[\hat{p}_{1}(x), \hat{p}_{2}(x), \ldots, \hat{p}_{M}(x)\big]
+\]</span></p>
+<p><span class="math display">\[
+\hat{p}_{\text{stack}}(x) = \sigma(\beta^\top z(x) + b)
+\]</span></p>
+<p>where <span class="math inline">\(\sigma\)</span> is the sigmoid function and the coefficients <span class="math inline">\(\beta\)</span> are learned from out-of-fold predictions to prevent leakage between base and meta levels.</p>
+</section>
+<section id="ensemble-diversity-analysis" class="level3" data-number="6.6.3">
+<h3 data-number="6.6.3" class="anchored" data-anchor-id="ensemble-diversity-analysis"><span class="header-section-number">6.6.3</span> Ensemble Diversity Analysis</h3>
+<p>The effectiveness of ensembling is supported by diversity evidence from the validation-set prediction correlations (<a href="#fig-ensemble-corr" class="quarto-xref">Figure&nbsp;<span>6.9</span></a>). Tree-based learners are highly correlated with each other (e.g., XGBoost–LightGBM = 0.9310, XGBoost–RF = 0.8790, LightGBM–RF = 0.8690), indicating they capture similar nonlinear structure. In contrast, the Logistic Regression predictions correlate much less with the tree models (approximately 0.4700 with each), implying complementary error patterns. This explains why including a weaker linear baseline can still improve an ensemble: it contributes orthogonal signal that slightly improves precision–recall ranking. Finally, learned blend weights show XGBoost dominates the NNLS solution, while LightGBM and Random Forest contribute meaningful secondary weight and Logistic Regression remains small but non-zero, consistent with the correlation-based diversity story.</p>
+<div id="cell-fig-ensemble-corr" class="cell" data-fig-height="2.6" data-fig-width="3.8" data-message="false" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div id="fig-ensemble-corr" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Heatmap showing prediction correlations between base models.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ensemble-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-ensemble-corr-output-1.png" alt="Heatmap showing prediction correlations between base models." width="373" height="278" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ensemble-corr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.9: Correlation matrix of base model predictions on the validation set (lower correlation indicates greater diversity).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-operating-point" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="sec-operating-point"><span class="header-section-number">6.7</span> Operating Point Analysis (Threshold Policy in Practice)</h2>
+<p>To turn probabilistic churn scores into an actionable retention list, this study adopts a single, fixed operating threshold across all candidate models. Concretely, <span class="math inline">\(\tau = 0.4400\)</span> (chosen on the validation set during the main tree-based model selection) serves as the production policy: any customer with predicted churn probability <span class="math inline">\(\hat{p}(\text{churn}) \geq \tau\)</span> is flagged for intervention. This fixed-threshold policy is intentionally conservative from a reporting standpoint: it avoids per-model “best threshold” cherry-picking and reflects how real teams often deploy one stable rule tied to capacity and budget. Full threshold sweeps showing precision–recall trade-offs across <span class="math inline">\(\tau\)</span> are provided in <a href="99-appendix.html#sec-appendix-h3" class="quarto-xref"><span>Section A.9.3</span></a> (<a href="99-appendix.html#tbl-xgb-threshold-full" class="quarto-xref">Table&nbsp;<span>A.17</span></a>).</p>
+<p>Under <span class="math inline">\(\tau = 0.4400\)</span>, the best balance of precision and recall is achieved by LightGBM with Precision = 0.3760, Recall = 0.7310, and F1 = 0.4970 (<a href="#tbl-operating-point" class="quarto-xref">Table&nbsp;<span>6.7</span></a>). XGBoost is extremely close (0.3670/0.7390/0.4900), indicating that the two GBMs behave similarly under the same decision rule. The dense NN baseline is more aggressive at this threshold, reaching higher recall (0.8060) but lower precision (0.3520), while Logistic Regression pushes recall even higher (0.8410) at the cost of precision (0.3130). These patterns match the expected operational trade-off: higher recall reduces missed churners but increases the number of false positives competing for retention resources.</p>
+<div class="cell" data-message="false" data-execution_count="16">
+<div id="tbl-operating-point" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="16">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-operating-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.7: Operating point comparison across models at fixed threshold τ = 0.4400.
+</figcaption>
+<div aria-describedby="tbl-operating-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">val_roc_auc</th>
+<th style="text-align: right;">val_pr_auc</th>
+<th style="text-align: right;">test_roc_auc</th>
+<th style="text-align: right;">test_pr_auc</th>
+<th style="text-align: right;">test_brier</th>
+<th style="text-align: right;">test_f1</th>
+<th style="text-align: right;">test_recall</th>
+<th style="text-align: right;">test_precision</th>
+<th style="text-align: right;">threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">XGBoost</td>
+<td style="text-align: right;">0.657146</td>
+<td style="text-align: right;">0.435915</td>
+<td style="text-align: right;">0.663681</td>
+<td style="text-align: right;">0.445441</td>
+<td style="text-align: right;">0.223314</td>
+<td style="text-align: right;">0.490413</td>
+<td style="text-align: right;">0.738953</td>
+<td style="text-align: right;">0.366982</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_wide_deep_focal</td>
+<td style="text-align: right;">0.653063</td>
+<td style="text-align: right;">0.429338</td>
+<td style="text-align: right;">0.661457</td>
+<td style="text-align: right;">0.435612</td>
+<td style="text-align: right;">0.197007</td>
+<td style="text-align: right;">0.0174614</td>
+<td style="text-align: right;">0.00883753</td>
+<td style="text-align: right;">0.722222</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LightGBM</td>
+<td style="text-align: right;">0.650239</td>
+<td style="text-align: right;">0.4311</td>
+<td style="text-align: right;">0.669973</td>
+<td style="text-align: right;">0.447632</td>
+<td style="text-align: right;">0.219983</td>
+<td style="text-align: right;">0.49688</td>
+<td style="text-align: right;">0.730795</td>
+<td style="text-align: right;">0.376401</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_wide_and_deep</td>
+<td style="text-align: right;">0.649779</td>
+<td style="text-align: right;">0.418712</td>
+<td style="text-align: right;">0.649605</td>
+<td style="text-align: right;">0.42076</td>
+<td style="text-align: right;">0.2364</td>
+<td style="text-align: right;">0.482441</td>
+<td style="text-align: right;">0.7845</td>
+<td style="text-align: right;">0.348325</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RandomForest</td>
+<td style="text-align: right;">0.649016</td>
+<td style="text-align: right;">0.421517</td>
+<td style="text-align: right;">0.653428</td>
+<td style="text-align: right;">0.428959</td>
+<td style="text-align: right;">0.228971</td>
+<td style="text-align: right;">0.480699</td>
+<td style="text-align: right;">0.804215</td>
+<td style="text-align: right;">0.342799</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_focal_loss</td>
+<td style="text-align: right;">0.648666</td>
+<td style="text-align: right;">0.421622</td>
+<td style="text-align: right;">0.661197</td>
+<td style="text-align: right;">0.434519</td>
+<td style="text-align: right;">0.197579</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05_nn_dense_baseline</td>
+<td style="text-align: right;">0.646737</td>
+<td style="text-align: right;">0.425746</td>
+<td style="text-align: right;">0.65528</td>
+<td style="text-align: right;">0.421941</td>
+<td style="text-align: right;">0.234346</td>
+<td style="text-align: right;">0.489779</td>
+<td style="text-align: right;">0.806254</td>
+<td style="text-align: right;">0.35172</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_baseline</td>
+<td style="text-align: right;">0.642545</td>
+<td style="text-align: right;">0.408729</td>
+<td style="text-align: right;">0.648944</td>
+<td style="text-align: right;">0.419172</td>
+<td style="text-align: right;">0.232875</td>
+<td style="text-align: right;">0.487391</td>
+<td style="text-align: right;">0.781781</td>
+<td style="text-align: right;">0.354064</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05_nn_wide_and_deep_deeper</td>
+<td style="text-align: right;">0.642242</td>
+<td style="text-align: right;">0.414346</td>
+<td style="text-align: right;">0.647519</td>
+<td style="text-align: right;">0.411018</td>
+<td style="text-align: right;">0.232793</td>
+<td style="text-align: right;">0.482227</td>
+<td style="text-align: right;">0.765466</td>
+<td style="text-align: right;">0.351985</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_strong_weight</td>
+<td style="text-align: right;">0.64173</td>
+<td style="text-align: right;">0.411761</td>
+<td style="text-align: right;">0.644192</td>
+<td style="text-align: right;">0.408117</td>
+<td style="text-align: right;">0.271837</td>
+<td style="text-align: right;">0.478787</td>
+<td style="text-align: right;">0.901428</td>
+<td style="text-align: right;">0.325959</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06_teacher</td>
+<td style="text-align: right;">0.63778</td>
+<td style="text-align: right;">0.418322</td>
+<td style="text-align: right;">0.645056</td>
+<td style="text-align: right;">0.427104</td>
+<td style="text-align: right;">0.193299</td>
+<td style="text-align: right;">0.262616</td>
+<td style="text-align: right;">0.173351</td>
+<td style="text-align: right;">0.541401</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logistic</td>
+<td style="text-align: right;">0.588286</td>
+<td style="text-align: right;">0.347494</td>
+<td style="text-align: right;">0.593987</td>
+<td style="text-align: right;">0.355974</td>
+<td style="text-align: right;">0.24378</td>
+<td style="text-align: right;">0.456037</td>
+<td style="text-align: right;">0.840925</td>
+<td style="text-align: right;">0.312848</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<section id="confusion-matrix-analysis" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="confusion-matrix-analysis"><span class="header-section-number">6.7.1</span> Confusion Matrix Analysis</h3>
+<p>The confusion matrix for XGBoost at <span class="math inline">\(\tau = 0.4400\)</span> illustrates the scale of this trade-off on the test set (n = 5,105): TP = 1,087, FP = 1,875, FN = 384, TN = 1,759 (<a href="#fig-confmat-xgb" class="quarto-xref">Figure&nbsp;<span>6.10</span></a>). This means the model correctly identifies 1,087 churners while flagging 1,875 non-churners as potential churners. In a retention campaign context, this translates to contacting approximately 2,962 customers (TP + FP) to capture 73.9% of actual churners, with a precision of 36.7%.</p>
+<div id="cell-fig-confmat-xgb" class="cell" data-fig-height="3.5" data-fig-width="4.5" data-message="false" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div id="fig-confmat-xgb" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Confusion matrix showing TP, FP, TN, FN counts.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-confmat-xgb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-experiments-results_files/figure-html/fig-confmat-xgb-output-1.png" alt="Confusion matrix showing TP, FP, TN, FN counts." width="408" height="317" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confmat-xgb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.10: Confusion matrix for XGBoost at the operating threshold τ = 0.4400 on the test set.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Finally, models whose probability scales differ substantially (e.g., the DAE teacher and some focal-loss networks) can become overly conservative under a shared <span class="math inline">\(\tau\)</span> (high precision but very low recall), suggesting that calibration or model-specific thresholds are important alternatives. Detailed calibration metrics and model-specific optimal thresholds are provided in <a href="99-appendix.html#sec-appendix-h4" class="quarto-xref"><span>Section A.9.4</span></a> (<a href="99-appendix.html#tbl-optimal-thresholds" class="quarto-xref">Table&nbsp;<span>A.18</span></a>) and <a href="99-appendix.html#sec-appendix-h4" class="quarto-xref"><span>Section A.9.4</span></a> for calibration details.</p>
+</section>
+</section>
+<section id="sec-results-summary" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="sec-results-summary"><span class="header-section-number">6.8</span> Summary of Key Findings</h2>
+<p>The experimental results across all model families can be summarized as follows:</p>
+<ol type="1">
+<li><p><strong>Gradient-boosted trees outperform other single-model families.</strong> XGBoost and LightGBM achieved the highest test ROC-AUC (0.6640–0.6700) and PR-AUC (0.4440–0.4480), providing meaningful improvements over the logistic regression baseline (ROC-AUC = 0.5940, PR-AUC = 0.3560).</p></li>
+<li><p><strong>Neural networks with focal loss are competitive but do not surpass GBMs.</strong> The best Wide &amp; Deep model with focal loss achieved test ROC-AUC = 0.6610 and PR-AUC = 0.4360, demonstrating that deep learning approaches can capture churn patterns effectively on tabular data. Focal loss consistently outperformed weighted BCE for handling class imbalance.</p></li>
+<li><p><strong>Autoencoder-based representation learning provides limited incremental value.</strong> Latent features from a denoising autoencoder did not meaningfully improve downstream classification beyond the original feature set. Pseudo-labeling with conservative confidence thresholds yielded insufficient coverage for semi-supervised learning.</p></li>
+<li><p><strong>Ensemble methods provide modest but consistent gains.</strong> Blending and OOF stacking reached approximately 0.6690 test ROC-AUC and 0.4490 test PR-AUC, representing a small lift over the best single model. The benefits derive primarily from diversity between linear (logistic regression) and nonlinear (tree-based) base learners.</p></li>
+<li><p><strong>Operating threshold selection is critical for deployment.</strong> At the fixed threshold <span class="math inline">\(\tau = 0.4400\)</span>, the champion models achieve recall around 73–74% with precision around 37%, suitable for targeted retention campaigns. Different models require different optimal thresholds, highlighting the importance of calibration in production.</p></li>
+</ol>
+<p>These findings inform the discussion of model interpretation, business implications, and deployment considerations in the following chapter.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../report/04-methodology.html" class="pagination-link" aria-label="Methodology">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../report/06-discussion.html" class="pagination-link" aria-label="Discussion – Interpretation and Error Analysis">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

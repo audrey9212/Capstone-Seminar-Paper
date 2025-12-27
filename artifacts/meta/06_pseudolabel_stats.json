@@ -1,0 +1,11 @@
+{
+  "total_unlabeled": 20000,
+  "high_conf_total": 2,
+  "high_conf_ratio": 0.0001,
+  "pseudo_accuracy": null,
+  "threshold_high": 0.95,
+  "threshold_low": 0.05,
+  "use_real_holdout": true,
+  "proba_mean": 0.28735050559043884,
+  "proba_std": 0.1102154478430748
+}

@@ -1,0 +1,18 @@
+{
+  "experiment": "wide_deep_focal",
+  "train_auc": 0.6858021556375765,
+  "val_auc": 0.653063053187155,
+  "test_auc": 0.6614565698159276,
+  "test_pr_auc": 0.4356121681984761,
+  "test_brier": 0.19700704514980316,
+  "best_threshold_val": 0.30999999999999994,
+  "test_precision_at_best_threshold": 0.36438923395445133,
+  "test_recall_at_best_threshold": 0.7178789938817132,
+  "test_f1_at_best_threshold": 0.48340581368734264,
+  "best_epoch": 62,
+  "train_time_sec": 52.06442189216614,
+  "loss_type": "focal",
+  "pos_weight": 2.469878494349562,
+  "focal_alpha": 0.25,
+  "focal_gamma": 2.0
+}

@@ -1,0 +1,202 @@
+{
+  "random_seed": 42,
+  "numeric_medians": {
+    "ActiveSubs": 1.0,
+    "AdjustmentsToCreditRating": 0.0,
+    "AgeHH1": 42.0,
+    "CurrentEquipmentDays": 329.0,
+    "DroppedBlockedCalls": 5.3,
+    "MonthlyMinutes": 367.0,
+    "MonthsInService": 16.0,
+    "OutboundCalls": 13.7,
+    "OverageMinutes": 3.0,
+    "PercChangeMinutes": -6.0,
+    "PercChangeRevenues": -0.3,
+    "ReferralsMadeBySubscriber": 0.0
+  },
+  "numeric_scaler": {
+    "ActiveSubs": {
+      "mean": 1.3528907608296399,
+      "std": 0.6370674324208196
+    },
+    "AdjustmentsToCreditRating": {
+      "mean": 0.05350539951514558,
+      "std": 0.383890855329179
+    },
+    "AgeHH1": {
+      "mean": 43.384229985142184,
+      "std": 12.38666849528414
+    },
+    "CurrentEquipmentDays": {
+      "mean": 380.44164462728963,
+      "std": 253.7289419823635
+    },
+    "DroppedBlockedCalls": {
+      "mean": 10.123498298112006,
+      "std": 15.421239780756197
+    },
+    "MonthlyMinutes": {
+      "mean": 525.242871527863,
+      "std": 528.3980438652977
+    },
+    "MonthsInService": {
+      "mean": 18.784215294953107,
+      "std": 9.832489290880359
+    },
+    "OutboundCalls": {
+      "mean": 25.315850821558882,
+      "std": 35.16796187451976
+    },
+    "OverageMinutes": {
+      "mean": 40.311344156003635,
+      "std": 97.9210750605311
+    },
+    "PercChangeMinutes": {
+      "mean": -11.750585740005425,
+      "std": 257.6717062463627
+    },
+    "PercChangeRevenues": {
+      "mean": -1.1193528497792686,
+      "std": 41.02168232354209
+    },
+    "ReferralsMadeBySubscriber": {
+      "mean": 0.05355437470920978,
+      "std": 0.3241917918738188
+    }
+  },
+  "categorical_mappings": {
+    "CreditRating": {
+      "1-Highest": 1,
+      "2-High": 2,
+      "3-Good": 3,
+      "4-Medium": 4,
+      "5-Low": 5,
+      "6-VeryLow": 6,
+      "7-Lowest": 7
+    },
+    "HandsetRefurbished": {
+      "No": 1,
+      "Yes": 2
+    },
+    "HandsetWebCapable": {
+      "No": 1,
+      "Yes": 2
+    },
+    "HasCreditCard": {
+      "No": 1,
+      "Yes": 2
+    },
+    "Homeownership": {
+      "Known": 1,
+      "Unknown": 2
+    },
+    "NewCellphoneUser": {
+      "No": 1,
+      "Yes": 2
+    },
+    "NonUSTravel": {
+      "No": 1,
+      "Yes": 2
+    },
+    "Occupation": {
+      "Clerical": 1,
+      "Crafts": 2,
+      "Homemaker": 3,
+      "Other": 4,
+      "Professional": 5,
+      "Retired": 6,
+      "Self": 7,
+      "Student": 8
+    },
+    "PrizmCode": {
+      "Other": 1,
+      "Rural": 2,
+      "Suburban": 3,
+      "Town": 4
+    }
+  },
+  "feature_cols_base": [
+    "MonthlyMinutes",
+    "OverageMinutes",
+    "PercChangeMinutes",
+    "PercChangeRevenues",
+    "OutboundCalls",
+    "DroppedBlockedCalls",
+    "MonthsInService",
+    "ActiveSubs",
+    "CurrentEquipmentDays",
+    "AgeHH1",
+    "HandsetRefurbished",
+    "HandsetWebCapable",
+    "Homeownership",
+    "NonUSTravel",
+    "HasCreditCard",
+    "NewCellphoneUser",
+    "ReferralsMadeBySubscriber",
+    "AdjustmentsToCreditRating",
+    "CreditRating",
+    "PrizmCode",
+    "Occupation",
+    "InactiveSubs",
+    "RevenuePerMinute",
+    "MOU_perActive",
+    "IncomeBand",
+    "HandsetPrice_q",
+    "UpgradeOverdue",
+    "HighRiskServiceArea_flag",
+    "CustomerCareCalls_flag",
+    "DroppedQuality_flag",
+    "HighUsage_flag",
+    "DroppedQuality \u00d7 HighUsage"
+  ],
+  "feature_cols_deep": [
+    "MonthlyMinutes",
+    "OverageMinutes",
+    "PercChangeMinutes",
+    "PercChangeRevenues",
+    "OutboundCalls",
+    "DroppedBlockedCalls",
+    "MonthsInService",
+    "ActiveSubs",
+    "CurrentEquipmentDays",
+    "AgeHH1",
+    "HandsetRefurbished",
+    "HandsetWebCapable",
+    "Homeownership",
+    "NonUSTravel",
+    "HasCreditCard",
+    "NewCellphoneUser",
+    "ReferralsMadeBySubscriber",
+    "AdjustmentsToCreditRating",
+    "CreditRating",
+    "PrizmCode",
+    "Occupation",
+    "InactiveSubs",
+    "RevenuePerMinute",
+    "MOU_perActive",
+    "IncomeBand",
+    "HandsetPrice_q",
+    "UpgradeOverdue",
+    "HighRiskServiceArea_flag",
+    "CustomerCareCalls_flag",
+    "DroppedQuality_flag",
+    "HighUsage_flag",
+    "DroppedQuality \u00d7 HighUsage"
+  ],
+  "feature_cols_ae": [
+    "MonthlyMinutes",
+    "OverageMinutes",
+    "PercChangeMinutes",
+    "PercChangeRevenues",
+    "OutboundCalls",
+    "DroppedBlockedCalls",
+    "ActiveSubs",
+    "CurrentEquipmentDays",
+    "AgeHH1",
+    "ReferralsMadeBySubscriber",
+    "AdjustmentsToCreditRating",
+    "InactiveSubs",
+    "RevenuePerMinute",
+    "MOU_perActive"
+  ]
+}

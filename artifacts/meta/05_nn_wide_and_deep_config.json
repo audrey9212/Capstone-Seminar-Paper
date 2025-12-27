@@ -1,0 +1,21 @@
+{
+  "batch_size": 256,
+  "epochs": 100,
+  "lr": 0.001,
+  "patience": 15,
+  "pos_weight": 2.469878494349562,
+  "model_type": "wide_deep",
+  "embedding_dim": 8,
+  "deep_hidden_dims": [
+    128,
+    64
+  ],
+  "dropout": 0.3,
+  "loss_type": "bce_weighted",
+  "wide_deep_alpha": 0.5,
+  "feature_signature": "bb398aea7dc3d310",
+  "config_hash": "0a6a91c6e932f2c6",
+  "best_epoch": 44,
+  "train_time": 41.890098333358765,
+  "n_params": 19927
+}

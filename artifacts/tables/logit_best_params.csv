@@ -1,0 +1,2 @@
+C,class_weight,max_iter,penalty,random_state,solver,best_cv_roc_auc
+0.1,balanced,1000,l1,42,liblinear,0.5923280269167547

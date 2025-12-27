@@ -1,0 +1,41 @@
+{
+  "run_name": "01_eda",
+  "figures_main": [
+    "F2a_churn_distribution_donut.png",
+    "F1a_sparsity_missing_zero.png",
+    "F4a_ordinal_trends.png",
+    "F4f_cramers_v_top_categorical.png",
+    "F5j_leakage_flags_churn.png"
+  ],
+  "figures_appendix": [],
+  "tables_main": [
+    "T0_feature_registry.csv",
+    "T0_semantic_groups_table.csv",
+    "T2_churn_distribution.csv",
+    "T1_sparsity_overview.csv",
+    "T1_value_domain_checks.csv",
+    "T1_outliers_iqr3.csv",
+    "T4_ordinal_trends.csv",
+    "T4_cramers_v_vs_churn.csv",
+    "T9_leakage_scan.csv"
+  ],
+  "tables_appendix": [],
+  "all_figures": [
+    "F2a_churn_distribution_donut.png",
+    "F1a_sparsity_missing_zero.png",
+    "F4a_ordinal_trends.png",
+    "F4f_cramers_v_top_categorical.png",
+    "F5j_leakage_flags_churn.png"
+  ],
+  "all_tables": [
+    "T0_feature_registry.csv",
+    "T0_semantic_groups_table.csv",
+    "T2_churn_distribution.csv",
+    "T1_sparsity_overview.csv",
+    "T1_value_domain_checks.csv",
+    "T1_outliers_iqr3.csv",
+    "T4_ordinal_trends.csv",
+    "T4_cramers_v_vs_churn.csv",
+    "T9_leakage_scan.csv"
+  ]
+}
