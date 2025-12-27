@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Literature Review – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../report/03-data-and-problem.html" rel="next">
+<link href="../report/01-introduction.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/02-literature-review.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Abstract</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/02-literature-review.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/03-data-and-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/04-methodology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/05-experiments-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/06-discussion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/07-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/97-acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/98-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99-appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#churn-theory-and-behavioral-mechanisms" id="toc-churn-theory-and-behavioral-mechanisms" class="nav-link active" data-scroll-target="#churn-theory-and-behavioral-mechanisms"><span class="header-section-number">3.1</span> Churn Theory and Behavioral Mechanisms</a></li>
+  <li><a href="#telecom-churn-data-characteristics-and-practical-constraints" id="toc-telecom-churn-data-characteristics-and-practical-constraints" class="nav-link" data-scroll-target="#telecom-churn-data-characteristics-and-practical-constraints"><span class="header-section-number">3.2</span> Telecom Churn Data Characteristics and Practical Constraints</a></li>
+  <li><a href="#modeling-approaches-for-telecom-churn-prediction" id="toc-modeling-approaches-for-telecom-churn-prediction" class="nav-link" data-scroll-target="#modeling-approaches-for-telecom-churn-prediction"><span class="header-section-number">3.3</span> Modeling Approaches for Telecom Churn Prediction</a>
+  <ul class="collapse">
+  <li><a href="#interpretable-baselines-and-classical-models" id="toc-interpretable-baselines-and-classical-models" class="nav-link" data-scroll-target="#interpretable-baselines-and-classical-models"><span class="header-section-number">3.3.1</span> Interpretable Baselines and Classical Models</a></li>
+  <li><a href="#ensemble-learning-and-tree-based-methods" id="toc-ensemble-learning-and-tree-based-methods" class="nav-link" data-scroll-target="#ensemble-learning-and-tree-based-methods"><span class="header-section-number">3.3.2</span> Ensemble Learning and Tree-based Methods</a></li>
+  <li><a href="#neural-and-hybrid-approaches-for-tabular-churn-prediction" id="toc-neural-and-hybrid-approaches-for-tabular-churn-prediction" class="nav-link" data-scroll-target="#neural-and-hybrid-approaches-for-tabular-churn-prediction"><span class="header-section-number">3.3.3</span> Neural and Hybrid Approaches for Tabular Churn Prediction</a></li>
+  <li><a href="#stacking-and-heterogeneous-ensembles" id="toc-stacking-and-heterogeneous-ensembles" class="nav-link" data-scroll-target="#stacking-and-heterogeneous-ensembles"><span class="header-section-number">3.3.4</span> Stacking and Heterogeneous Ensembles</a></li>
+  </ul></li>
+  <li><a href="#evaluation-class-imbalance-and-explainability" id="toc-evaluation-class-imbalance-and-explainability" class="nav-link" data-scroll-target="#evaluation-class-imbalance-and-explainability"><span class="header-section-number">3.4</span> Evaluation, Class Imbalance, and Explainability</a></li>
+  <li><a href="#open-issues-and-emerging-trends" id="toc-open-issues-and-emerging-trends" class="nav-link" data-scroll-target="#open-issues-and-emerging-trends"><span class="header-section-number">3.5</span> Open Issues and Emerging Trends</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+This chapter is generated from your Word section “2. Literature Review (2.1–2.5)”.
+Citations were converted from (Author, Year) to Quarto/Pandoc syntax like [authorYear].
+
+Note: You must export a complete report/references.bib from Zotero (Better BibTeX).
+If your citekeys differ from the placeholders below, update either the .bib keys or the citekeys in this file.
+-->
+<p><em>Telecom Churn Prediction with Interpretable Machine Learning: From Behavioral Mechanisms to Modern Ensembles</em></p>
+<section id="churn-theory-and-behavioral-mechanisms" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="churn-theory-and-behavioral-mechanisms"><span class="header-section-number">3.1</span> Churn Theory and Behavioral Mechanisms</h2>
+<p>Telecom churn is often framed as a predictive classification problem, but the underlying phenomenon is a behavioral decision shaped by service experience, perceived value, and switching considerations. Service marketing research shows that customers frequently switch after adverse service encounters, dissatisfaction, or unmet expectations, while the dominant “reason for switching” can vary across customers and contexts <span class="citation" data-cites="keaveney1995customerswitchingbehaviora">(<a href="98-references.html#ref-keaveney1995customerswitchingbehaviora" role="doc-biblioref">Keaveney 1995</a>)</span>. Work on regain management further characterizes churn as a process of customer defection and potential recovery, where churn prevention and win-back should be evaluated jointly as part of relationship management rather than as isolated outcomes <span class="citation" data-cites="regainingservicecustomers">(<a href="98-references.html#ref-regainingservicecustomers" role="doc-biblioref"><span>“Regaining <span>Service Customers</span> - <span>Bernd Stauss</span>, <span>Christian Friege</span>, 1999”</span> n.d.</a>)</span>.</p>
+<p>A related theme is that loyalty and churn are influenced by both attitudinal factors (e.g., satisfaction and preference) and behavioral constraints (e.g., switching costs and barriers), implying that churn drivers can be nonlinear and interactive <span class="citation" data-cites="dick1994customerloyaltyintegrated">(<a href="98-references.html#ref-dick1994customerloyaltyintegrated" role="doc-biblioref">Dick and Basu 1994</a>)</span>. In mobile telecommunications, empirical studies highlight the roles of satisfaction, perceived service quality, and switching barriers in shaping loyalty and churn outcomes <span class="citation" data-cites="gerpott2001customerretentionloyalty kim2004determinantssubscriberchurn kim2004effectscustomersatisfaction">(<a href="98-references.html#ref-gerpott2001customerretentionloyalty" role="doc-biblioref">Gerpott, Rams, and Schindler 2001</a>; <a href="98-references.html#ref-kim2004determinantssubscriberchurn" role="doc-biblioref">H.-S. Kim and Yoon 2004</a>; <a href="98-references.html#ref-kim2004effectscustomersatisfaction" role="doc-biblioref">M.-K. Kim, Park, and Jeong 2004</a>)</span>. These findings motivate a practical view for churn modeling: features such as usage and engagement variables, billing and pricing proxies, tenure or contract indicators, and service-quality-related signals can be interpreted as measurable correlates of satisfaction and switching frictions rather than as purely random predictors. Accordingly, later sections interpret model explanations not only as statistical associations but also as evidence consistent with churn mechanisms discussed in prior retention research.</p>
+</section>
+<section id="telecom-churn-data-characteristics-and-practical-constraints" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="telecom-churn-data-characteristics-and-practical-constraints"><span class="header-section-number">3.2</span> Telecom Churn Data Characteristics and Practical Constraints</h2>
+<p>Telecom churn datasets typically combine heterogeneous information sources, including numerical usage measures, customer demographics, billing variables, and high-cardinality categorical descriptors (e.g., plan identifiers or geographic codes). These properties create recurring modeling challenges that shape churn pipelines and motivate robust, reproducible experimentation <span class="citation" data-cites="lalwani2022customerchurnprediction vafeiadis2015comparisonmachinelearning">(<a href="98-references.html#ref-lalwani2022customerchurnprediction" role="doc-biblioref">Lalwani et al. 2022</a>; <a href="98-references.html#ref-vafeiadis2015comparisonmachinelearning" role="doc-biblioref">Vafeiadis et al. 2015</a>)</span>. In applied churn research, the most emphasized constraints include:</p>
+<ul>
+<li><strong>Class imbalance:</strong> Churn is often a minority event, so naïve training and default thresholding can bias models toward the majority class. Prior work proposes a range of imbalance-handling strategies, including reweighting, resampling (over- or under-sampling), and imbalance-aware ensemble methods, each of which can influence both measured performance and the set of customers prioritized for intervention <span class="citation" data-cites="beeharry2022hybridapproachusing sikri2024enhancingcustomerretention">(<a href="98-references.html#ref-beeharry2022hybridapproachusing" role="doc-biblioref">Beeharry and Tsokizep Fokone 2022</a>; <a href="98-references.html#ref-sikri2024enhancingcustomerretention" role="doc-biblioref">Sikri et al. 2024</a>)</span>.</li>
+<li><strong>Missingness and measurement noise:</strong> Telecom records are operational logs, so missing values may reflect business processes rather than random absence, and churn labels depend on operational definitions that may introduce label ambiguity.</li>
+<li><strong>Leakage risk:</strong> Features created after the churn window (or strong proxies of post-churn outcomes) can inflate performance if not controlled. Leakage prevention is therefore part of credible benchmarking.</li>
+<li><strong>Temporal instability:</strong> Behavior, product offerings, and marketing policies evolve. Drift-focused work emphasizes that churn models can degrade as the data-generating process shifts, motivating monitoring, retraining, and robustness checks <span class="citation" data-cites="bugajev2025realisticdatadelays">(<a href="98-references.html#ref-bugajev2025realisticdatadelays" role="doc-biblioref">Bugajev, Kriauzienė, and Chadyšas 2025</a>)</span>. These constraints motivate end-to-end workflows where preprocessing, splitting, and evaluation are standardized across model families. Consistent data handling is especially important when comparing heterogeneous algorithms because small preprocessing differences can confound conclusions about which model family truly performs best.</li>
+</ul>
+</section>
+<section id="modeling-approaches-for-telecom-churn-prediction" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="modeling-approaches-for-telecom-churn-prediction"><span class="header-section-number">3.3</span> Modeling Approaches for Telecom Churn Prediction</h2>
+<p>The churn literature spans interpretable baselines, high-capacity machine learning, and heterogeneous ensembles. These families differ in inductive bias, data requirements, and interpretability properties, which motivates systematic comparison within a unified pipeline.</p>
+<section id="interpretable-baselines-and-classical-models" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="interpretable-baselines-and-classical-models"><span class="header-section-number">3.3.1</span> Interpretable Baselines and Classical Models</h3>
+<p>Logistic regression and tree-based baselines remain widely used because they are transparent, stable, and straightforward to deploy in CRM environments. Benchmarking studies frequently treat such baselines as essential anchors even when more complex methods improve discrimination <span class="citation" data-cites="vafeiadis2015comparisonmachinelearning">(<a href="98-references.html#ref-vafeiadis2015comparisonmachinelearning" role="doc-biblioref">Vafeiadis et al. 2015</a>)</span>. Their limitations are also well recognized: linear decision boundaries may underfit nonlinear churn mechanisms, and shallow trees may sacrifice accuracy to maintain interpretability. For this reason, modern churn studies often implement baseline models not as end goals but as reference points for measuring incremental benefit from more complex approaches.</p>
+</section>
+<section id="ensemble-learning-and-tree-based-methods" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="ensemble-learning-and-tree-based-methods"><span class="header-section-number">3.3.2</span> Ensemble Learning and Tree-based Methods</h3>
+<p>Ensemble learning is central in churn modeling because it can improve generalization by aggregating multiple learners and capturing nonlinear effects without extensive manual feature specification. Ensemble approaches have demonstrated benefits in churn prediction across domains <span class="citation" data-cites="coussement2013customerchurnprediction">(<a href="98-references.html#ref-coussement2013customerchurnprediction" role="doc-biblioref">Coussement and De Bock 2013</a>)</span>, and telecom-focused work similarly reports strong performance from tree ensembles on heterogeneous tabular data <span class="citation" data-cites="lalwani2022customerchurnprediction vafeiadis2015comparisonmachinelearning">(<a href="98-references.html#ref-lalwani2022customerchurnprediction" role="doc-biblioref">Lalwani et al. 2022</a>; <a href="98-references.html#ref-vafeiadis2015comparisonmachinelearning" role="doc-biblioref">Vafeiadis et al. 2015</a>)</span>. Practical advantages include handling mixed feature types, automatically modeling interaction effects, and achieving high discrimination without deep representation learning.</p>
+</section>
+<section id="neural-and-hybrid-approaches-for-tabular-churn-prediction" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="neural-and-hybrid-approaches-for-tabular-churn-prediction"><span class="header-section-number">3.3.3</span> Neural and Hybrid Approaches for Tabular Churn Prediction</h3>
+<p>Deep learning has also been explored for churn prediction, particularly when representation learning is expected to capture complex feature relationships or mitigate sparsity from categorical inputs. Empirical comparisons of supervised techniques have evaluated neural models alongside traditional methods, with results often depending on preprocessing choices, regularization, and dataset structure <span class="citation" data-cites="khodabandehlou2017comparisonsupervisedmachine">(<a href="98-references.html#ref-khodabandehlou2017comparisonsupervisedmachine" role="doc-biblioref">Khodabandehlou and Rahman 2017</a>)</span>. Neural-network-based churn prediction continues to appear in more recent surveys and applied studies, suggesting sustained interest in deep architectures for customer analytics <span class="citation" data-cites="thangeda2024neuralnetworkbasedpredictive">(<a href="98-references.html#ref-thangeda2024neuralnetworkbasedpredictive" role="doc-biblioref">Thangeda, Kumar, and Majhi 2024</a>)</span>. However, deep learning in tabular settings is commonly viewed as sensitive to feature encoding, hyperparameters, and imbalance-handling choices. Consequently, neural methods are most informative when evaluated within controlled benchmarking frameworks rather than assumed to universally outperform tree ensembles.</p>
+<p>A recurring theme is that neural methods are most informative when evaluated within a controlled benchmarking framework. Therefore, in this thesis deep learning is treated as one model family among several, compared under identical data splits and preprocessing constraints. This design enables a fair assessment of whether added capacity improves discrimination and stability on telecom-style tabular churn data, and it supports subsequent interpretability analyses.</p>
+</section>
+<section id="stacking-and-heterogeneous-ensembles" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="stacking-and-heterogeneous-ensembles"><span class="header-section-number">3.3.4</span> Stacking and Heterogeneous Ensembles</h3>
+<p>Beyond bagging and boosting, stacking aims to exploit model diversity by combining base learners through a meta-learner trained on out-of-fold predictions. Telecom churn research suggests that stacking can improve performance when base models have complementary error profiles <span class="citation" data-cites="haddadi2025hybridmodelimproving">(<a href="98-references.html#ref-haddadi2025hybridmodelimproving" role="doc-biblioref">Haddadi and Hamidi 2025</a>)</span>. Related work further indicates that sampling-aware heterogeneous ensembles can create diversity via both algorithm choice and data views, which can be beneficial in imbalanced churn settings <span class="citation" data-cites="sikri2024enhancingcustomerretention">(<a href="98-references.html#ref-sikri2024enhancingcustomerretention" role="doc-biblioref">Sikri et al. 2024</a>)</span>. These findings support the use of heterogeneous stacking as a practical strategy when multiple strong models exist but no single method dominates across all evaluation dimensions.</p>
+</section>
+</section>
+<section id="evaluation-class-imbalance-and-explainability" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="evaluation-class-imbalance-and-explainability"><span class="header-section-number">3.4</span> Evaluation, Class Imbalance, and Explainability</h2>
+<p>Because churn prediction is operationalized as a ranking task for targeting retention actions, evaluation must go beyond overall accuracy. The churn literature emphasizes that imbalanced settings require metrics sensitive to minority-class performance and practical decision trade-offs <span class="citation" data-cites="beeharry2022hybridapproachusing jiao2021analysiscomparisonforecasting sikri2024enhancingcustomerretention">(<a href="98-references.html#ref-beeharry2022hybridapproachusing" role="doc-biblioref">Beeharry and Tsokizep Fokone 2022</a>; <a href="98-references.html#ref-jiao2021analysiscomparisonforecasting" role="doc-biblioref">Jiao and Xu 2021</a>; <a href="98-references.html#ref-sikri2024enhancingcustomerretention" role="doc-biblioref">Sikri et al. 2024</a>)</span>. In practice, this motivates reporting multiple complementary views of performance, including:</p>
+<ul>
+<li>Discrimination metrics (e.g., ROC-AUC) to assess ranking ability across thresholds</li>
+<li>Precision–recall trade-offs and related measures when churn is rare and false positives are costly</li>
+<li>Threshold- or top-k analyses to align model outputs with limited retention capacity Systematic reviews further emphasize that metric selection should reflect deployment goals and dataset imbalance rather than relying on a single score <span class="citation" data-cites="zhu2023baggingbasedselectiveensemble">(<a href="98-references.html#ref-zhu2023baggingbasedselectiveensemble" role="doc-biblioref">Zhu et al. 2023</a>)</span>. Accordingly, later sections report a metric set designed to support realistic retention decision-making and to compare models fairly under imbalance.</li>
+</ul>
+<p>Because churn models are often used as probability scores to prioritize intervention, calibration and threshold selection are also practically important: a model can rank customers well but still produce probabilities that are systematically over- or under-confident. As a result, later sections complement discrimination metrics with calibration diagnostics and threshold-based analyses aligned to realistic retention capacity constraints.</p>
+<p>Beyond predictive discrimination, several studies emphasize linking churn scores to customer profiling and segmentation so that retention actions can be tailored. In this view, churn prediction is coupled with “who” and “why” analyses that identify groups of customers with distinct churn drivers, supporting more targeted marketing and service interventions <span class="citation" data-cites="geiler2022effectivestrategychurn">(<a href="98-references.html#ref-geiler2022effectivestrategychurn" role="doc-biblioref">Geiler, Affeldt, and Nadif 2022</a>)</span>. This motivates treating modeling and interpretability as a joint design problem: stronger models are valuable insofar as their outputs remain explainable and deployable for retention strategy design.</p>
+<p>Explainability is increasingly treated as essential for making churn models actionable. While baselines provide transparent coefficients or decision paths, ensembles and neural networks often require post-hoc methods. Recent churn-related studies demonstrate SHAP-based explanations as a practical approach to produce both global summaries (portfolio-level drivers) and local explanations (customer-level reasons for high risk) <span class="citation" data-cites="asif2025datadrivenapproachexplainable poudel2024explainingcustomerchurn">(<a href="98-references.html#ref-asif2025datadrivenapproachexplainable" role="doc-biblioref">Asif, Arif, and Mukheimer 2025</a>; <a href="98-references.html#ref-poudel2024explainingcustomerchurn" role="doc-biblioref">Poudel, Pokharel, and Timilsina 2024</a>)</span>. Complementary tools for visualizing nonlinear feature effects are also commonly discussed, supporting interpretation in cases where churn drivers interact or exhibit threshold effects. This perspective motivates integrating explainability directly into the modeling pipeline. In this thesis, explainability is not treated as an afterthought but as a parallel analysis layer that supports error analysis, segment comparisons, and calibration/threshold discussions, thereby connecting predictive gains to interpretable churn mechanisms.</p>
+</section>
+<section id="open-issues-and-emerging-trends" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="open-issues-and-emerging-trends"><span class="header-section-number">3.5</span> Open Issues and Emerging Trends</h2>
+<p>Several open issues remain. Concept drift and temporal instability are persistent challenges in telecom churn because customer behavior and market conditions evolve; drift analyses reinforce the need for monitoring and periodic retraining if churn models are deployed in production <span class="citation" data-cites="bugajev2025realisticdatadelays">(<a href="98-references.html#ref-bugajev2025realisticdatadelays" role="doc-biblioref">Bugajev, Kriauzienė, and Chadyšas 2025</a>)</span>. Another direction is moving from “who will churn” to “who should be targeted,” where retention research argues that targeting customers solely by predicted churn risk can be suboptimal when high-risk customers are not always influenceable or profitable to retain. These issues motivate broader frameworks that integrate predictive performance with business value and intervention design.</p>
+<p>Within this landscape, the empirical contribution of the present thesis is positioned as an engineering-grade, end-to-end churn prediction pipeline that systematically compares model families (interpretable baseline, tree ensembles, deep learning, and stacking) under realistic constraints such as imbalance and leakage control, while using SHAP-centered explainability to connect predictive outputs to plausible churn mechanisms and actionable retention insights. <!--
+Chapter 2: Literature Review (sections 2.1-2.7)
+This chapter reviews prior work on churn prediction, model families, and interpretability,
+and positions the study in relation to existing methods.
+--></p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-asif2025datadrivenapproachexplainable" class="csl-entry" role="listitem">
+Asif, Daniyal, Muhammad Shoaib Arif, and Aiman Mukheimer. 2025. <span>“A Data-Driven Approach with Explainable Artificial Intelligence for Customer Churn Prediction in the Telecommunications Industry.”</span> <em>Results in Engineering</em> 26 (June): 104629. <a href="https://doi.org/10.1016/j.rineng.2025.104629">https://doi.org/10.1016/j.rineng.2025.104629</a>.
+</div>
+<div id="ref-beeharry2022hybridapproachusing" class="csl-entry" role="listitem">
+Beeharry, Yogesh, and Ristin Tsokizep Fokone. 2022. <span>“Hybrid Approach Using Machine Learning Algorithms for Customers’ Churn Prediction in the Telecommunications Industry.”</span> <em>Concurrency and Computation: Practice and Experience</em> 34 (4): e6627. <a href="https://doi.org/10.1002/cpe.6627">https://doi.org/10.1002/cpe.6627</a>.
+</div>
+<div id="ref-bugajev2025realisticdatadelays" class="csl-entry" role="listitem">
+Bugajev, Andrej, Rima Kriauzienė, and Viktoras Chadyšas. 2025. <span>“Realistic <span>Data Delays</span> and <span>Alternative Inactivity Definitions</span> in <span>Telecom Churn</span>: <span>Investigating Concept Drift Using</span> a <span>Sliding-Window Approach</span>.”</span> <em>Applied Sciences</em> 15 (3): 1599. <a href="https://doi.org/10.3390/app15031599">https://doi.org/10.3390/app15031599</a>.
+</div>
+<div id="ref-coussement2013customerchurnprediction" class="csl-entry" role="listitem">
+Coussement, Kristof, and Koen W. De Bock. 2013. <span>“Customer Churn Prediction in the Online Gambling Industry: <span>The</span> Beneficial Effect of Ensemble Learning.”</span> <em>Journal of Business Research</em>, Advancing <span>Research Methods</span> in <span>Marketing</span>, 66 (9): 1629–36. <a href="https://doi.org/10.1016/j.jbusres.2012.12.008">https://doi.org/10.1016/j.jbusres.2012.12.008</a>.
+</div>
+<div id="ref-dick1994customerloyaltyintegrated" class="csl-entry" role="listitem">
+Dick, A. S., and K. Basu. 1994. <span>“Customer <span>Loyalty</span>: <span>Toward</span> an <span>Integrated Conceptual Framework</span>.”</span> <em>Journal of the Academy of Marketing Science</em> 22 (2): 99–113. <a href="https://doi.org/10.1177/0092070394222001">https://doi.org/10.1177/0092070394222001</a>.
+</div>
+<div id="ref-geiler2022effectivestrategychurn" class="csl-entry" role="listitem">
+Geiler, Louis, Séverine Affeldt, and Mohamed Nadif. 2022. <span>“An Effective Strategy for Churn Prediction and Customer Profiling.”</span> <em>Data &amp; Knowledge Engineering</em> 142 (November): 102100. <a href="https://doi.org/10.1016/j.datak.2022.102100">https://doi.org/10.1016/j.datak.2022.102100</a>.
+</div>
+<div id="ref-gerpott2001customerretentionloyalty" class="csl-entry" role="listitem">
+Gerpott, Torsten J, Wolfgang Rams, and Andreas Schindler. 2001. <span>“Customer Retention, Loyalty, and Satisfaction in the <span>German</span> Mobile Cellular Telecommunications Market.”</span> <em>Telecommunications Policy</em> 25 (4): 249–69. <a href="https://doi.org/10.1016/S0308-5961(00)00097-5">https://doi.org/10.1016/S0308-5961(00)00097-5</a>.
+</div>
+<div id="ref-haddadi2025hybridmodelimproving" class="csl-entry" role="listitem">
+Haddadi, Amir Mohammad, and Hodjat Hamidi. 2025. <span>“A Hybrid Model for Improving Customer Lifetime Value Prediction Using Stacking Ensemble Learning Algorithm.”</span> <em>Computers in Human Behavior Reports</em> 18 (May): 100616. <a href="https://doi.org/10.1016/j.chbr.2025.100616">https://doi.org/10.1016/j.chbr.2025.100616</a>.
+</div>
+<div id="ref-jiao2021analysiscomparisonforecasting" class="csl-entry" role="listitem">
+Jiao, Gui’e, and Hong Xu. 2021. <span>“Analysis and <span>Comparison</span> of <span>Forecasting Algorithms</span> for <span>Telecom Customer Churn</span>.”</span> <em>Journal of Physics: Conference Series</em> 1881 (3): 032061. <a href="https://doi.org/10.1088/1742-6596/1881/3/032061">https://doi.org/10.1088/1742-6596/1881/3/032061</a>.
+</div>
+<div id="ref-keaveney1995customerswitchingbehaviora" class="csl-entry" role="listitem">
+Keaveney, Susan M. 1995. <span>“Customer <span>Switching Behavior</span> in <span>Service Industries</span>: <span>An Exploratory Study</span>.”</span> <em>Journal of Marketing</em> 59 (2): 71–82.
+</div>
+<div id="ref-khodabandehlou2017comparisonsupervisedmachine" class="csl-entry" role="listitem">
+Khodabandehlou, Samira, and Mahmoud Rahman. 2017. <span>“Comparison of Supervised Machine Learning Techniques for Customer Churn Prediction Based on Analysis of Customer Behavior.”</span> <em>Journal of Systems and Information Technology</em> 19 (August): 00–00. <a href="https://doi.org/10.1108/JSIT-10-2016-0061">https://doi.org/10.1108/JSIT-10-2016-0061</a>.
+</div>
+<div id="ref-kim2004determinantssubscriberchurn" class="csl-entry" role="listitem">
+Kim, Hee-Su, and Choong-Han Yoon. 2004. <span>“Determinants of Subscriber Churn and Customer Loyalty in the <span>Korean</span> Mobile Telephony Market.”</span> <em>Telecommunications Policy</em> 28 (9-10): 751–65. <a href="https://doi.org/10.1016/j.telpol.2004.05.013">https://doi.org/10.1016/j.telpol.2004.05.013</a>.
+</div>
+<div id="ref-kim2004effectscustomersatisfaction" class="csl-entry" role="listitem">
+Kim, Moon-Koo, Myeong-Cheol Park, and Dong-Heon Jeong. 2004. <span>“The Effects of Customer Satisfaction and Switching Barrier on Customer Loyalty in <span>Korean</span> Mobile Telecommunication Services.”</span> <em>Telecommunications Policy</em>, Growth in mobile communications, 28 (2): 145–59. <a href="https://doi.org/10.1016/j.telpol.2003.12.003">https://doi.org/10.1016/j.telpol.2003.12.003</a>.
+</div>
+<div id="ref-lalwani2022customerchurnprediction" class="csl-entry" role="listitem">
+Lalwani, Praveen, Manas Kumar Mishra, Jasroop Singh Chadha, and Pratyush Sethi. 2022. <span>“Customer Churn Prediction System: A Machine Learning Approach.”</span> <em>Computing</em> 104 (2): 271–94. <a href="https://doi.org/10.1007/s00607-021-00908-y">https://doi.org/10.1007/s00607-021-00908-y</a>.
+</div>
+<div id="ref-poudel2024explainingcustomerchurn" class="csl-entry" role="listitem">
+Poudel, Sumana Sharma, Suresh Pokharel, and Mohan Timilsina. 2024. <span>“Explaining Customer Churn Prediction in Telecom Industry Using Tabular Machine Learning Models.”</span> <em>Machine Learning with Applications</em> 17 (September): 100567. <a href="https://doi.org/10.1016/j.mlwa.2024.100567">https://doi.org/10.1016/j.mlwa.2024.100567</a>.
+</div>
+<div id="ref-regainingservicecustomers" class="csl-entry" role="listitem">
+<span>“Regaining <span>Service Customers</span> - <span>Bernd Stauss</span>, <span>Christian Friege</span>, 1999.”</span> n.d. https://journals-sagepub-com.wwwproxy1.library.unsw.edu.au/doi/abs/10.1177/109467059914006. Accessed October 15, 2025.
+</div>
+<div id="ref-sikri2024enhancingcustomerretention" class="csl-entry" role="listitem">
+Sikri, Alisha, Roshan Jameel, Sheikh Mohammad Idrees, and Harleen Kaur. 2024. <span>“Enhancing Customer Retention in Telecom Industry with Machine Learning Driven Churn Prediction.”</span> <em>Scientific Reports</em> 14 (1): 13097. <a href="https://doi.org/10.1038/s41598-024-63750-0">https://doi.org/10.1038/s41598-024-63750-0</a>.
+</div>
+<div id="ref-thangeda2024neuralnetworkbasedpredictive" class="csl-entry" role="listitem">
+Thangeda, Rahul, Niraj Kumar, and Ritanjali Majhi. 2024. <span>“A Neural Network-Based Predictive Decision Model for Customer Retention in the Telecommunication Sector.”</span> <em>Technological Forecasting and Social Change</em> 202 (May): 123250. <a href="https://doi.org/10.1016/j.techfore.2024.123250">https://doi.org/10.1016/j.techfore.2024.123250</a>.
+</div>
+<div id="ref-vafeiadis2015comparisonmachinelearning" class="csl-entry" role="listitem">
+Vafeiadis, T., K. I. Diamantaras, G. Sarigiannidis, and K.Ch. Chatzisavvas. 2015. <span>“A Comparison of Machine Learning Techniques for Customer Churn Prediction.”</span> <em>Simulation Modelling Practice and Theory</em> 55 (June): 1–9. <a href="https://doi.org/10.1016/j.simpat.2015.03.003">https://doi.org/10.1016/j.simpat.2015.03.003</a>.
+</div>
+<div id="ref-zhu2023baggingbasedselectiveensemble" class="csl-entry" role="listitem">
+Zhu, Bing, Cheng Qian, Seppe vanden Broucke, Jin Xiao, and Yuanyuan Li. 2023. <span>“A Bagging-Based Selective Ensemble Model for Churn Prediction on Imbalanced Data.”</span> <em>Expert Systems with Applications</em> 227 (October): 120223. <a href="https://doi.org/10.1016/j.eswa.2023.120223">https://doi.org/10.1016/j.eswa.2023.120223</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../report/01-introduction.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../report/03-data-and-problem.html" class="pagination-link" aria-label="Data and Problem Setup">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

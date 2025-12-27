@@ -1,0 +1,5 @@
+semantic_group,feature,type,n_unique
+Demographic,Homeownership,categorical,2
+Customer Value,CreditRating,categorical,7
+Customer Value,IncomeGroup,ordinal,10
+Customer Value,HandsetPrice,categorical,16

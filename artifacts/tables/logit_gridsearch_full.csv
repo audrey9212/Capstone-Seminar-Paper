@@ -1,0 +1,11 @@
+params,mean_test_score,std_test_score,rank_test_score
+"{'C': 0.1, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l1', 'random_state': 42, 'solver': 'liblinear'}",0.5923280269167547,0.0077461597843707765,1
+"{'C': 1.0, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l1', 'random_state': 42, 'solver': 'liblinear'}",0.5923235745850945,0.007761034414210969,2
+"{'C': 100.0, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l1', 'random_state': 42, 'solver': 'liblinear'}",0.5923214710170984,0.00776331150630995,3
+"{'C': 10.0, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2', 'random_state': 42, 'solver': 'liblinear'}",0.5923213833816152,0.007763020052562638,4
+"{'C': 100.0, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2', 'random_state': 42, 'solver': 'liblinear'}",0.5923212079658876,0.007762785517751975,5
+"{'C': 10.0, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l1', 'random_state': 42, 'solver': 'liblinear'}",0.592321207846557,0.0077625564324987064,6
+"{'C': 1.0, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2', 'random_state': 42, 'solver': 'liblinear'}",0.5923198780954979,0.0077638675934634015,7
+"{'C': 0.1, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2', 'random_state': 42, 'solver': 'liblinear'}",0.5923155227133744,0.007767800322108816,8
+"{'C': 0.01, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l2', 'random_state': 42, 'solver': 'liblinear'}",0.5922644311201054,0.007804557329089159,9
+"{'C': 0.01, 'class_weight': 'balanced', 'max_iter': 1000, 'penalty': 'l1', 'random_state': 42, 'solver': 'liblinear'}",0.5917580884317252,0.007853132774303648,10

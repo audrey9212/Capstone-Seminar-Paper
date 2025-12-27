@@ -1,0 +1,32 @@
+{
+  "run_name": "05_nn",
+  "figures_main": [
+    "05_nn_wide_deep_focal_curves.png",
+    "05_nn_wide_deep_focal_roc_pr_test.png"
+  ],
+  "figures_appendix": [
+    "05_nn_dense_baseline_curves.png",
+    "05_nn_embedding_baseline_curves.png",
+    "05_nn_embedding_strong_weight_curves.png",
+    "05_nn_embedding_focal_loss_curves.png",
+    "05_nn_wide_and_deep_curves.png",
+    "05_nn_wide_and_deep_deeper_curves.png"
+  ],
+  "tables_main": [
+    "05_nn_leaderboard.csv"
+  ],
+  "tables_appendix": [],
+  "all_figures": [
+    "05_nn_dense_baseline_curves.png",
+    "05_nn_embedding_baseline_curves.png",
+    "05_nn_embedding_strong_weight_curves.png",
+    "05_nn_embedding_focal_loss_curves.png",
+    "05_nn_wide_and_deep_curves.png",
+    "05_nn_wide_and_deep_deeper_curves.png",
+    "05_nn_wide_deep_focal_curves.png",
+    "05_nn_wide_deep_focal_roc_pr_test.png"
+  ],
+  "all_tables": [
+    "05_nn_leaderboard.csv"
+  ]
+}

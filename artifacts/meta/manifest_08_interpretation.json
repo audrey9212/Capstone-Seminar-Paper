@@ -1,0 +1,110 @@
+{
+  "timestamp": "2025-12-27T18:15:22.895746",
+  "seed": 42,
+  "threshold": {
+    "value": 0.43999999999999984,
+    "source": "04_trees_gbm"
+  },
+  "models": {
+    "Logistic": {
+      "path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/logit_baseline.pkl",
+      "source": "03_logit"
+    },
+    "XGBoost": {
+      "path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_xgb_baseline.pkl",
+      "source": "04_trees_gbm"
+    },
+    "LightGBM": {
+      "path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_lgbm_small.pkl",
+      "source": "04_trees_gbm"
+    },
+    "RandomForest": {
+      "path": "/Users/audreychang/Projects/Capstone-Seminar-Paper-repro/models/04_rf_baseline.pkl",
+      "source": "04_trees_gbm"
+    },
+    "05_nn_dense_baseline": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "05_nn_embedding_baseline": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "05_nn_embedding_focal_loss": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "05_nn_embedding_strong_weight": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "05_nn_wide_and_deep_deeper": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "05_nn_wide_and_deep": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "05_nn_wide_deep_focal": {
+      "path": "artifacts/preds",
+      "source": "05_nn_cached"
+    },
+    "06_teacher": {
+      "path": "artifacts/preds",
+      "source": "06_ssl_cached"
+    }
+  },
+  "champion": {
+    "model": "XGBoost",
+    "test_roc_auc": 0.6636811037983663,
+    "test_pr_auc": 0.44544060761365467
+  },
+  "shap": {
+    "enabled": true,
+    "sample_size": 3000,
+    "top_features": [
+      "CurrentEquipmentDays",
+      "MonthlyMinutes",
+      "MonthsInService",
+      "PercChangeMinutes",
+      "DroppedBlockedCalls",
+      "OverageMinutes",
+      "AgeHH1",
+      "CreditRating_5-Low",
+      "PercChangeRevenues",
+      "HandsetRefurbished_Yes"
+    ]
+  },
+  "ssl_appendix": {
+    "enabled": true,
+    "pseudo_stats": {
+      "total_unlabeled": 20000,
+      "high_conf_total": 2,
+      "high_conf_ratio": 0.0001,
+      "pseudo_accuracy": null,
+      "threshold_high": 0.95,
+      "threshold_low": 0.05,
+      "use_real_holdout": true,
+      "proba_mean": 0.28735050559043884,
+      "proba_std": 0.1102154478430748
+    }
+  },
+  "outputs": {
+    "core_tables": [
+      "08_model_leaderboard.csv"
+    ],
+    "core_figures": [
+      "08_model_comparison_roc.png",
+      "08_model_comparison2.png",
+      "08_shap_summary.png",
+      "08_confusion_matrix.png"
+    ],
+    "appendix_figures": [
+      "08_model_comparison_pr.png",
+      "08_shap_importance.png",
+      "08_ssl_summary.png",
+      "08_ssl_confidence_dist.png"
+    ]
+  }
+}

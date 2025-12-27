@@ -1,0 +1,27 @@
+{
+  "selected_features": [
+    "MonthlyMinutes",
+    "OverageMinutes",
+    "PercChangeMinutes",
+    "PercChangeRevenues",
+    "OutboundCalls",
+    "DroppedBlockedCalls",
+    "MonthsInService",
+    "ActiveSubs",
+    "CurrentEquipmentDays",
+    "AgeHH1",
+    "ReferralsMadeBySubscriber",
+    "AdjustmentsToCreditRating"
+  ],
+  "n_features": 12,
+  "optimal_threshold": 0.43999999999999984,
+  "best_params": {
+    "C": 0.1,
+    "class_weight": "balanced",
+    "max_iter": 1000,
+    "penalty": "l1",
+    "random_state": 42,
+    "solver": "liblinear"
+  },
+  "best_cv_roc_auc": 0.5923280269167547
+}

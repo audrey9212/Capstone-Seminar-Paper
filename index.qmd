@@ -1,0 +1,16 @@
+---
+title: ""
+numbered: false
+author: ""
+date: ""
+lang: en
+---
+
+# Abstract {.unnumbered .unlisted}
+
+Customer churn—the cancellation of service or switching to a competitor—remains a major source of revenue leakage for telecommunications providers, especially in mature markets where customer acquisition is costly and growth is limited. This study develops a leakage-safe, end-to-end machine learning pipeline to predict churn using the Cell2Cell telecom dataset, and benchmarks multiple model families (logistic regression, tree-based models, gradient boosting, neural networks, and stacking ensembles) under a consistent experimental design. To support real-world decision making, evaluation emphasizes metrics suitable for imbalanced labels (ROC-AUC, PR-AUC, and F1/recall at an operating threshold), and model interpretability is treated as a first-class requirement. Using explainability techniques (e.g., SHAP), the final system translates predictive signals into actionable retention drivers and prioritization lists that can guide targeted outreach and A/B testing.
+
+\noindent\textbf{Keywords:} Telecom churn; supervised learning; gradient boosting; stacking ensemble; imbalanced classification; explainable machine learning; SHAP
+
+\tableofcontents
+\newpage

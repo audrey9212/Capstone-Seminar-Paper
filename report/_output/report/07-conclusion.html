@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Conclusion and Future Work – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../report/97-acknowledgements.html" rel="next">
+<link href="../report/06-discussion.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/07-conclusion.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Abstract</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/02-literature-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/03-data-and-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/04-methodology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/05-experiments-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/06-discussion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/07-conclusion.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/97-acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/98-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99-appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-conclusion-summary" id="toc-sec-conclusion-summary" class="nav-link active" data-scroll-target="#sec-conclusion-summary"><span class="header-section-number">8.1</span> Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#sec-rq1-answer" id="toc-sec-rq1-answer" class="nav-link" data-scroll-target="#sec-rq1-answer"><span class="header-section-number">8.1.1</span> RQ1: Model Effectiveness</a></li>
+  <li><a href="#sec-rq2-answer" id="toc-sec-rq2-answer" class="nav-link" data-scroll-target="#sec-rq2-answer"><span class="header-section-number">8.1.2</span> RQ2: Imbalance Robustness</a></li>
+  <li><a href="#sec-rq3-answer" id="toc-sec-rq3-answer" class="nav-link" data-scroll-target="#sec-rq3-answer"><span class="header-section-number">8.1.3</span> RQ3: Interpretability to Action</a></li>
+  <li><a href="#sec-engineering-tradeoffs" id="toc-sec-engineering-tradeoffs" class="nav-link" data-scroll-target="#sec-engineering-tradeoffs"><span class="header-section-number">8.1.4</span> Engineering Trade-offs</a></li>
+  </ul></li>
+  <li><a href="#sec-future-work" id="toc-sec-future-work" class="nav-link" data-scroll-target="#sec-future-work"><span class="header-section-number">8.2</span> Future Work</a>
+  <ul class="collapse">
+  <li><a href="#sec-future-ssl" id="toc-sec-future-ssl" class="nav-link" data-scroll-target="#sec-future-ssl"><span class="header-section-number">8.2.1</span> Incorporating Semi-Supervised Learning</a></li>
+  <li><a href="#sec-future-temporal" id="toc-sec-future-temporal" class="nav-link" data-scroll-target="#sec-future-temporal"><span class="header-section-number">8.2.2</span> Sequence Modeling and Temporal Features</a></li>
+  <li><a href="#sec-future-mlops" id="toc-sec-future-mlops" class="nav-link" data-scroll-target="#sec-future-mlops"><span class="header-section-number">8.2.3</span> Real-time Inference and MLOps Deployment</a></li>
+  <li><a href="#sec-future-calibration" id="toc-sec-future-calibration" class="nav-link" data-scroll-target="#sec-future-calibration"><span class="header-section-number">8.2.4</span> Calibration and Threshold Optimization</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-conclusion" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+Chapter 7: Conclusion and Future Work (sections 7.1–7.2)
+This chapter summarizes findings in relation to the three research questions (RQ1–RQ3)
+and outlines future directions for semi-supervised learning, temporal modeling, and MLOps deployment.
+-->
+<section id="sec-conclusion-summary" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="sec-conclusion-summary"><span class="header-section-number">8.1</span> Conclusion</h2>
+<p>This thesis presented a comprehensive exploration of telecom customer churn prediction, balancing <strong>predictive performance</strong> with <strong>interpretability</strong> and practical actionability. A range of modeling approaches was investigated under consistent conditions, class imbalance challenges were tackled, and insights were extracted to guide retention strategy. Here I summarize the findings in relation to the three research questions posed in the Introduction (Chapter 1).</p>
+<section id="sec-rq1-answer" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="sec-rq1-answer"><span class="header-section-number">8.1.1</span> RQ1: Model Effectiveness</h3>
+<p><strong>Results indicate</strong> that gradient-boosted decision trees achieved the strongest overall performance among all model families tested. The champion single model was <strong>XGBoost</strong>, achieving a test ROC-AUC of <strong>0.6637</strong> and a test PR-AUC of <strong>0.4454</strong>. The best heterogeneous ensemble (Blend_WeightedAUC) achieved a slightly higher test ROC-AUC of <strong>0.6688</strong> and test PR-AUC of <strong>0.4488</strong>, but the marginal gain (+0.0050 ROC-AUC) suggests that XGBoost is the most practical choice for deployment. Both substantially outperformed the logistic regression baseline (test ROC-AUC = 0.5940, test PR-AUC = 0.3560).</p>
+<p>Heterogeneous ensemble methods (blending and OOF stacking) provided competitive but not decisively superior results. The best blending approach (Blend_WeightedAUC) reached a test ROC-AUC of <strong>0.6688</strong> and test PR-AUC of <strong>0.4488</strong>, while OOF stacking achieved test ROC-AUC of <strong>0.6679</strong> and test PR-AUC of <strong>0.4490</strong>. Ensemble methods slightly exceeded XGBoost on ROC-AUC, but the improvement was modest. This suggests that the gains from model combination derive primarily from variance reduction and diversity between linear and nonlinear base learners, rather than capturing fundamentally new predictive signals.</p>
+<p>The <strong>Wide &amp; Deep neural network</strong>, a model architecture not commonly used in traditional churn studies, proved feasible on tabular telecom data. The best neural network variant (Wide &amp; Deep with focal loss) achieved test ROC-AUC of <strong>0.6615</strong> and test PR-AUC of <strong>0.4356</strong>, demonstrating that deep learning approaches can capture churn patterns effectively, though they did not surpass gradient boosting methods in this dataset. The neural networks clustered in a narrow performance band (test ROC-AUC approximately 0.6440–0.6620), suggesting a performance ceiling for this architecture class on this feature set.</p>
+<p>These findings address RQ1 by demonstrating that <strong>gradient-boosted trees represent the most effective single-model approach</strong> for this churn prediction task. Ensemble methods provide modest additional benefits, with the trade-off between performance gain and implementation complexity favoring simpler single-model deployment in many production scenarios.</p>
+</section>
+<section id="sec-rq2-answer" class="level3" data-number="8.1.2">
+<h3 data-number="8.1.2" class="anchored" data-anchor-id="sec-rq2-answer"><span class="header-section-number">8.1.2</span> RQ2: Imbalance Robustness</h3>
+<p>Class imbalance was a significant challenge, with churners comprising approximately 28.8% of the dataset. Various strategies <strong>were implemented and evaluated</strong> to ensure the models remained sensitive to the minority class:</p>
+<ul>
+<li><strong>Class weighting</strong> in training (giving higher weight to churn examples in the loss function)</li>
+<li>Experimenting with <strong>focal loss</strong> for the neural networks (to focus learning on hard-to-predict churn cases)</li>
+<li>Adjusting the <strong>decision threshold</strong> on the validation set to optimize recall/precision trade-offs rather than using the default 0.5000</li>
+</ul>
+<p>The findings indicate that these techniques did improve the model’s ability to capture churners. At the fixed operating threshold of τ = 0.4400, LightGBM achieved the best balance with <strong>precision = 0.3760, recall = 0.7310, and F1 = 0.4970</strong>. XGBoost performed nearly identically with precision = 0.3670, recall = 0.7390, and F1 = 0.4900. This balance is <strong>advantageous for retention contexts</strong>, facilitating the detection of approximately 73–74% of actual churners while maintaining precision in the high-30s%, a trade-off suitable for targeted retention campaigns where the cost of contacting non-churners is acceptable.</p>
+<p>Experiments with <strong>focal loss</strong> produced competitive ranking metrics (ROC-AUC, PR-AUC) but exhibited threshold sensitivity: under the fixed threshold of τ = 0.4400, some focal-loss variants produced very few positive predictions, resulting in near-zero recall despite competitive AUC scores. This highlights that <strong>loss function selection must be paired with appropriate threshold calibration</strong> for deployment. The standard weighted cross-entropy loss proved more robust across operating points in this dataset.</p>
+<p>Thus, RQ2 is answered: <strong>yes, specific imbalance-aware strategies made the churn predictions more robust and useful</strong>, ensuring that the model’s performance on the minority class (churn) was strong enough for practical use. However, threshold selection proved as critical as algorithmic imbalance handling for achieving practical deployment performance.</p>
+</section>
+<section id="sec-rq3-answer" class="level3" data-number="8.1.3">
+<h3 data-number="8.1.3" class="anchored" data-anchor-id="sec-rq3-answer"><span class="header-section-number">8.1.3</span> RQ3: Interpretability to Action</h3>
+<p>The best models, despite their complexity, are demonstrated to not be “black boxes” when it comes to drawing insights. Using <strong>SHAP values</strong> and related interpretability tools, model outputs were translated into <strong>actionable churn drivers</strong>.</p>
+<p>The global SHAP analysis (see <a href="06-discussion.html#sec-global-interpretability" class="quarto-xref"><span>Section 7.1</span></a>) highlighted features such as CurrentEquipmentDays, MonthlyMinutes, MonthsInService, PercChangeMinutes, and DroppedBlockedCalls as the primary churn drivers. These features map directly to actionable business levers:</p>
+<ul>
+<li><strong>Device lifecycle timing</strong> (CurrentEquipmentDays): Customers with longer equipment tenure show higher churn risk, supporting proactive upgrade offers</li>
+<li><strong>Engagement patterns</strong> (MonthlyMinutes): Low usage strongly correlates with churn, identifying disengaged customers for re-engagement campaigns</li>
+<li><strong>Tenure effects</strong> (MonthsInService): Newer customers exhibit higher vulnerability, informing onboarding and early retention strategies</li>
+<li><strong>Service quality signals</strong> (DroppedBlockedCalls): Call failures drive dissatisfaction and switching behavior</li>
+</ul>
+<p>SHAP dependence plots revealed non-linear effects that would be difficult to summarize with a single coefficient, such as the asymmetric risk pattern for MonthlyMinutes (low usage drives much stronger positive SHAP contributions than high usage provides negative contributions) and threshold-like upgrade cycle effects in CurrentEquipmentDays.</p>
+<p>Importantly, these interpretations were derived from the same model that produces the risk scores, ensuring consistency between what is deployed and what is explained. These insights were further used to craft an <strong>action framework (the three-tier retention strategy)</strong> described in <a href="06-discussion.html#sec-business-impact" class="quarto-xref"><span>Section 7.4</span></a>, exemplifying how interpretability bridges the gap between prediction and decision. Consequently, regarding RQ3, the findings demonstrate that the model interpretation outputs were successfully converted into practical guidance, reinforcing the idea that churn prediction models should be judged not only by their AUC, but also by how well they inform next steps for retention efforts.</p>
+</section>
+<section id="sec-engineering-tradeoffs" class="level3" data-number="8.1.4">
+<h3 data-number="8.1.4" class="anchored" data-anchor-id="sec-engineering-tradeoffs"><span class="header-section-number">8.1.4</span> Engineering Trade-offs</h3>
+<p>In evaluating the above points, it’s worth noting an <strong>engineering trade-off</strong> that emerged. While ensemble methods achieved comparable performance to single models, they introduce significant operational complexity without proportionate performance gains. The marginal improvements (approximately 0.0010–0.0020 in PR-AUC) must be weighed against deployment and maintenance costs.</p>
+<div id="tbl-deployment-tradeoffs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-deployment-tradeoffs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8.1: Comparison of deployment considerations between ensemble methods and single GBM models.
+</figcaption>
+<div aria-describedby="tbl-deployment-tradeoffs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Consideration</th>
+<th>Ensemble (Blending/Stacking)</th>
+<th>XGBoost Only</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Test ROC-AUC</td>
+<td>0.6679–0.6688</td>
+<td>0.6637</td>
+</tr>
+<tr class="even">
+<td>Test PR-AUC</td>
+<td>0.4488–0.4490</td>
+<td>0.4454</td>
+</tr>
+<tr class="odd">
+<td>Inference Latency</td>
+<td>Higher (multiple models)</td>
+<td>Low</td>
+</tr>
+<tr class="even">
+<td>Deployment Complexity</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr class="odd">
+<td>Maintenance Burden</td>
+<td>Multiple model artifacts</td>
+<td>Single artifact</td>
+</tr>
+<tr class="even">
+<td>Interpretability</td>
+<td>Requires aggregation</td>
+<td>Direct SHAP analysis</td>
+</tr>
+<tr class="odd">
+<td>Threshold Calibration</td>
+<td>More complex</td>
+<td>Straightforward</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>For a <strong>real-time deployment</strong> where latency and system simplicity are paramount, a single GBM model (XGBoost) represents the pragmatic choice, offering fast inference, straightforward integration, and essentially equivalent predictive performance. The ensemble approach might be justified in batch-scoring scenarios where the slight PR-AUC lift translates to meaningful business value at scale, but the complexity trade-off generally favors single-model deployment.</p>
+<p>This highlights that the “best” model on paper isn’t always the best in practice; <strong>model selection must consider deployment constraints, maintainability, and interpretability requirements</strong> as well as raw performance. In this case, XGBoost is the recommended production choice: it delivers strong test performance while maintaining operational simplicity.</p>
+<p>Ultimately, this thesis showed that advanced models can be harnessed for churn prediction without making the results opaque. A balance was achieved where <strong>performance, interpretability, and practical utility coexist</strong>, which is a promising outcome for deploying the model in a real telecom business environment.</p>
+</section>
+</section>
+<section id="sec-future-work" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="sec-future-work"><span class="header-section-number">8.2</span> Future Work</h2>
+<p>Building on this study’s findings and acknowledging its limitations (see <a href="06-discussion.html#sec-limitations" class="quarto-xref"><span>Section 7.5</span></a>), several avenues for <strong>future work</strong> are identified to further enhance telecom churn prediction and its deployment.</p>
+<section id="sec-future-ssl" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="sec-future-ssl"><span class="header-section-number">8.2.1</span> Incorporating Semi-Supervised Learning</h3>
+<p>One promising direction is to leverage unlabeled or partially labeled data through <strong>semi-supervised techniques</strong>. The current study attempted pseudo-labeling using the XGBoost teacher model on real holdout data, but achieved minimal coverage: at conservative confidence thresholds (0.0500/0.9500), only 2 samples out of 20,000 met the criteria, with approximately 100% remaining “uncertain.” This result highlights that <strong>confidence calibration and threshold selection are critical</strong> for successful semi-supervised learning.</p>
+<p>Future work could explore:</p>
+<ol type="1">
+<li><strong>Relaxed confidence thresholds</strong> with curriculum learning to gradually incorporate pseudo-labels</li>
+<li><strong>Self-training with consistency regularization</strong> (e.g., MixMatch, FixMatch) that does not rely solely on hard pseudo-label thresholds</li>
+<li><strong>Contrastive learning approaches</strong> that learn representations from unlabeled data before fine-tuning on labeled examples</li>
+<li><strong>Teacher ensemble methods</strong> using multiple diverse teachers to provide more calibrated confidence estimates</li>
+</ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Connection to Current Work
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The autoencoder experiments in this thesis (see <a href="06-discussion.html#sec-autoencoder-interpretation" class="quarto-xref"><span>Section 7.3</span></a>) showed that learned latent representations did not significantly improve downstream classification beyond the original feature set (augmented features achieved ROC-AUC = 0.6451 vs.&nbsp;baseline 0.6465). However, the autoencoder architecture remains valuable as an <strong>engineering capability</strong>: it provides a reusable representation learning component and a clear interface for future semi-supervised variants if better confidence calibration or more unlabeled data becomes available.</p>
+</div>
+</div>
+</section>
+<section id="sec-future-temporal" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="sec-future-temporal"><span class="header-section-number">8.2.2</span> Sequence Modeling and Temporal Features</h3>
+<p>As identified in the limitations (<a href="06-discussion.html#sec-limitations" class="quarto-xref"><span>Section 7.5</span></a>), the analysis would benefit from true <strong>temporal modeling</strong>. The current dataset provides snapshot features representing customer state at a single point in time, limiting the model’s ability to capture behavioral trends that precede churn.</p>
+<p><strong>Potential approaches include:</strong></p>
+<ol type="1">
+<li><p><strong>Recurrent Neural Networks (LSTMs)</strong>: Can learn patterns like “gradual decline in data usage over 6 months” or “a spike in dropped calls last month” that precede churn</p></li>
+<li><p><strong>Transformer-based architectures</strong>: Could capture complex patterns of seasonality or multi-feature interactions over time for <strong>multivariate time series</strong> of customer behavior</p></li>
+<li><p><strong>Feature engineering for trends</strong>: Even without full sequence models, computing rolling statistics (e.g., 3-month moving averages, month-over-month deltas) from historical data could provide temporal signals within the current tabular framework</p></li>
+<li><p><strong>Event-based modeling</strong>: Treating customer interactions (calls, complaints, plan changes) as discrete events and using event sequence models</p></li>
+</ol>
+<p>The PercChangeMinutes feature in the current dataset provides a glimpse of temporal value: it emerged as a top SHAP feature, with declining usage patterns strongly associated with higher churn risk. This suggests that <strong>richer temporal features would likely improve predictive performance</strong> and enable earlier intervention.</p>
+</section>
+<section id="sec-future-mlops" class="level3" data-number="8.2.3">
+<h3 data-number="8.2.3" class="anchored" data-anchor-id="sec-future-mlops"><span class="header-section-number">8.2.3</span> Real-time Inference and MLOps Deployment</h3>
+<p>From an operational standpoint, future efforts should focus on deploying the churn model in a production environment with <strong>real-time or near-real-time inference</strong> capabilities. The engineering foundation established in this thesis, including MLflow experiment tracking, modular pipeline design, and reproducible preprocessing, provides a starting point for production deployment.</p>
+<p>Key MLOps components for production deployment include:</p>
+<div id="tbl-mlops-components" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mlops-components-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8.2: Key components of an MLOps pipeline for churn prediction deployment, prioritized by implementation order.
+</figcaption>
+<div aria-describedby="tbl-mlops-components-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 32%">
+<col style="width: 38%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Description</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Automated Data Pipelines</strong></td>
+<td>Feed the model with fresh data continuously</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td><strong>Model Serving Infrastructure</strong></td>
+<td>API or microservice for real-time predictions</td>
+<td>High</td>
+</tr>
+<tr class="odd">
+<td><strong>Feature Store</strong></td>
+<td>Ensure training-serving consistency for features</td>
+<td>High</td>
+</tr>
+<tr class="even">
+<td><strong>Data Drift Detection</strong></td>
+<td>Monitor input feature distributions</td>
+<td>Medium</td>
+</tr>
+<tr class="odd">
+<td><strong>Concept Drift Detection</strong></td>
+<td>Monitor prediction distribution and model performance</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td><strong>Retraining Schedules</strong></td>
+<td>Refresh the model periodically (e.g., quarterly)</td>
+<td>Medium</td>
+</tr>
+<tr class="odd">
+<td><strong>A/B Testing Framework</strong></td>
+<td>Validate ROI assumptions with actual campaign results</td>
+<td>Medium</td>
+</tr>
+<tr class="even">
+<td><strong>Shadow Mode Deployment</strong></td>
+<td>Run new models alongside production for comparison</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The preprocessing bug discovered during this research, a 1000x scale mismatch between training and holdout data that caused catastrophic model performance degradation (train/validation loss ratios exceeding 285x), underscores the critical importance of <strong>training-serving consistency</strong>. Production systems must implement:</p>
+<ul>
+<li>Unified preprocessing pipelines that share code between training and inference</li>
+<li>Feature signature validation to catch schema mismatches early</li>
+<li>Automated sanity checks (e.g., feature distribution comparisons) before model scoring</li>
+</ul>
+<p>One critical aspect is <strong>drift monitoring</strong>. Over time, the profile of churners may change; for instance, if the company launches a new product or a competitor changes their strategy, the factors influencing churn could shift. The SHAP-based interpretability framework developed in this thesis provides a foundation for monitoring: tracking changes in feature importance distributions over time can serve as an early warning system for concept drift.</p>
+</section>
+<section id="sec-future-calibration" class="level3" data-number="8.2.4">
+<h3 data-number="8.2.4" class="anchored" data-anchor-id="sec-future-calibration"><span class="header-section-number">8.2.4</span> Calibration and Threshold Optimization</h3>
+<p>The experiments revealed that <strong>probability calibration</strong> and <strong>threshold selection</strong> significantly impact operational performance, particularly for models trained with focal loss. Future work should explore:</p>
+<ol type="1">
+<li><strong>Isotonic regression or Platt scaling</strong> for post-hoc calibration</li>
+<li><strong>Cost-sensitive threshold optimization</strong> incorporating business parameters (intervention cost, customer LTV, save rate)</li>
+<li><strong>Dynamic thresholds</strong> that adapt to changing business constraints or resource availability</li>
+<li><strong>Calibration monitoring</strong> in production to detect when model probabilities become unreliable</li>
+</ol>
+<hr>
+<p>In conclusion, the journey of building this churn prediction system has shown both the substantial value such models can deliver and the complexity of making them truly effective in practice. The key findings, indicating that gradient-boosted trees (with XGBoost achieving test ROC-AUC = 0.6637) outperform other model families, that the best ensemble offers only a modest lift (test ROC-AUC = 0.6688), that class imbalance handling requires both algorithmic strategies and threshold tuning, and that SHAP-based interpretability enables actionable business insights, provide a solid foundation for production deployment.</p>
+<p>By addressing the above future directions, from advanced modeling techniques like semi-supervised learning and sequence modeling to the practicalities of real-time deployment and drift monitoring, the model’s performance and longevity can be further enhanced. Ultimately, the goal is to evolve the churn prediction solution into a <strong>long-term, self-improving asset</strong> for the telecom provider, one that not only predicts which customers might leave, but continuously learns from new data and helps the business prevent churn in an ever-changing environment.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../report/06-discussion.html" class="pagination-link" aria-label="Discussion – Interpretation and Error Analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../report/97-acknowledgements.html" class="pagination-link" aria-label="Acknowledgments">
+        <span class="nav-page-text">Acknowledgments</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

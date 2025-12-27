@@ -1,0 +1,18 @@
+{
+  "experiment": "embedding_focal_loss",
+  "train_auc": 0.6860238677496723,
+  "val_auc": 0.6486663646121849,
+  "test_auc": 0.6611969176973871,
+  "test_pr_auc": 0.43451896375162324,
+  "test_brier": 0.19757920503616333,
+  "best_threshold_val": 0.29999999999999993,
+  "test_precision_at_best_threshold": 0.3429063756461804,
+  "test_recall_at_best_threshold": 0.8116927260367097,
+  "test_f1_at_best_threshold": 0.4821320411871593,
+  "best_epoch": 49,
+  "train_time_sec": 42.94638180732727,
+  "loss_type": "focal",
+  "pos_weight": 2.469878494349562,
+  "focal_alpha": 0.25,
+  "focal_gamma": 2.0
+}

@@ -1,0 +1,139 @@
+
+# Data and Problem Setup {#sec-data-problem}
+
+## Data sources and study scope
+This study utilizes a single primary dataset, cell2celltrain.csv, a customer-level telecom churn dataset consisting of 51,047 customer records and 58 original columns (including the identifier and raw target label). To facilitate binary classification modeling, the original string-based churn label was encoded into a binary numerical format (1/0) to serve as the final prediction target. Each row corresponds to one customer, with CustomerID serving as a unique identifier; no duplicate CustomerID values were detected.
+
+To make feature handling auditable and reproducible across notebooks, the project also maintains a configuration-driven feature registry (built from feature_config_clean.csv) that specifies feature types (numeric/binary/ordinal/nominal), semantic groups, and risk/processing tags (e.g., "high_card", "sparse_zero", "zero_as_missing"). This design supports consistent "data scope" decisions (e.g., dropping identifiers, excluding leakage-prone fields) without hard-coding per-notebook logic.
+
+In addition, a Detailed Feature Decision Table and a Data Dictionary were created as formal documentation of the dataset's columns and the feature inclusion/exclusion rationale. The decision table is treated as a "single source of truth" for feature-level decisions and is provided in @sec-appendix-a1 (@tbl-full-feature-registry).
+
+## Prediction target and observation window
+The modeling task is a binary classification problem: predicting whether a customer will churn. The dataset's churn definition is event-based: "customers who churned 31- 60 days later" are labeled as churners. Many behavioral variables are constructed as historical summaries (e.g., four-month means), which aligns with a practical churn prediction setting where features represent pre-outcome customer state rather than post-churn operational actions.
+
+From a business perspective, this framing supports proactive retention: the goal is to rank customers by churn risk so that limited retention resources can be targeted toward those most likely to leave.
+
+## Data documentation and feature organization
+Because the dataset contains heterogeneous feature families (usage, billing, tenure, device, demographics, and operational indicators), EDA was used not only to summarize distributions but also to organize features into consistent groups for later modeling and interpretation. The project produced reusable documentation outputs, including a feature registry table (@sec-appendix-a1) and a semantic grouping table (@sec-appendix-a2).
+
+At a high level, the raw columns include a mixture of numeric, integer, and object-typed variables (29 float64, 7 int64, 22 object in the raw load). A structured type and tag system was maintained for each feature (e.g., some features are tagged as high-cardinality, some as zero-as-missing, some as sparse-zero), enabling later preprocessing and model design to follow a documented specification rather than ad hoc decisions.
+
+
+```{python}
+#| label: tbl-feature-registry-excerpt
+#| tbl-cap: "Feature registry excerpt (top 5 rows)."
+#| tbl-cap-location: top
+#| echo: false
+
+import pandas as pd
+from pathlib import Path
+
+def find_project_root(start: Path) -> Path:
+    """Walk upwards to locate the Quarto project root (where _quarto.yml lives)."""
+    p = start.resolve()
+    for _ in range(12):
+        if (p / "_quarto.yml").exists() or (p / ".git").exists():
+            return p
+        if p.parent == p:
+            break
+        p = p.parent
+    return start.resolve()
+
+root = find_project_root(Path.cwd())
+
+# Project-relative candidates (robust to different working directories).
+candidate_paths = [
+    root / "data" / "feature_config_clean.csv",
+    root / "data" / "feature_config_clean",  # sometimes saved without .csv
+    root / "src" / "feature_config_clean.csv",
+    root / "feature_config_clean.csv",
+]
+
+# Extra fallback: search under data/ for any matching CSV.
+data_dir = root / "data"
+if data_dir.exists():
+    candidate_paths += sorted(data_dir.glob("*feature_config_clean*.csv"))
+
+df = None
+for fp in candidate_paths:
+    if fp.exists():
+        df = pd.read_csv(fp)
+        break
+
+if df is None:
+    tried = "\n".join(f"- {fp}" for fp in candidate_paths[:20])
+    msg = (
+        "feature_config_clean.csv not found. Tried:\n"
+        + tried
+        + f"\n(cwd={Path.cwd()}, root={root})"
+    )
+    raise FileNotFoundError(msg)
+
+cols = [c for c in [
+    "feature", "origin", "semantic_group", "type", "transform_encoding",
+    "keep_glm", "keep_tree", "keep_nn", "decision_type_short"
+] if c in df.columns]
+
+(df[cols] if cols else df).head(5)
+```
+
+The complete registry is provided in Appendix A (see @sec-appendix-a1, Complete Feature Registry).
+
+## Exploratory data analysis: what the data "looks like" and why it matters {#sec-eda}
+EDA in this study was designed to (i) quantify the dataset's major modeling constraints (imbalance, sparsity, nonlinearity), (ii) detect leakage risks, and (iii) create reproducible tables/figures that guide later methodological choices.
+
+
+### Class balance and baseline difficulty
+Churn is a minority class but not extremely rare: 14,711 churners (28.82%) versus 36,336 non-churners (71.18%). A naïve classifier that always predicts "non-churn" would achieve 0.7118 accuracy, demonstrating that accuracy alone is not a sufficient measure for this task.
+
+
+![Churn class distribution in the Cell2Cell training set.](../artifacts/figures/F2a_churn_distribution_donut.png){#fig-churn-distribution fig-alt="Donut chart showing churn vs non-churn share." width=55%}
+
+This imbalance motivated evaluation choices later in the thesis (e.g., ranking metrics and precision/recall-focused diagnostics), but the formal metric definitions are deferred to the Methodology section.
+
+
+### Missingness, sparsity, and "zero inflation"
+A key constraint in this telecom dataset is that many variables are structurally sparse, meaning they are missing for most customers or recorded as zeros that effectively encode "not applicable" or "not observed". The EDA therefore tracked missing values and zero inflation together (a "missing+zero" sparsity score) and saved a ranked summary.
+
+The top-ranked features by combined sparsity were mainly zero-inflated retention and low-frequency call variables (e.g., CallForwardingCalls, RetentionOffersAccepted, RetentionCalls), followed by sparse call-behavior and customer-contact measures (e.g., ThreewayCalls, RoamingCalls, CustomerCareCalls) and high-missingness demographic/pricing proxies such as IncomeGroup, AgeHH1/AgeHH2, and HandsetPrice.
+
+
+![Missingness and zero-rate diagnostics for input features.](../artifacts/figures/F1a_sparsity_missing_zero.png){#fig-sparsity fig-alt="Bar chart showing missing rate and zero rate by feature."}
+
+
+### Ordinal, categorical, and continuous patterns
+EDA included several diagnostic plots for ordinal and categorical features, examining the relationship between variable categories and churn rate. For example, @fig-ordinal-trends visualizes how churn risk varies across ordinal feature levels.
+
+![Churn rates across ordinal variable levels.](../artifacts/figures/F4a_ordinal_trends.png){#fig-ordinal-trends fig-alt="Stacked bar chart showing ordinal variable churn patterns." width=70%}
+
+
+An important categorical analysis tool was Cramér's V, which measures association strength between categorical predictors and the binary churn outcome. Features with strong associations are potentially informative but require care to distinguish from leakage. @fig-cramers-v-top presents the Cramér's V ranking for the top categorical features.
+
+![Cramér's V association between top categorical features and churn label.](../artifacts/figures/F4f_cramers_v_top_categorical.png){#fig-cramers-v-top fig-alt="Horizontal bar chart showing Cramér's V values." width=60%}
+
+
+### Leakage risk and variable exclusion {#sec-leakage-risk}
+A central rigor requirement in churn modeling is avoiding predictors that implicitly contain post-outcome information. This study therefore treated leakage control as a data scoping decision: features that would not be available at prediction time (or that are only triggered once churn intent is revealed) were excluded from the modeling dataset.
+
+A dedicated leakage scan (saved as T5j_leakage_risk_rank.csv) ranked features by a composite leakage risk score (see @sec-appendix-a3 for the complete ranking). In the scan, the highest-risk features were retention intervention variables such as MadeCallToRetentionTeam, RetentionCalls, and RetentionOffersAccepted, which were flagged as essentially post-churn indicators. The EDA further visualized these risks using leakage-flag churn comparisons and saved the summary plot.
+
+![Leakage risk visualization: churn rates by retention-related flag values.](../artifacts/figures/F5j_leakage_flags_churn.png){#fig-leakage-flags fig-alt="Bar chart comparing churn rates for leakage-prone features." width=70%}
+
+Based on both statistical evidence and business-process logic, these retention-related variables were treated as leakage and excluded from all predictive models. This choice preserves realism: a churn model should predict before retention actions occur, not infer churn because an intervention has already been triggered.
+
+
+## Artifacts and documentation outputs
+Feature documentation artifacts (T0_feature_registry.csv, T0_semantic_groups_table.csv) were generated and reused across notebooks (see @sec-appendix-a1 and @sec-appendix-a2 for complete tables).
+
+The EDA stage produced:
+
+- **Sparsity diagnostics** (T1_sparsity_overview.csv; see @fig-sparsity).
+- **Ordinal trend analysis** (T4_ordinal_trends.csv; see @fig-ordinal-trends).
+- **Categorical association analysis** (T4_cramers_v_vs_churn.csv; see @fig-cramers-v-top).
+- **Leakage risk ranking** (T5j_leakage_risk_rank.csv; see @fig-leakage-flags and @sec-appendix-a3 for the full ranking).
+
+The complete registry is provided in Appendix A (see @sec-appendix-a1, Complete Feature Registry).
+
+
+## Summary of data constraints
+(1) moderate class imbalance (28.82% churn), (2) substantial sparsity and zero inflation across multiple feature families, (3) nonlinear churn patterns (e.g., a U-shaped CreditRating risk curve), and (4) high-stakes leakage risks in retention-related variables requiring explicit exclusion. These observations establish the constraints and motivations for the modeling comparisons presented in subsequent sections.

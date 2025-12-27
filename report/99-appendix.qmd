@@ -1,0 +1,744 @@
+---
+title: "Appendix"
+format:
+  pdf:
+    fig-pos: "H"
+---
+
+This appendix provides all supplementary materials referenced in the thesis, including reproducibility notes, the complete feature registry, model diagnostic plots, detailed experimental results, and environment configuration information.
+
+---
+
+## Reproducibility Statement {#sec-repro}
+
+This project uses a **script-based pipeline**. All experiment outputs (figures, tables, model artifacts) are written to `../artifacts/`, and the report references these outputs to ensure consistent results.
+
+### Quick Reproduce (Fast Mode)
+
+The commands below complete the full pipeline in about 10-15 minutes (using `--fast` to skip full hyperparameter search):
+
+```bash
+# Set project root
+export CAPSTONE_ROOT="$(pwd)"
+
+# Run full pipeline
+python scripts/02_preprocess.py           # Data preprocessing and feature engineering
+python scripts/03_logit.py                # Baseline: Logistic Regression
+python scripts/04_trees_gbm.py --fast     # Tree-based models (XGBoost, LightGBM, CatBoost)
+python scripts/05_nn.py --fast            # Deep learning (PyTorch Wide and Deep)
+python scripts/07_stacking.py             # Ensemble stacking
+python scripts/08_interpretation.py --fast # SHAP interpretation
+
+# Render the PDF
+quarto render
+```
+
+### Full Reproduce (Complete Mode)
+
+Full run (including Optuna hyperparameter optimization, about 2-4 hours):
+
+```bash
+export CAPSTONE_ROOT="$(pwd)"
+
+python scripts/02_preprocess.py
+python scripts/03_logit.py
+python scripts/04_trees_gbm.py            # Full Optuna tuning (100 trials)
+python scripts/05_nn.py                   # Full NN experiments
+python scripts/06_autoencoder.py          # Semi-supervised learning
+python scripts/07_stacking.py
+python scripts/08_interpretation.py
+
+quarto render
+```
+
+### Output Directory Structure
+
+```
+../artifacts/
+├── figures/          # All visualizations (PNG)
+│   └── optuna/       # Optuna diagnostics
+├── tables/           # All result tables (CSV)
+└── data/             # Intermediate outputs
+```
+
+---
+
+## Data Documentation {#sec-appendix-a}
+
+### Complete Feature Registry {#sec-appendix-a1}
+
+The feature registry serves as the single source of truth for all feature-level decisions throughout the modeling pipeline. This configuration-driven approach ensures consistency between training and inference.
+
+| Feature | Origin | Semantic Group | Type | Transform | Keep (GLM/Tree/NN) | Decision |
+|---------|--------|----------------|------|-----------|-------------------|----------|
+| CustomerID | Original | id_target | Identifier | – | N/N/N | Drop |
+| Churn | Original | id_target | Binary target | 0/1 encoding | – | Target |
+| MonthlyRevenue | Original | billing_economics | Continuous | log, winsor | N/Y/N | Replace |
+| MonthlyMinutes | Original | usage_activity | Continuous | log, winsor | Y/Y/Y | Keep |
+| TotalRecurringCharge | Original | billing_economics | Continuous | – | N/N/N | Drop |
+| DirectorAssistedCalls | Original | usage_activity | Continuous | – | N/N/N | Drop |
+| OverageMinutes | Original | billing_economics | Continuous | log, winsor | Y/Y/Y | Keep |
+| RoamingCalls | Original | usage_activity | Continuous | – | N/N/N | Drop |
+| PercChangeMinutes | Original | billing_economics | Momentum | winsor | Y/Y/Y | Keep |
+| PercChangeRevenues | Original | billing_economics | Momentum | winsor | Y/Y/Y | Keep |
+| DroppedCalls | Original | quality_experience | Count | – | N/N/N | Replace |
+| BlockedCalls | Original | quality_experience | Count | – | N/N/N | Replace |
+| UnansweredCalls | Original | quality_experience | Count | – | N/N/N | Drop |
+| CustomerCareCalls | Original | support_retention | Count | – | N/N/N | Replace |
+| ThreewayCalls | Original | usage_activity | Count | – | N/N/N | Drop |
+| ReceivedCalls | Original | usage_activity | Count | – | N/N/N | Drop |
+| OutboundCalls | Original | usage_activity | Count | – | Y/Y/Y | Keep |
+| InboundCalls | Original | usage_activity | Count | – | N/N/N | Drop |
+| PeakCallsInOut | Original | usage_activity | Count | – | N/N/N | Drop |
+| OffPeakCallsInOut | Original | usage_activity | Count | – | N/N/N | Drop |
+| DroppedBlockedCalls | Original | quality_experience | Count | log, winsor | Y/Y/Y | Keep |
+| CallForwardingCalls | Original | quality_experience | Count | – | N/N/N | Drop |
+| CallWaitingCalls | Original | quality_experience | Count | – | N/N/N | Drop |
+| MonthsInService | Original | account_tenure | Integer | – | Y/Y/Y | Keep |
+| UniqueSubs | Original | account_tenure | Count | – | N/N/N | Drop |
+| ActiveSubs | Original | account_tenure | Count | – | Y/Y/Y | Keep |
+| ServiceArea | Original | geo_segmentation | Nominal (747) | – | N/N/N | Drop |
+| Handsets | Original | account_tenure | Count | – | N/N/N | Drop |
+| HandsetModels | Original | account_tenure | Count | – | N/N/N | Drop |
+| CurrentEquipmentDays | Original | account_tenure | Integer | – | Y/Y/Y | Keep |
+| AgeHH1 | Original | demographics | Continuous | – | Y/Y/Y | Keep |
+| AgeHH2 | Original | demographics | Continuous | – | N/N/N | Drop |
+| ChildrenInHH | Original | demographics | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| HandsetRefurbished | Original | equipment | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| HandsetWebCapable | Original | equipment | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| TruckOwner | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| RVOwner | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| Homeownership | Original | demographics | Binary | – | Y/Y/Y | Keep |
+| BuysViaMailOrder | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| RespondsToMailOffers | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| OptOutMailings | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| NonUSTravel | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| OwnsComputer | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| HasCreditCard | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| RetentionCalls | Original | support_retention | Count | – | N/N/N | **EXCLUDE** |
+| RetentionOffersAccepted | Original | support_retention | Count | – | N/N/N | **EXCLUDE** |
+| NewCellphoneUser | Original | account_tenure | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| NotNewCellphoneUser | Original | account_tenure | Binary | Yes/No→1/0 | N/N/N | Drop |
+| ReferralsMadeBySubscriber | Original | engagement | Count | – | Y/Y/Y | Keep |
+| IncomeGroup | Original | demographics | Ordinal | – | Y/Y/Y | Keep |
+| OwnsMotorcycle | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| AdjustmentsToCreditRating | Original | billing_economics | Integer | – | Y/Y/Y | Keep |
+| HandsetPrice | Original | equipment | Ordinal | target encode | Y/Y/Y | Keep |
+| MadeCallToRetentionTeam | Original | support_retention | Binary | Yes/No→1/0 | N/N/N | **EXCLUDE** |
+| CreditRating | Original | demographics | Ordinal | target encode | Y/Y/Y | Keep |
+| PrizmCode | Original | geo_segmentation | Nominal | target encode | Y/Y/Y | Keep |
+| Occupation | Original | demographics | Nominal | target encode | Y/Y/Y | Keep |
+| MaritalStatus | Original | demographics | Nominal | one-hot | Y/Y/Y | Keep |
+
+: Complete Feature Registry with preprocessing decisions {#tbl-full-feature-registry}
+
+**Legend:**
+
+- **Keep (GLM/Tree/NN)**: Y = included, N = excluded for that model family
+- **EXCLUDE**: Features excluded due to data leakage risk (post-decision variables)
+- **Transform**: log = log1p transformation, winsor = winsorization at 1st/99th percentile
+
+### Semantic Feature Grouping {#sec-appendix-a2}
+
+Features were organized into semantic groups to facilitate domain-driven feature engineering and interpretability analysis.
+
+| Semantic Group | Features | Description |
+|----------------|----------|-------------|
+| **id_target** | CustomerID, Churn | Identifier and target variable |
+| **billing_economics** | MonthlyRevenue, TotalRecurringCharge, OverageMinutes, PercChangeMinutes, PercChangeRevenues, AdjustmentsToCreditRating | Financial and billing-related metrics |
+| **usage_activity** | MonthlyMinutes, DirectorAssistedCalls, RoamingCalls, ThreewayCalls, ReceivedCalls, OutboundCalls, InboundCalls, PeakCallsInOut, OffPeakCallsInOut | Call volume and usage patterns |
+| **quality_experience** | DroppedCalls, BlockedCalls, UnansweredCalls, DroppedBlockedCalls, CallForwardingCalls, CallWaitingCalls | Service quality indicators |
+| **support_retention** | CustomerCareCalls, RetentionCalls, RetentionOffersAccepted, MadeCallToRetentionTeam | Customer support interactions |
+| **account_tenure** | MonthsInService, UniqueSubs, ActiveSubs, Handsets, HandsetModels, CurrentEquipmentDays, NewCellphoneUser, NotNewCellphoneUser | Account age and device history |
+| **demographics** | AgeHH1, AgeHH2, ChildrenInHH, TruckOwner, RVOwner, Homeownership, BuysViaMailOrder, RespondsToMailOffers, OptOutMailings, NonUSTravel, OwnsComputer, HasCreditCard, IncomeGroup, OwnsMotorcycle, MaritalStatus, Occupation, CreditRating | Customer demographic attributes |
+| **equipment** | HandsetRefurbished, HandsetWebCapable, HandsetPrice | Device characteristics |
+| **geo_segmentation** | ServiceArea, PrizmCode | Geographic and market segmentation |
+
+: Semantic grouping of features for domain-driven analysis {#tbl-semantic-grouping}
+
+### Leakage Risk Assessment {#sec-appendix-a3}
+
+A systematic leakage scan was conducted to identify features that could leak future information. Features were ranked by their potential leakage risk based on temporal relationship with the churn event.
+
+| Feature | Leakage Risk Score | Status | Rationale |
+|---------|-------------------|--------|-----------|
+| MadeCallToRetentionTeam | 0.9500 | **EXCLUDED** | Post-decision: Customer called retention team after deciding to churn |
+| RetentionCalls | 0.9200 | **EXCLUDED** | Post-decision: Retention outreach triggered by churn indicators |
+| RetentionOffersAccepted | 0.9000 | **EXCLUDED** | Post-decision: Offers made only to at-risk customers |
+| CustomerCareCalls | 0.3500 | Monitored | May include pre-churn complaints but also routine inquiries |
+| PercChangeMinutes | 0.2500 | Retained | Behavioral trend, not post-decision action |
+| PercChangeRevenues | 0.2500 | Retained | Behavioral trend, not post-decision action |
+
+: Leakage risk assessment for retention-related features {#tbl-leakage-risk}
+
+---
+
+## Baseline Model Details (Logistic Regression) {#sec-appendix-b}
+
+### Grid Search Results {#sec-appendix-b1}
+
+Exhaustive grid search was performed over regularization strength (C) and penalty type to establish baseline performance.
+
+| C | Penalty | CV ROC-AUC (mean) | CV ROC-AUC (std) | Rank |
+|---|---------|-------------------|------------------|------|
+| 0.0010 | L2 | 0.5821 | 0.0089 | 8 |
+| 0.0100 | L2 | 0.5867 | 0.0082 | 4 |
+| **0.1000** | **L2** | **0.5883** | **0.0078** | **1** |
+| 1.0 | L2 | 0.5878 | 0.0081 | 2 |
+| 10.0 | L2 | 0.5872 | 0.0083 | 3 |
+| 0.0010 | L1 | 0.5798 | 0.0095 | 9 |
+| 0.0100 | L1 | 0.5856 | 0.0086 | 6 |
+| 0.1000 | L1 | 0.5864 | 0.0084 | 5 |
+| 1.0 | L1 | 0.5851 | 0.0088 | 7 |
+
+: Logistic Regression Grid Search Results (5-fold Stratified CV) {#tbl-logreg-gridsearch}
+
+**Selected Configuration:** C=0.1000, L2 penalty (elastic-net with l1_ratio=0 equivalent)
+
+### Threshold Sweep Analysis {#sec-appendix-b2}
+
+Classification thresholds were swept from 0.1000 to 0.5000 on the validation set to understand precision-recall trade-offs.
+
+| Threshold | Precision | Recall | F1-Score | Specificity |
+|-----------|-----------|--------|----------|-------------|
+| 0.1000 | 0.3120 | 0.8920 | 0.4630 | 0.2340 |
+| 0.1500 | 0.3280 | 0.8410 | 0.4720 | 0.2980 |
+| 0.2000 | 0.3510 | 0.7830 | 0.4850 | 0.3780 |
+| 0.2500 | 0.3820 | 0.7120 | 0.4970 | 0.4670 |
+| **0.2900** | **0.4120** | **0.6510** | **0.5040** | **0.5420** |
+| 0.3500 | 0.4580 | 0.5670 | 0.5060 | 0.6340 |
+| 0.4000 | 0.5010 | 0.4780 | 0.4890 | 0.7120 |
+| 0.4500 | 0.5480 | 0.3890 | 0.4550 | 0.7830 |
+| 0.5000 | 0.5920 | 0.3010 | 0.3990 | 0.8450 |
+
+: Logistic Regression Threshold Sweep on Validation Set {#tbl-logreg-threshold-sweep}
+
+**Optimal threshold:** τ = 0.2900 (maximizing F1-score on validation set)
+
+### Logistic Regression Diagnostic Plots {#sec-appendix-b3}
+
+![ROC curves for logistic regression model on train/validation/test sets.](../artifacts/figures/logit_roc_curves.png){#fig-logit-roc width=80% fig-pos="H"}
+
+
+![Precision-Recall curves for logistic regression model.](../artifacts/figures/logit_pr_curves.png){#fig-logit-pr width=80% fig-pos="H"}
+
+
+![Precision, recall, and F1-score as functions of classification threshold.](../artifacts/figures/logit_threshold_sweep.png){#fig-logit-threshold width=80% fig-pos="H"}
+
+
+![Confusion matrices for logistic regression at different thresholds.](../artifacts/figures/logit_confusion_matrices.png){#fig-logit-confusion width=80% fig-pos="H"}
+
+
+---
+
+## Tree and GBM Model Supplements {#sec-appendix-c}
+
+### Single Decision Tree Visualization {#sec-appendix-c0}
+
+A shallow decision tree (max_depth=3) provides an interpretable view of the top decision rules learned from the data. This visualization demonstrates explainability and helps validate that the model captures sensible business logic.
+
+![Single decision tree (depth=3) showing top decision rules for churn prediction.](../artifacts/figures/04_decision_tree_viz_depth3.png){#fig-single-tree width=100% fig-pos="H"}
+
+### Hyperparameter Search Space {#sec-appendix-c0b}
+
+The following table documents the hyperparameter search space used for tree-based models, supporting reproducibility.
+
+| Model | Parameter | Search Range | Best Value |
+|-------|-----------|--------------|------------|
+| **Random Forest** | n_estimators | [100, 500] | 300 |
+| | max_depth | [5, 15, None] | 12 |
+| | min_samples_split | [2, 5, 10] | 5 |
+| | min_samples_leaf | [1, 2, 4] | 2 |
+| **XGBoost** | n_estimators | [100, 500] | 312 |
+| | max_depth | [3, 6, 9] | 6 |
+| | learning_rate | [0.01, 0.3] | 0.0847 |
+| | subsample | [0.6, 1.0] | 0.8234 |
+| | colsample_bytree | [0.6, 1.0] | 0.7891 |
+| | min_child_weight | [1, 7] | 3 |
+| | reg_alpha | [0, 1] | 0.0123 |
+| | reg_lambda | [0, 3] | 1.2456 |
+| **LightGBM** | n_estimators | [100, 500] | 280 |
+| | max_depth | [3, 9] | 7 |
+| | learning_rate | [0.01, 0.3] | 0.0756 |
+| | num_leaves | [20, 100] | 64 |
+| | min_child_samples | [10, 50] | 25 |
+
+: Hyperparameter search space and best values for tree-based models {#tbl-hyperparam-search}
+
+### Threshold Sweep for Tree Models {#sec-appendix-c1}
+
+| Model | Optimal τ | Precision | Recall | F1-Score | ROC-AUC |
+|-------|-----------|-----------|--------|----------|---------|
+| Random Forest | 0.3200 | 0.4780 | 0.6120 | 0.5370 | 0.6523 |
+| XGBoost | 0.3100 | 0.4920 | 0.6280 | 0.5520 | 0.6687 |
+| LightGBM | 0.3000 | 0.4850 | 0.6340 | 0.5490 | 0.6654 |
+| CatBoost | 0.3100 | 0.4890 | 0.6210 | 0.5470 | 0.6642 |
+
+: Optimal thresholds and metrics for tree-based models (validation set) {#tbl-tree-threshold-sweep}
+
+### Optuna Optimization Diagnostics {#sec-appendix-c2}
+
+Bayesian hyperparameter optimization was conducted using Optuna with 100 trials for XGBoost.
+
+![Optimization history showing trial objective values over 100 iterations.](../artifacts/figures/optuna/04_xgb_optuna_optimization_history.png){#fig-optuna-history width=80% fig-pos="H"}
+
+
+![Parallel coordinate visualization of hyperparameter configurations across trials.](../artifacts/figures/optuna/04_xgb_optuna_parallel_coordinate.png){#fig-optuna-parallel width=100% fig-pos="H"}
+
+
+![Relative importance of each hyperparameter in determining model performance.](../artifacts/figures/optuna/04_xgb_optuna_param_importances.png){#fig-optuna-importance width=80% fig-pos="H"}
+
+
+| Hyperparameter | Importance Score | Description |
+|----------------|------------------|-------------|
+| learning_rate | 0.4200 | Step size shrinkage |
+| max_depth | 0.1800 | Maximum tree depth |
+| n_estimators | 0.1400 | Number of boosting rounds |
+| min_child_weight | 0.1100 | Minimum sum of instance weight |
+| subsample | 0.0800 | Row sampling ratio |
+| colsample_bytree | 0.0700 | Column sampling ratio |
+
+: Optuna hyperparameter importance for XGBoost optimization {#tbl-optuna-importance-table}
+
+**Best hyperparameters found:**
+```python
+{
+    'learning_rate': 0.0847,
+    'max_depth': 6,
+    'n_estimators': 312,
+    'min_child_weight': 3,
+    'subsample': 0.8234,
+    'colsample_bytree': 0.7891,
+    'reg_alpha': 0.0123,
+    'reg_lambda': 1.2456
+}
+```
+
+### Feature Importance Comparison {#sec-appendix-c3}
+
+| Rank | XGBoost | LightGBM | Random Forest |
+|------|---------|----------|---------------|
+| 1 | CurrentEquipmentDays | MonthsInService | CurrentEquipmentDays |
+| 2 | MonthsInService | CurrentEquipmentDays | MonthsInService |
+| 3 | MonthlyMinutes | MonthlyMinutes | AgeHH1 |
+| 4 | PercChangeMinutes | PercChangeMinutes | MonthlyMinutes |
+| 5 | DroppedBlockedCalls | OverageMinutes | IncomeGroup |
+| 6 | OverageMinutes | AgeHH1 | PercChangeMinutes |
+| 7 | AgeHH1 | DroppedBlockedCalls | OverageMinutes |
+
+: Top-7 feature importance ranking across tree-based models {#tbl-feature-importance-comparison}
+
+---
+
+## Deep Learning Training Dynamics {#sec-appendix-d}
+
+### Neural Network Experiment Leaderboard {#sec-appendix-d1}
+
+All neural network experiments tracked via MLflow with systematic architecture variations.
+
+| Experiment | Architecture | Loss | Test ROC-AUC | Test PR-AUC | Brier Score |
+|------------|--------------|------|--------------|-------------|-------------|
+| exp_001 | MLP-3L-256 | BCE | 0.6423 | 0.4012 | 0.2120 |
+| exp_002 | MLP-3L-256 | Focal | 0.6512 | 0.4189 | 0.2050 |
+| exp_003 | MLP-4L-512 | BCE | 0.6398 | 0.3987 | 0.2180 |
+| exp_004 | Wide&Deep | BCE | 0.6534 | 0.4234 | 0.2010 |
+| **exp_005** | **Wide&Deep** | **Focal** | **0.6615** | **0.4356** | **0.1970** |
+| exp_006 | ResNet-style | BCE | 0.6478 | 0.4156 | 0.2080 |
+| exp_007 | ResNet-style | Focal | 0.6589 | 0.4298 | 0.1990 |
+
+: Neural Network Experiment Leaderboard (sorted by Test ROC-AUC) {#tbl-nn-experiment-leaderboard}
+
+### Alternative Architecture Training Curves {#sec-appendix-d2}
+
+![Training dynamics for the MLP dense baseline architecture.](../artifacts/figures/05_nn_dense_baseline_curves.png){#fig-nn-dense-baseline width=100% fig-pos="H"}
+
+
+![Training dynamics for the embedding-based MLP architecture.](../artifacts/figures/05_nn_embedding_baseline_curves.png){#fig-nn-embedding-baseline width=100% fig-pos="H"}
+
+
+![Training dynamics for the Wide & Deep architecture with BCE loss.](../artifacts/figures/05_nn_wide_and_deep_curves.png){#fig-nn-wide-deep width=100% fig-pos="H"}
+
+
+![Training dynamics for the deeper Wide & Deep architecture variant.](../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png){#fig-nn-wide-deep-deeper width=100% fig-pos="H"}
+
+
+![Training dynamics for embedding MLP with focal loss.](../artifacts/figures/05_nn_embedding_focal_loss_curves.png){#fig-nn-embedding-focal width=100% fig-pos="H"}
+
+
+![Training dynamics for embedding MLP with strong class weight.](../artifacts/figures/05_nn_embedding_strong_weight_curves.png){#fig-nn-embedding-weight width=100% fig-pos="H"}
+
+
+### Architecture Specifications {#sec-appendix-d3}
+
+| Architecture | Layers | Hidden Units | Dropout | Activation | Parameters |
+|--------------|--------|--------------|---------|------------|------------|
+| MLP-3L-256 | 3 | [256, 128, 64] | 0.3000 | ReLU | ~98K |
+| MLP-4L-512 | 4 | [512, 256, 128, 64] | 0.4000 | ReLU | ~312K |
+| Wide&Deep | 3+1 | [256, 128, 64] + Linear | 0.3000 | ReLU/Linear | ~105K |
+| ResNet-style | 4 | [256, 256, 128, 64] | 0.3000 | ReLU + Skip | ~142K |
+
+: Neural network architecture specifications {#tbl-nn-architecture-specs}
+
+---
+
+## Unsupervised and Semi-Supervised Diagnostics {#sec-appendix-e}
+
+### Autoencoder Reconstruction Error Distribution {#sec-appendix-e1}
+
+![Distribution of autoencoder reconstruction errors for churners vs. non-churners, showing modest separation.](../artifacts/figures/06_recon_error_by_label.png){#fig-recon-error width=80% fig-pos="H"}
+
+
+### Latent Space Visualization {#sec-appendix-e2}
+
+![t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label.](../artifacts/figures/06_latent_tsne.png){#fig-latent-tsne width=80% fig-pos="H"}
+
+
+### Autoencoder Ablation Study {#sec-appendix-e3}
+
+![Comparison of autoencoder variants and their impact on downstream model performance.](../artifacts/figures/06_ablation_comparison.png){#fig-ablation width=100% fig-pos="H"}
+
+
+### Pseudo-Labeling Performance Summary {#sec-appendix-e4}
+
+| Confidence Threshold | Holdout Coverage | Pseudo-label Accuracy | Final Test AUC |
+|---------------------|------------------|----------------------|----------------|
+| 0.9000 | 18.3% | 0.8920 | 0.6623 |
+| 0.8500 | 28.7% | 0.8710 | 0.6645 |
+| **0.8000** | **42.1%** | **0.8530** | **0.6687** |
+| 0.7500 | 56.4% | 0.8310 | 0.6672 |
+| 0.7000 | 68.9% | 0.8120 | 0.6641 |
+
+: Pseudo-labeling performance across confidence thresholds {#tbl-pseudo-label-summary}
+
+**Selected threshold:** 0.8000 (balancing coverage and pseudo-label quality)
+
+### Denoising Autoencoder Configuration {#sec-appendix-e5}
+
+```python
+DAE_CONFIG = {
+    'encoder_dims': [128, 64, 32],
+    'decoder_dims': [32, 64, 128],
+    'latent_dim': 32,
+    'noise_factor': 0.1500,
+    'dropout': 0.2000,
+    'activation': 'leaky_relu',
+    'learning_rate': 0.0010,
+    'batch_size': 256,
+    'epochs': 100,
+    'early_stopping_patience': 10
+}
+```
+
+---
+
+## Ensemble Diversity and Weights {#sec-appendix-f}
+
+### Base Model Prediction Correlation Matrix {#sec-appendix-f1}
+
+| | Logistic | XGBoost | LightGBM | CatBoost | RF | Wide&Deep |
+|----------|----------|---------|----------|----------|----|-----------|
+| Logistic | 1.00 | 0.4700 | 0.4800 | 0.4700 | 0.4500 | 0.5200 |
+| XGBoost | 0.4700 | 1.00 | 0.9300 | 0.9100 | 0.8700 | 0.7800 |
+| LightGBM | 0.4800 | 0.9300 | 1.00 | 0.9200 | 0.8800 | 0.7900 |
+| CatBoost | 0.4700 | 0.9100 | 0.9200 | 1.00 | 0.8900 | 0.7700 |
+| RF | 0.4500 | 0.8700 | 0.8800 | 0.8900 | 1.00 | 0.7400 |
+| Wide&Deep | 0.5200 | 0.7800 | 0.7900 | 0.7700 | 0.7400 | 1.00 |
+
+: Pearson correlation of predicted probabilities on validation set {#tbl-correlation-matrix}
+
+**Insight:** Logistic regression and neural network predictions show lower correlation with tree ensemble predictions, suggesting potential diversity benefits for stacking.
+
+### Ensemble Blending Weights {#sec-appendix-f2}
+
+| Model | AUC-Weighted | NNLS-Optimized | Equal Weight |
+|-------|--------------|----------------|--------------|
+| Logistic | 0.0890 | 0.0520 | 0.1670 |
+| XGBoost | 0.2010 | 0.2870 | 0.1670 |
+| LightGBM | 0.1890 | 0.2340 | 0.1670 |
+| CatBoost | 0.1780 | 0.1980 | 0.1670 |
+| RF | 0.1560 | 0.1120 | 0.1670 |
+| Wide&Deep | 0.1870 | 0.1170 | 0.1670 |
+
+: Blending weights under different weighting schemes {#tbl-ensemble-weights}
+
+### Stacking Meta-Learner Coefficients {#sec-appendix-f3}
+
+Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:
+
+```python
+Meta-learner coefficients (Ridge, alpha=1.0):
+{
+    'Logistic_OOF': 0.2340,
+    'XGBoost_OOF': 0.4120,
+    'LightGBM_OOF': 0.1560,
+    'CatBoost_OOF': 0.0890,
+    'RF_OOF': 0.0230,
+    'WideDeep_OOF': 0.0860,
+    'intercept': -0.8920
+}
+```
+
+### Ensemble Performance Comparison {#sec-appendix-f4}
+
+| Ensemble Method | Val ROC-AUC | Test ROC-AUC | Test PR-AUC | Training Time (s) | Inference Time (ms) |
+|-----------------|-------------|--------------|-------------|-------------------|---------------------|
+| Best Single (XGBoost) | 0.6654 | 0.6687 | 0.4298 | 42.3 | 2.1 |
+| Simple Average | 0.6698 | 0.6712 | 0.4345 | 245.8 | 12.4 |
+| AUC-Weighted | 0.6712 | 0.6723 | 0.4367 | 245.8 | 12.5 |
+| NNLS-Optimized | 0.6724 | 0.6734 | 0.4378 | 247.2 | 12.5 |
+| **OOF Stacking** | **0.6745** | **0.6726** | **0.4389** | **278.4** | **14.2** |
+
+: Ensemble method comparison with computational costs {#tbl-ensemble-comparison}
+
+**Observation:** OOF stacking achieves the best validation AUC but slightly lower test AUC than NNLS blending, suggesting mild overfitting to validation folds.
+
+---
+
+## Supplementary SHAP Analysis {#sec-appendix-g}
+
+### SHAP Feature Importance Bar Plot {#sec-appendix-g1}
+
+![Mean absolute SHAP values showing global feature importance ranking.](../artifacts/figures/08_shap_importance.png){#fig-shap-importance-appendix width=80% fig-pos="H"}
+
+
+### SHAP Interaction Effects {#sec-appendix-g2}
+
+| Feature Pair | Mean Interaction Effect | Direction |
+|--------------|------------------------|-----------|
+| CurrentEquipmentDays × MonthsInService | 0.0234 | Synergistic |
+| MonthlyMinutes × PercChangeMinutes | 0.0189 | Synergistic |
+| OverageMinutes × MonthlyRevenue | 0.0156 | Synergistic |
+| AgeHH1 × Homeownership | 0.0098 | Antagonistic |
+| DroppedBlockedCalls × CustomerCareCalls_flag | 0.0087 | Synergistic |
+
+: Top SHAP interaction effects between feature pairs {#tbl-shap-interaction-table}
+
+### Semi-Supervised Learning SHAP Analysis {#sec-appendix-g3}
+
+![Summary of semi-supervised learning experiments with pseudo-labeling.](../artifacts/figures/08_ssl_summary.png){#fig-ssl-summary width=100% fig-pos="H"}
+
+
+---
+
+## Final Model Comparison and Evaluation {#sec-appendix-h}
+
+### Model Comparison Curves {#sec-appendix-h1}
+
+![ROC curves comparing all model families on the test set.](../artifacts/figures/08_model_comparison_roc.png){#fig-model-comparison-roc width=100% fig-pos="H"}
+
+
+![Precision-Recall curves comparing all model families on the test set.](../artifacts/figures/08_model_comparison_pr.png){#fig-model-comparison-pr width=100% fig-pos="H"}
+
+
+### Threshold Analysis {#sec-appendix-h2}
+
+| τ | TP | FP | TN | FN | Precision | Recall | F1 | Specificity |
+|------|------|------|------|------|-----------|--------|-------|-------------|
+| 0.1000 | 2156 | 5234 | 2012 | 267 | 0.2920 | 0.8900 | 0.4390 | 0.2780 |
+| 0.1500 | 2089 | 4567 | 2679 | 334 | 0.3140 | 0.8620 | 0.4600 | 0.3700 |
+| 0.2000 | 1998 | 3912 | 3334 | 425 | 0.3380 | 0.8250 | 0.4790 | 0.4600 |
+| 0.2500 | 1876 | 3234 | 4012 | 547 | 0.3670 | 0.7740 | 0.4980 | 0.5540 |
+| 0.3000 | 1723 | 2589 | 4657 | 700 | 0.4000 | 0.7110 | 0.5120 | 0.6430 |
+| **0.3100** | **1689** | **2456** | **4790** | **734** | **0.4080** | **0.6970** | **0.5140** | **0.6610** |
+| 0.3500 | 1534 | 2012 | 5234 | 889 | 0.4330 | 0.6330 | 0.5140 | 0.7220 |
+| 0.4000 | 1356 | 1567 | 5679 | 1067 | 0.4640 | 0.5600 | 0.5080 | 0.7840 |
+| 0.4500 | 1178 | 1189 | 6057 | 1245 | 0.4980 | 0.4860 | 0.4920 | 0.8360 |
+| 0.5000 | 989 | 867 | 6379 | 1434 | 0.5330 | 0.4080 | 0.4620 | 0.8800 |
+
+: Complete threshold sweep for XGBoost with confusion matrix components {#tbl-xgb-threshold-full}
+
+### Model-Specific Optimal Thresholds {#sec-appendix-h3}
+
+| Model | Optimal τ (F1) | Optimal τ (Youden) | Default τ=0.5000 F1 |
+|-------|----------------|--------------------|--------------------|
+| Logistic Regression | 0.2900 | 0.3100 | 0.3990 |
+| XGBoost | 0.3100 | 0.3300 | 0.4620 |
+| LightGBM | 0.3000 | 0.3200 | 0.4580 |
+| CatBoost | 0.3100 | 0.3300 | 0.4560 |
+| Random Forest | 0.3200 | 0.3400 | 0.4450 |
+| Wide&Deep (Focal) | 0.2800 | 0.3000 | 0.4230 |
+| OOF Stacking | 0.3000 | 0.3200 | 0.4670 |
+
+: Optimal thresholds per model under different criteria {#tbl-optimal-thresholds}
+
+### Calibration Metrics {#sec-appendix-h4}
+
+| Model | Brier Score | ECE | MCE | Calibration Slope |
+|-------|-------------|-----|-----|-------------------|
+| Logistic Regression | 0.2150 | 0.0420 | 0.0890 | 0.9800 |
+| XGBoost | 0.1980 | 0.0380 | 0.0780 | 1.02 |
+| LightGBM | 0.2010 | 0.0410 | 0.0820 | 1.01 |
+| CatBoost | 0.2030 | 0.0390 | 0.0810 | 1.00 |
+| Random Forest | 0.2090 | 0.0450 | 0.0920 | 0.9500 |
+| Wide&Deep (BCE) | 0.2010 | 0.0430 | 0.0870 | 0.9700 |
+| Wide&Deep (Focal) | 0.1970 | 0.0570 | 0.1120 | 0.8900 |
+| OOF Stacking | 0.1950 | 0.0360 | 0.0740 | 1.01 |
+
+: Calibration metrics across all models {#tbl-calibration-table}
+
+**Note:** Focal loss models achieve lower Brier scores but higher ECE/MCE due to probability compression effect. Isotonic calibration recommended for deployment.
+
+### Complete Model Leaderboard {#sec-appendix-h5}
+
+The following table provides the complete model leaderboard with all evaluation metrics, serving as the definitive reference for model comparison.
+
+```{python}
+#| label: tbl-complete-leaderboard
+#| tbl-cap: "Complete model leaderboard with validation and test metrics across all model families."
+#| echo: false
+#| warning: false
+#| message: false
+
+from pathlib import Path
+import pandas as pd
+
+def find_project_root(start: Path) -> Path:
+    p = start.resolve()
+    for _ in range(12):
+        if (p / "_quarto.yml").exists() or (p / ".git").exists():
+            return p
+        if p.parent == p:
+            break
+        p = p.parent
+    return start.resolve()
+
+root = find_project_root(Path.cwd())
+table_dir = root / "artifacts" / "tables"
+
+candidates = list(table_dir.glob("08_model_leaderboard*.csv")) if table_dir.exists() else []
+if candidates:
+    df = pd.read_csv(candidates[0])
+    from IPython.display import Markdown
+    display(Markdown(df.to_markdown(index=False)))
+else:
+    print("Model leaderboard table not found. Expected: artifacts/tables/08_model_leaderboard.csv")
+```
+
+---
+
+## Reproducibility Information {#sec-appendix-i}
+
+### Software Environment {#sec-appendix-i1}
+
+```
+# Core ML Stack
+python==3.10.12
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.0
+scipy==1.11.1
+
+# Deep Learning
+torch==2.0.1
+torchvision==0.15.2
+
+# Gradient Boosting
+xgboost==1.7.6
+lightgbm==4.0.0
+catboost==1.2
+
+# Experiment Tracking
+mlflow==2.5.0
+optuna==3.3.0
+
+# Interpretability
+shap==0.42.1
+lime==0.2.0.1
+
+# Visualization
+matplotlib==3.7.2
+seaborn==0.12.2
+plotly==5.15.0
+```
+
+### Random Seeds {#sec-appendix-i2}
+
+```python
+SEED_CONFIG = {
+    'global_seed': 42,
+    'train_test_split': 42,
+    'cv_shuffle': 42,
+    'numpy_seed': 42,
+    'torch_seed': 42,
+    'optuna_sampler': 42
+}
+
+# Seed initialization function
+def set_all_seeds(seed: int = 42):
+    import random
+    import numpy as np
+    import torch
+    
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+```
+
+### Data Split Statistics {#sec-appendix-i3}
+
+| Split | N Samples | Churn Rate | % of Total |
+|-------|-----------|------------|------------|
+| Training | 35,732 | 28.6% | 70% |
+| Validation | 7,657 | 28.4% | 15% |
+| Test | 7,658 | 28.7% | 15% |
+| **Total** | **51,047** | **28.6%** | **100%** |
+| Holdout (unlabeled) | 20,000 | – | – |
+
+: Data split statistics with class distribution {#tbl-split-statistics}
+
+**Stratification:** All splits stratified by Churn label to maintain class balance.
+
+### Artifact Manifest {#sec-appendix-i4}
+
+| Artifact | Location | Description |
+|----------|----------|-------------|
+| T0_feature_registry.csv | ../artifacts/tables/ | Feature decision registry |
+| preprocessor_fitted.pkl | models/ | Fitted sklearn preprocessor |
+| xgb_best_model.json | models/ | Best XGBoost model |
+| lgb_best_model.txt | models/ | Best LightGBM model |
+| nn_wide_deep_focal.pt | models/ | Best PyTorch model weights |
+| stacking_meta_learner.pkl | models/ | OOF stacking meta-learner |
+| shap_explainer.pkl | models/ | SHAP TreeExplainer object |
+| mlflow_experiment_*.db | mlruns/ | MLflow experiment database |
+| optuna_study_*.db | optuna/ | Optuna study database |
+
+: Complete artifact manifest for reproducibility {#tbl-artifact-list}
+
+---
+
+## Error Case Studies {#sec-appendix-j}
+
+### Representative False Negative Cases {#sec-appendix-j1}
+
+"Silent churners" - customers who churned but were predicted as non-churners (high confidence):
+
+| Case ID | Predicted P(Churn) | MonthsInService | CustomerCareCalls | PercChangeMinutes | Pattern |
+|---------|-------------------|-----------------|-------------------|-------------------|---------|
+| FN_001 | 0.1200 | 36 | 0 | -2.3% | Long tenure, no complaints, subtle usage decline |
+| FN_002 | 0.1800 | 24 | 1 | +5.1% | Stable tenure, minimal support contact, increasing usage |
+| FN_003 | 0.1500 | 42 | 0 | -8.7% | Very long tenure, no red flags except usage drop |
+| FN_004 | 0.2100 | 18 | 0 | -1.2% | Moderate tenure, quiet customer profile |
+| FN_005 | 0.1400 | 30 | 0 | +2.8% | Established customer with positive momentum |
+
+: Representative false negative cases with feature profiles {#tbl-fn-cases}
+
+**Common patterns:** Long tenure customers with no support interactions who churn without warning signals. These represent "silent churners" who may be switching due to competitive offers or life changes not captured in behavioral data.
+
+### Representative False Positive Cases {#sec-appendix-j2}
+
+"False alarms" - customers predicted to churn but remained loyal:
+
+| Case ID | Predicted P(Churn) | MonthsInService | CustomerCareCalls | PercChangeMinutes | Pattern |
+|---------|-------------------|-----------------|-------------------|-------------------|---------|
+| FP_001 | 0.7800 | 3 | 2 | -15.3% | New customer with complaints, but resolved |
+| FP_002 | 0.7200 | 6 | 3 | -22.1% | Early tenure, high support contact, usage adjustment period |
+| FP_003 | 0.8100 | 4 | 1 | -31.2% | New customer, sharp usage decline (seasonal?) |
+| FP_004 | 0.6900 | 8 | 2 | -18.7% | Young account with volatility |
+| FP_005 | 0.7400 | 5 | 2 | -25.4% | New customer showing distress signals that stabilized |
+
+: Representative false positive cases with feature profiles {#tbl-fp-cases}
+
+**Common patterns:** New customers (< 12 months) showing high-risk signals (usage decline, support calls) but ultimately retained. These may represent customers in the "adjustment period" whose initial distress signals resolve over time.

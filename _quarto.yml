@@ -1,18 +1,61 @@
 project:
-  type: manuscript
+  type: book
+  # keep rendered outputs under report/_output
   output-dir: report/_output
+
+book:
+  title: "Predicting Telecom Customer Churn with Explainable Machine Learning"
+  author: "Chih-Jung (Audrey) Chang (B2211687)"
+  subtitle: "Instructor: Dr. Clinton Watkins"
+  date: "Dec 2025"
+  chapters:
+    - index.qmd
+    - report/01-introduction.qmd
+    - report/02-literature-review.qmd
+    - report/03-data-and-problem.qmd
+    - report/04-methodology.qmd
+    - report/05-experiments-results.qmd
+    - report/06-discussion.qmd
+    - report/07-conclusion.qmd
+    - report/97-acknowledgements.qmd
+    - report/98-references.qmd
+
+  appendices:
+    - report/99-appendix.qmd
+
+# Zotero (Better BibTeX) export
+bibliography: report/references.bib
 
 format:
   html:
-    toc: true
+    output-dir: report/_output
   pdf:
-    number-sections: true
-    toc: true
+    output-dir: report/_output
+    toc: false
+    pdf-engine: lualatex
+    titlepage: true
 
-# 關鍵：讓程式碼的工作目錄=專案根
+    papersize: letter
+    fontsize: 11pt
+    geometry:
+      - margin=1in
+
+    block-headings: false
+    indent: true
+
+    # Font: use one family everywhere
+    mainfont: "Times New Roman"
+    sansfont: "Times New Roman"
+    monofont: "Courier New"
+    mathfont: "Latin Modern Math"
+
+    # Syllabus requirement
+    linestretch: 1.5
+
+    # Global default figure size (override per-figure if needed)
+    fig-width: 5.5
+    fig-height: 3.6
+
 execute:
-  execute-dir: project
-  freeze: auto
-  cache: true
-  echo: true
+  echo: false
   warning: false

@@ -1,0 +1,52 @@
+
+
+# Introduction
+
+## Background & Motivation
+
+Customer churn, defined as customers canceling service or switching to a competing provider, is a major driver of revenue loss in the telecommunications industry. In saturated mobile markets, where growth through new subscriptions is constrained, retaining existing customers becomes strategically as important as acquiring new ones. Prior telecom studies document substantial churn levels and the operational difficulty of stabilizing subscriber bases over time [@ahn2006customerchurnanalysis; @wei2002turningtelecommunicationscall].
+
+Churn directly erodes recurring revenue and increases operating costs because replacement typically requires additional spending on marketing, onboarding, and incentives. Retention-oriented marketing research further suggests that acquiring a new customer may cost multiple times more than retaining an existing customer, reinforcing why churn prevention is frequently treated as a high-impact managerial priority [@sonkova2015customerengagementtransactional; @rosenberg1984marketingapproachcustomer]. Customer churn can also weaken longer-term customer equity by reducing lifetime value and creating a compounding revenue gap in subscription settings [@geiler2022effectivestrategychurn].
+
+These economic and strategic pressures explain why churn prediction has become a standard analytics application in customer relationship management. By identifying high-risk customers in advance, telecom operators can prioritize proactive interventions and allocate retention budgets more efficiently. However, in operational contexts, predictive performance alone is insufficient. Retention teams typically require explanations of why a customer is flagged as high risk, because different churn drivers imply different actions (e.g., service quality remediation vs. price-based incentives). As a result, the churn modeling task is inherently dual-purpose: producing accurate risk scores while enabling actionable interpretation that supports decision-making.
+
+## Research Gap
+
+Two persistent gaps motivate the present study.
+
+First, although many churn prediction studies have progressively adopted higher-capacity machine learning models, transparency and managerial actionability are not consistently addressed. Early work frequently relied on interpretable models such as logistic regression and decision trees, which can provide direct insight into drivers but may underperform when churn patterns are nonlinear or driven by complex feature interactions [@lemmens2006baggingboostingclassification; @bogaert2023ensemblemethodscustomer]. Recent work has moved beyond linear baselines and highlights ensemble and other flexible nonlinear models, including random forests, gradient boosting, support vector machines, and neural networks, which have been shown to improve predictive performance in churn prediction tasks [@vafeiadis2015comparisonmachinelearning; @bogaert2023ensemblemethodscustomer]. At the same time, this shift can reduce transparency, making it harder to convert model outputs into targeted retention actions.
+
+Second, evaluation practices and “real-world” data constraints remain unevenly handled across the literature. Telecom churn data are commonly imbalanced, and naive reporting of accuracy can be misleading because a model can appear strong while failing to identify churners effectively [@burez2009handlingclassimbalance; @akosa2017predictiveaccuracymisleading]. Empirical work comparing imbalance-handling strategies highlights that model selection and thresholding decisions materially affect minority-class performance, yet such considerations are not always reflected in standard reporting practices [@zhu2023baggingbasedselectiveensemble]. Recent reviews further emphasize that churn prediction research continues to face challenges related to robustness and practical deployment considerations, including mismatches between experimental assumptions and production settings [@imanievaluatingclassificationsampling].
+
+Together, these gaps indicate a need for churn research that simultaneously (i) benchmarks strong predictive model families under a consistent experimental design and (ii) treats interpretability and decision-oriented evaluation as core requirements, not as secondary considerations.
+
+## Research Questions
+
+To address the above gaps, this study is organized around three research questions:
+
+- **RQ1 (Model Effectiveness)**: Under a consistent telecom churn data setting, which model family provides the strongest overall performance among linear baselines, tree-based models, gradient boosting methods, tabular neural networks, and heterogeneous ensembles?
+- **RQ2 (Imbalance Robustness)**: Under class imbalance, which modeling and decision strategies yield more stable churner detection, particularly when using class weighting, alternative loss functions (e.g., focal loss), and decision-threshold adjustment, rather than relying on default accuracy-driven evaluation?
+- **RQ3 (Interpretability to Action)**: Can model interpretation outputs be transformed into actionable churn drivers that support customer profiling, risk-factor discovery, and retention-oriented grouping, while remaining consistent with the predictive pipeline used for final evaluation?
+
+## Contributions
+
+This study makes the following contributions, emphasizing a unified pipeline that balances predictive performance and interpretability:
+
+- **Comparative modeling under consistent controls**: Multiple model families are implemented and evaluated in a standardized setting, spanning interpretable baselines and higher-capacity learners reported as strong performers in churn prediction research [@lemmens2006baggingboostingclassification; @bogaert2023ensemblemethodscustomer;  @lalwani2022customerchurnprediction].
+- **Imbalance-aware evaluation emphasis**: The study foregrounds pitfalls of accuracy-dominated reporting and motivates decision-relevant evaluation under imbalance, consistent with prior findings in churn prediction methodology research [@burez2009handlingclassimbalance; @akosa2017predictiveaccuracymisleading; @zhu2023baggingbasedselectiveensemble].
+- **Interpretability aligned with deployment needs**: The research treats interpretability as an operational requirement: model outputs are framed as inputs to retention actions (not solely as predictive scores), with the objective of producing explanations that support practical intervention design.
+- **Planned extension beyond supervised learning**: In addition to supervised modeling, a semi-supervised direction is articulated as future work in response to practical constraints highlighted in recent reviews, acknowledging that real-world churn labeling can be incomplete or delayed [@imanievaluatingclassificationsampling].
+
+## Paper Roadmap
+
+The remainder of this thesis is structured as follows. Section 2 reviews related work on churn mechanisms, telecom data characteristics, modeling approaches, evaluation under class imbalance, and emerging research trends. Section 3 defines the dataset and prediction task, describes the experimental setup, and details preprocessing choices designed to support fair model comparison. Subsequent sections present the implemented modeling approaches, report experimental results, and provide interpretation-driven analysis aimed at connecting churn prediction to actionable retention insights.
+<!--
+Chapter 1: Introduction (sections 1.1-1.6)
+This chapter introduces the churn prediction problem, motivation, and study scope,
+and outlines the research questions and contributions.
+-->
+<!--
+Chapter 1: Introduction (sections 1.1-1.6)
+This chapter introduces the churn prediction problem, motivation, and study scope,
+and outlines the research questions and contributions.
+-->

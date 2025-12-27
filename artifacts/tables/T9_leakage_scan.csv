@@ -1,0 +1,6 @@
+flag_name,n_flag_true,n_flag_false,churn_rate_flag_true,churn_rate_flag_false,delta_churn_rate,leakage_risk
+called_retention_team,1745,49302,0.4504,0.2824,0.168,HIGH
+retention_offers_accepted,881,50166,0.4109,0.286,0.1249,MEDIUM
+has_high_monthly_minutes,2545,48502,0.2338,0.291,-0.0572,MEDIUM
+has_cust_care_calls_gt_5,5500,45547,0.2465,0.2932,-0.0467,LOW
+has_high_monthly_revenue,2545,48502,0.2974,0.2877,0.0097,LOW

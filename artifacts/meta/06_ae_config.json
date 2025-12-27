@@ -1,0 +1,16 @@
+{
+  "model_type": "DAE",
+  "input_dim": 11,
+  "latent_dim": 32,
+  "hidden_dims": [
+    128,
+    64
+  ],
+  "best_val_loss": 0.05060301832854748,
+  "train_size": 60837,
+  "labeled_size": 40837,
+  "unlabeled_size": 20000,
+  "feature_signature": "122f9167e8cbe982",
+  "use_real_holdout": true,
+  "seed": 42
+}

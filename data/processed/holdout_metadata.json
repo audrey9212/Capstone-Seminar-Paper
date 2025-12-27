@@ -1,0 +1,27 @@
+{
+  "n_samples": 20000,
+  "n_features": 14,
+  "features": [
+    "MonthlyMinutes",
+    "OverageMinutes",
+    "PercChangeMinutes",
+    "PercChangeRevenues",
+    "OutboundCalls",
+    "DroppedBlockedCalls",
+    "ActiveSubs",
+    "CurrentEquipmentDays",
+    "AgeHH1",
+    "ReferralsMadeBySubscriber",
+    "AdjustmentsToCreditRating",
+    "InactiveSubs",
+    "RevenuePerMinute",
+    "MOU_perActive"
+  ],
+  "missing_cols_filled_zero": [
+    "InactiveSubs",
+    "RevenuePerMinute",
+    "MOU_perActive"
+  ],
+  "source": "cell2cellholdout.csv",
+  "preprocessing": "train-fitted params (no leakage)"
+}

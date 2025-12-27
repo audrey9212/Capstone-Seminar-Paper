@@ -1,0 +1,75 @@
+<!--
+This chapter is generated from your Word section “2. Literature Review (2.1–2.5)”.
+Citations were converted from (Author, Year) to Quarto/Pandoc syntax like [authorYear].
+
+Note: You must export a complete report/references.bib from Zotero (Better BibTeX).
+If your citekeys differ from the placeholders below, update either the .bib keys or the citekeys in this file.
+-->
+
+# Literature Review
+
+*Telecom Churn Prediction with Interpretable Machine Learning: From Behavioral Mechanisms to Modern Ensembles*
+
+## Churn Theory and Behavioral Mechanisms
+
+Telecom churn is often framed as a predictive classification problem, but the underlying phenomenon is a behavioral decision shaped by service experience, perceived value, and switching considerations. Service marketing research shows that customers frequently switch after adverse service encounters, dissatisfaction, or unmet expectations, while the dominant “reason for switching” can vary across customers and contexts [@keaveney1995customerswitchingbehaviora]. Work on regain management further characterizes churn as a process of customer defection and potential recovery, where churn prevention and win-back should be evaluated jointly as part of relationship management rather than as isolated outcomes [@regainingservicecustomers].
+
+A related theme is that loyalty and churn are influenced by both attitudinal factors (e.g., satisfaction and preference) and behavioral constraints (e.g., switching costs and barriers), implying that churn drivers can be nonlinear and interactive [@dick1994customerloyaltyintegrated]. In mobile telecommunications, empirical studies highlight the roles of satisfaction, perceived service quality, and switching barriers in shaping loyalty and churn outcomes [@gerpott2001customerretentionloyalty; @kim2004determinantssubscriberchurn; @kim2004effectscustomersatisfaction]. These findings motivate a practical view for churn modeling: features such as usage and engagement variables, billing and pricing proxies, tenure or contract indicators, and service-quality-related signals can be interpreted as measurable correlates of satisfaction and switching frictions rather than as purely random predictors. Accordingly, later sections interpret model explanations not only as statistical associations but also as evidence consistent with churn mechanisms discussed in prior retention research.
+
+## Telecom Churn Data Characteristics and Practical Constraints
+
+Telecom churn datasets typically combine heterogeneous information sources, including numerical usage measures, customer demographics, billing variables, and high-cardinality categorical descriptors (e.g., plan identifiers or geographic codes). These properties create recurring modeling challenges that shape churn pipelines and motivate robust, reproducible experimentation [@lalwani2022customerchurnprediction; @vafeiadis2015comparisonmachinelearning]. In applied churn research, the most emphasized constraints include:
+
+- **Class imbalance:** Churn is often a minority event, so naïve training and default thresholding can bias models toward the majority class. Prior work proposes a range of imbalance-handling strategies, including reweighting, resampling (over- or under-sampling), and imbalance-aware ensemble methods, each of which can influence both measured performance and the set of customers prioritized for intervention [@beeharry2022hybridapproachusing; @sikri2024enhancingcustomerretention].
+- **Missingness and measurement noise:** Telecom records are operational logs, so missing values may reflect business processes rather than random absence, and churn labels depend on operational definitions that may introduce label ambiguity.
+- **Leakage risk:** Features created after the churn window (or strong proxies of post-churn outcomes) can inflate performance if not controlled. Leakage prevention is therefore part of credible benchmarking.
+- **Temporal instability:** Behavior, product offerings, and marketing policies evolve. Drift-focused work emphasizes that churn models can degrade as the data-generating process shifts, motivating monitoring, retraining, and robustness checks [@bugajev2025realisticdatadelays].
+These constraints motivate end-to-end workflows where preprocessing, splitting, and evaluation are standardized across model families. Consistent data handling is especially important when comparing heterogeneous algorithms because small preprocessing differences can confound conclusions about which model family truly performs best.
+
+## Modeling Approaches for Telecom Churn Prediction
+
+The churn literature spans interpretable baselines, high-capacity machine learning, and heterogeneous ensembles. These families differ in inductive bias, data requirements, and interpretability properties, which motivates systematic comparison within a unified pipeline.
+
+### Interpretable Baselines and Classical Models
+
+Logistic regression and tree-based baselines remain widely used because they are transparent, stable, and straightforward to deploy in CRM environments. Benchmarking studies frequently treat such baselines as essential anchors even when more complex methods improve discrimination [@vafeiadis2015comparisonmachinelearning]. Their limitations are also well recognized: linear decision boundaries may underfit nonlinear churn mechanisms, and shallow trees may sacrifice accuracy to maintain interpretability. For this reason, modern churn studies often implement baseline models not as end goals but as reference points for measuring incremental benefit from more complex approaches.
+
+### Ensemble Learning and Tree-based Methods
+
+Ensemble learning is central in churn modeling because it can improve generalization by aggregating multiple learners and capturing nonlinear effects without extensive manual feature specification. Ensemble approaches have demonstrated benefits in churn prediction across domains [@coussement2013customerchurnprediction], and telecom-focused work similarly reports strong performance from tree ensembles on heterogeneous tabular data [@lalwani2022customerchurnprediction; @vafeiadis2015comparisonmachinelearning]. Practical advantages include handling mixed feature types, automatically modeling interaction effects, and achieving high discrimination without deep representation learning.
+
+### Neural and Hybrid Approaches for Tabular Churn Prediction
+
+Deep learning has also been explored for churn prediction, particularly when representation learning is expected to capture complex feature relationships or mitigate sparsity from categorical inputs. Empirical comparisons of supervised techniques have evaluated neural models alongside traditional methods, with results often depending on preprocessing choices, regularization, and dataset structure [@khodabandehlou2017comparisonsupervisedmachine]. Neural-network-based churn prediction continues to appear in more recent surveys and applied studies, suggesting sustained interest in deep architectures for customer analytics [@thangeda2024neuralnetworkbasedpredictive]. However, deep learning in tabular settings is commonly viewed as sensitive to feature encoding, hyperparameters, and imbalance-handling choices. Consequently, neural methods are most informative when evaluated within controlled benchmarking frameworks rather than assumed to universally outperform tree ensembles.
+
+A recurring theme is that neural methods are most informative when evaluated within a controlled benchmarking framework. Therefore, in this thesis deep learning is treated as one model family among several, compared under identical data splits and preprocessing constraints. This design enables a fair assessment of whether added capacity improves discrimination and stability on telecom-style tabular churn data, and it supports subsequent interpretability analyses.
+
+### Stacking and Heterogeneous Ensembles
+
+Beyond bagging and boosting, stacking aims to exploit model diversity by combining base learners through a meta-learner trained on out-of-fold predictions. Telecom churn research suggests that stacking can improve performance when base models have complementary error profiles [@haddadi2025hybridmodelimproving]. Related work further indicates that sampling-aware heterogeneous ensembles can create diversity via both algorithm choice and data views, which can be beneficial in imbalanced churn settings [@sikri2024enhancingcustomerretention]. These findings support the use of heterogeneous stacking as a practical strategy when multiple strong models exist but no single method dominates across all evaluation dimensions.
+
+## Evaluation, Class Imbalance, and Explainability
+
+Because churn prediction is operationalized as a ranking task for targeting retention actions, evaluation must go beyond overall accuracy. The churn literature emphasizes that imbalanced settings require metrics sensitive to minority-class performance and practical decision trade-offs [@beeharry2022hybridapproachusing; @jiao2021analysiscomparisonforecasting; @sikri2024enhancingcustomerretention]. In practice, this motivates reporting multiple complementary views of performance, including:
+
+- Discrimination metrics (e.g., ROC-AUC) to assess ranking ability across thresholds
+- Precision–recall trade-offs and related measures when churn is rare and false positives are costly
+- Threshold- or top-k analyses to align model outputs with limited retention capacity
+Systematic reviews further emphasize that metric selection should reflect deployment goals and dataset imbalance rather than relying on a single score [@zhu2023baggingbasedselectiveensemble]. Accordingly, later sections report a metric set designed to support realistic retention decision-making and to compare models fairly under imbalance.
+
+Because churn models are often used as probability scores to prioritize intervention, calibration and threshold selection are also practically important: a model can rank customers well but still produce probabilities that are systematically over- or under-confident. As a result, later sections complement discrimination metrics with calibration diagnostics and threshold-based analyses aligned to realistic retention capacity constraints.
+
+Beyond predictive discrimination, several studies emphasize linking churn scores to customer profiling and segmentation so that retention actions can be tailored. In this view, churn prediction is coupled with “who” and “why” analyses that identify groups of customers with distinct churn drivers, supporting more targeted marketing and service interventions [@geiler2022effectivestrategychurn]. This motivates treating modeling and interpretability as a joint design problem: stronger models are valuable insofar as their outputs remain explainable and deployable for retention strategy design.
+
+Explainability is increasingly treated as essential for making churn models actionable. While baselines provide transparent coefficients or decision paths, ensembles and neural networks often require post-hoc methods. Recent churn-related studies demonstrate SHAP-based explanations as a practical approach to produce both global summaries (portfolio-level drivers) and local explanations (customer-level reasons for high risk) [@asif2025datadrivenapproachexplainable; @poudel2024explainingcustomerchurn]. Complementary tools for visualizing nonlinear feature effects are also commonly discussed, supporting interpretation in cases where churn drivers interact or exhibit threshold effects. This perspective motivates integrating explainability directly into the modeling pipeline. In this thesis, explainability is not treated as an afterthought but as a parallel analysis layer that supports error analysis, segment comparisons, and calibration/threshold discussions, thereby connecting predictive gains to interpretable churn mechanisms.
+
+## Open Issues and Emerging Trends
+
+Several open issues remain. Concept drift and temporal instability are persistent challenges in telecom churn because customer behavior and market conditions evolve; drift analyses reinforce the need for monitoring and periodic retraining if churn models are deployed in production [@bugajev2025realisticdatadelays]. Another direction is moving from “who will churn” to “who should be targeted,” where retention research argues that targeting customers solely by predicted churn risk can be suboptimal when high-risk customers are not always influenceable or profitable to retain. These issues motivate broader frameworks that integrate predictive performance with business value and intervention design.
+
+Within this landscape, the empirical contribution of the present thesis is positioned as an engineering-grade, end-to-end churn prediction pipeline that systematically compares model families (interpretable baseline, tree ensembles, deep learning, and stacking) under realistic constraints such as imbalance and leakage control, while using SHAP-centered explainability to connect predictive outputs to plausible churn mechanisms and actionable retention insights.
+<!--
+Chapter 2: Literature Review (sections 2.1-2.7)
+This chapter reviews prior work on churn prediction, model families, and interpretability,
+and positions the study in relation to existing methods.
+-->

@@ -1,0 +1,33 @@
+{
+  "run_name": "03_logit",
+  "figures_main": [
+    "logit_roc_curves.png",
+    "logit_pr_curves.png",
+    "logit_calibration.png"
+  ],
+  "figures_appendix": [
+    "logit_confusion_matrices.png",
+    "logit_threshold_sweep.png"
+  ],
+  "tables_main": [
+    "logit_metrics_summary.csv",
+    "logit_best_params.csv"
+  ],
+  "tables_appendix": [
+    "logit_gridsearch_full.csv",
+    "logit_threshold_sweep.csv"
+  ],
+  "all_figures": [
+    "logit_roc_curves.png",
+    "logit_pr_curves.png",
+    "logit_calibration.png",
+    "logit_confusion_matrices.png",
+    "logit_threshold_sweep.png"
+  ],
+  "all_tables": [
+    "logit_metrics_summary.csv",
+    "logit_best_params.csv",
+    "logit_gridsearch_full.csv",
+    "logit_threshold_sweep.csv"
+  ]
+}

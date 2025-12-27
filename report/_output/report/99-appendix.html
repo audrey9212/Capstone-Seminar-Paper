@@ -1,0 +1,3612 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Appendix A — Appendix – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../report/98-references.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99-appendix.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99-appendix.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Abstract</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/01-introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/02-literature-review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Literature Review</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/03-data-and-problem.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data and Problem Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/04-methodology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Methodology</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/05-experiments-results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Experiments and Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/06-discussion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Discussion – Interpretation and Error Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/07-conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusion and Future Work</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/97-acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/98-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99-appendix.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-repro" id="toc-sec-repro" class="nav-link active" data-scroll-target="#sec-repro"><span class="header-section-number">A.1</span> Reproducibility Statement</a>
+  <ul class="collapse">
+  <li><a href="#quick-reproduce-fast-mode" id="toc-quick-reproduce-fast-mode" class="nav-link" data-scroll-target="#quick-reproduce-fast-mode"><span class="header-section-number">A.1.1</span> Quick Reproduce (Fast Mode)</a></li>
+  <li><a href="#full-reproduce-complete-mode" id="toc-full-reproduce-complete-mode" class="nav-link" data-scroll-target="#full-reproduce-complete-mode"><span class="header-section-number">A.1.2</span> Full Reproduce (Complete Mode)</a></li>
+  <li><a href="#output-directory-structure" id="toc-output-directory-structure" class="nav-link" data-scroll-target="#output-directory-structure"><span class="header-section-number">A.1.3</span> Output Directory Structure</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-a" id="toc-sec-appendix-a" class="nav-link" data-scroll-target="#sec-appendix-a"><span class="header-section-number">A.2</span> Data Documentation</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-a1" id="toc-sec-appendix-a1" class="nav-link" data-scroll-target="#sec-appendix-a1"><span class="header-section-number">A.2.1</span> Complete Feature Registry</a></li>
+  <li><a href="#sec-appendix-a2" id="toc-sec-appendix-a2" class="nav-link" data-scroll-target="#sec-appendix-a2"><span class="header-section-number">A.2.2</span> Semantic Feature Grouping</a></li>
+  <li><a href="#sec-appendix-a3" id="toc-sec-appendix-a3" class="nav-link" data-scroll-target="#sec-appendix-a3"><span class="header-section-number">A.2.3</span> Leakage Risk Assessment</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-b" id="toc-sec-appendix-b" class="nav-link" data-scroll-target="#sec-appendix-b"><span class="header-section-number">A.3</span> Baseline Model Details (Logistic Regression)</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-b1" id="toc-sec-appendix-b1" class="nav-link" data-scroll-target="#sec-appendix-b1"><span class="header-section-number">A.3.1</span> Grid Search Results</a></li>
+  <li><a href="#sec-appendix-b2" id="toc-sec-appendix-b2" class="nav-link" data-scroll-target="#sec-appendix-b2"><span class="header-section-number">A.3.2</span> Threshold Sweep Analysis</a></li>
+  <li><a href="#sec-appendix-b3" id="toc-sec-appendix-b3" class="nav-link" data-scroll-target="#sec-appendix-b3"><span class="header-section-number">A.3.3</span> Logistic Regression Diagnostic Plots</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-c" id="toc-sec-appendix-c" class="nav-link" data-scroll-target="#sec-appendix-c"><span class="header-section-number">A.4</span> Tree and GBM Model Supplements</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-c0" id="toc-sec-appendix-c0" class="nav-link" data-scroll-target="#sec-appendix-c0"><span class="header-section-number">A.4.1</span> Single Decision Tree Visualization</a></li>
+  <li><a href="#sec-appendix-c0b" id="toc-sec-appendix-c0b" class="nav-link" data-scroll-target="#sec-appendix-c0b"><span class="header-section-number">A.4.2</span> Hyperparameter Search Space</a></li>
+  <li><a href="#sec-appendix-c1" id="toc-sec-appendix-c1" class="nav-link" data-scroll-target="#sec-appendix-c1"><span class="header-section-number">A.4.3</span> Threshold Sweep for Tree Models</a></li>
+  <li><a href="#sec-appendix-c2" id="toc-sec-appendix-c2" class="nav-link" data-scroll-target="#sec-appendix-c2"><span class="header-section-number">A.4.4</span> Optuna Optimization Diagnostics</a></li>
+  <li><a href="#sec-appendix-c3" id="toc-sec-appendix-c3" class="nav-link" data-scroll-target="#sec-appendix-c3"><span class="header-section-number">A.4.5</span> Feature Importance Comparison</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-d" id="toc-sec-appendix-d" class="nav-link" data-scroll-target="#sec-appendix-d"><span class="header-section-number">A.5</span> Deep Learning Training Dynamics</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-d1" id="toc-sec-appendix-d1" class="nav-link" data-scroll-target="#sec-appendix-d1"><span class="header-section-number">A.5.1</span> Neural Network Experiment Leaderboard</a></li>
+  <li><a href="#sec-appendix-d2" id="toc-sec-appendix-d2" class="nav-link" data-scroll-target="#sec-appendix-d2"><span class="header-section-number">A.5.2</span> Alternative Architecture Training Curves</a></li>
+  <li><a href="#sec-appendix-d3" id="toc-sec-appendix-d3" class="nav-link" data-scroll-target="#sec-appendix-d3"><span class="header-section-number">A.5.3</span> Architecture Specifications</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-e" id="toc-sec-appendix-e" class="nav-link" data-scroll-target="#sec-appendix-e"><span class="header-section-number">A.6</span> Unsupervised and Semi-Supervised Diagnostics</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-e1" id="toc-sec-appendix-e1" class="nav-link" data-scroll-target="#sec-appendix-e1"><span class="header-section-number">A.6.1</span> Autoencoder Reconstruction Error Distribution</a></li>
+  <li><a href="#sec-appendix-e2" id="toc-sec-appendix-e2" class="nav-link" data-scroll-target="#sec-appendix-e2"><span class="header-section-number">A.6.2</span> Latent Space Visualization</a></li>
+  <li><a href="#sec-appendix-e3" id="toc-sec-appendix-e3" class="nav-link" data-scroll-target="#sec-appendix-e3"><span class="header-section-number">A.6.3</span> Autoencoder Ablation Study</a></li>
+  <li><a href="#sec-appendix-e4" id="toc-sec-appendix-e4" class="nav-link" data-scroll-target="#sec-appendix-e4"><span class="header-section-number">A.6.4</span> Pseudo-Labeling Performance Summary</a></li>
+  <li><a href="#sec-appendix-e5" id="toc-sec-appendix-e5" class="nav-link" data-scroll-target="#sec-appendix-e5"><span class="header-section-number">A.6.5</span> Denoising Autoencoder Configuration</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-f" id="toc-sec-appendix-f" class="nav-link" data-scroll-target="#sec-appendix-f"><span class="header-section-number">A.7</span> Ensemble Diversity and Weights</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-f1" id="toc-sec-appendix-f1" class="nav-link" data-scroll-target="#sec-appendix-f1"><span class="header-section-number">A.7.1</span> Base Model Prediction Correlation Matrix</a></li>
+  <li><a href="#sec-appendix-f2" id="toc-sec-appendix-f2" class="nav-link" data-scroll-target="#sec-appendix-f2"><span class="header-section-number">A.7.2</span> Ensemble Blending Weights</a></li>
+  <li><a href="#sec-appendix-f3" id="toc-sec-appendix-f3" class="nav-link" data-scroll-target="#sec-appendix-f3"><span class="header-section-number">A.7.3</span> Stacking Meta-Learner Coefficients</a></li>
+  <li><a href="#sec-appendix-f4" id="toc-sec-appendix-f4" class="nav-link" data-scroll-target="#sec-appendix-f4"><span class="header-section-number">A.7.4</span> Ensemble Performance Comparison</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-g" id="toc-sec-appendix-g" class="nav-link" data-scroll-target="#sec-appendix-g"><span class="header-section-number">A.8</span> Supplementary SHAP Analysis</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-g1" id="toc-sec-appendix-g1" class="nav-link" data-scroll-target="#sec-appendix-g1"><span class="header-section-number">A.8.1</span> SHAP Feature Importance Bar Plot</a></li>
+  <li><a href="#sec-appendix-g2" id="toc-sec-appendix-g2" class="nav-link" data-scroll-target="#sec-appendix-g2"><span class="header-section-number">A.8.2</span> SHAP Interaction Effects</a></li>
+  <li><a href="#sec-appendix-g3" id="toc-sec-appendix-g3" class="nav-link" data-scroll-target="#sec-appendix-g3"><span class="header-section-number">A.8.3</span> Semi-Supervised Learning SHAP Analysis</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-h" id="toc-sec-appendix-h" class="nav-link" data-scroll-target="#sec-appendix-h"><span class="header-section-number">A.9</span> Final Model Comparison and Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-h1" id="toc-sec-appendix-h1" class="nav-link" data-scroll-target="#sec-appendix-h1"><span class="header-section-number">A.9.1</span> Model Comparison Curves</a></li>
+  <li><a href="#sec-appendix-h2" id="toc-sec-appendix-h2" class="nav-link" data-scroll-target="#sec-appendix-h2"><span class="header-section-number">A.9.2</span> Threshold Analysis</a></li>
+  <li><a href="#sec-appendix-h3" id="toc-sec-appendix-h3" class="nav-link" data-scroll-target="#sec-appendix-h3"><span class="header-section-number">A.9.3</span> Model-Specific Optimal Thresholds</a></li>
+  <li><a href="#sec-appendix-h4" id="toc-sec-appendix-h4" class="nav-link" data-scroll-target="#sec-appendix-h4"><span class="header-section-number">A.9.4</span> Calibration Metrics</a></li>
+  <li><a href="#sec-appendix-h5" id="toc-sec-appendix-h5" class="nav-link" data-scroll-target="#sec-appendix-h5"><span class="header-section-number">A.9.5</span> Complete Model Leaderboard</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-i" id="toc-sec-appendix-i" class="nav-link" data-scroll-target="#sec-appendix-i"><span class="header-section-number">A.10</span> Reproducibility Information</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-i1" id="toc-sec-appendix-i1" class="nav-link" data-scroll-target="#sec-appendix-i1"><span class="header-section-number">A.10.1</span> Software Environment</a></li>
+  <li><a href="#sec-appendix-i2" id="toc-sec-appendix-i2" class="nav-link" data-scroll-target="#sec-appendix-i2"><span class="header-section-number">A.10.2</span> Random Seeds</a></li>
+  <li><a href="#sec-appendix-i3" id="toc-sec-appendix-i3" class="nav-link" data-scroll-target="#sec-appendix-i3"><span class="header-section-number">A.10.3</span> Data Split Statistics</a></li>
+  <li><a href="#sec-appendix-i4" id="toc-sec-appendix-i4" class="nav-link" data-scroll-target="#sec-appendix-i4"><span class="header-section-number">A.10.4</span> Artifact Manifest</a></li>
+  </ul></li>
+  <li><a href="#sec-appendix-j" id="toc-sec-appendix-j" class="nav-link" data-scroll-target="#sec-appendix-j"><span class="header-section-number">A.11</span> Error Case Studies</a>
+  <ul class="collapse">
+  <li><a href="#sec-appendix-j1" id="toc-sec-appendix-j1" class="nav-link" data-scroll-target="#sec-appendix-j1"><span class="header-section-number">A.11.1</span> Representative False Negative Cases</a></li>
+  <li><a href="#sec-appendix-j2" id="toc-sec-appendix-j2" class="nav-link" data-scroll-target="#sec-appendix-j2"><span class="header-section-number">A.11.2</span> Representative False Positive Cases</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99-appendix.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99-appendix.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Appendix A — Appendix</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This appendix provides all supplementary materials referenced in the thesis, including reproducibility notes, the complete feature registry, model diagnostic plots, detailed experimental results, and environment configuration information.</p>
+<hr>
+<section id="sec-repro" class="level2" data-number="A.1">
+<h2 data-number="A.1" class="anchored" data-anchor-id="sec-repro"><span class="header-section-number">A.1</span> Reproducibility Statement</h2>
+<p>This project uses a <strong>script-based pipeline</strong>. All experiment outputs (figures, tables, model artifacts) are written to <code>../artifacts/</code>, and the report references these outputs to ensure consistent results.</p>
+<section id="quick-reproduce-fast-mode" class="level3" data-number="A.1.1">
+<h3 data-number="A.1.1" class="anchored" data-anchor-id="quick-reproduce-fast-mode"><span class="header-section-number">A.1.1</span> Quick Reproduce (Fast Mode)</h3>
+<p>The commands below complete the full pipeline in about 10-15 minutes (using <code>--fast</code> to skip full hyperparameter search):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set project root</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CAPSTONE_ROOT</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run full pipeline</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/02_preprocess.py           <span class="co"># Data preprocessing and feature engineering</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/03_logit.py                <span class="co"># Baseline: Logistic Regression</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/04_trees_gbm.py <span class="at">--fast</span>     <span class="co"># Tree-based models (XGBoost, LightGBM, CatBoost)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/05_nn.py <span class="at">--fast</span>            <span class="co"># Deep learning (PyTorch Wide and Deep)</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/07_stacking.py             <span class="co"># Ensemble stacking</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/08_interpretation.py <span class="at">--fast</span> <span class="co"># SHAP interpretation</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Render the PDF</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="full-reproduce-complete-mode" class="level3" data-number="A.1.2">
+<h3 data-number="A.1.2" class="anchored" data-anchor-id="full-reproduce-complete-mode"><span class="header-section-number">A.1.2</span> Full Reproduce (Complete Mode)</h3>
+<p>Full run (including Optuna hyperparameter optimization, about 2-4 hours):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CAPSTONE_ROOT</span><span class="op">=</span><span class="st">"</span><span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span><span class="st">"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/02_preprocess.py</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/03_logit.py</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/04_trees_gbm.py            <span class="co"># Full Optuna tuning (100 trials)</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/05_nn.py                   <span class="co"># Full NN experiments</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/06_autoencoder.py          <span class="co"># Semi-supervised learning</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/07_stacking.py</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/08_interpretation.py</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="output-directory-structure" class="level3" data-number="A.1.3">
+<h3 data-number="A.1.3" class="anchored" data-anchor-id="output-directory-structure"><span class="header-section-number">A.1.3</span> Output Directory Structure</h3>
+<pre><code>../artifacts/
+├── figures/          # All visualizations (PNG)
+│   └── optuna/       # Optuna diagnostics
+├── tables/           # All result tables (CSV)
+└── data/             # Intermediate outputs</code></pre>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-a" class="level2" data-number="A.2">
+<h2 data-number="A.2" class="anchored" data-anchor-id="sec-appendix-a"><span class="header-section-number">A.2</span> Data Documentation</h2>
+<section id="sec-appendix-a1" class="level3" data-number="A.2.1">
+<h3 data-number="A.2.1" class="anchored" data-anchor-id="sec-appendix-a1"><span class="header-section-number">A.2.1</span> Complete Feature Registry</h3>
+<p>The feature registry serves as the single source of truth for all feature-level decisions throughout the modeling pipeline. This configuration-driven approach ensures consistency between training and inference.</p>
+<div id="tbl-full-feature-registry" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-full-feature-registry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.1: Complete Feature Registry with preprocessing decisions
+</figcaption>
+<div aria-describedby="tbl-full-feature-registry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 20%">
+<col style="width: 7%">
+<col style="width: 13%">
+<col style="width: 24%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Origin</th>
+<th>Semantic Group</th>
+<th>Type</th>
+<th>Transform</th>
+<th>Keep (GLM/Tree/NN)</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CustomerID</td>
+<td>Original</td>
+<td>id_target</td>
+<td>Identifier</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>Churn</td>
+<td>Original</td>
+<td>id_target</td>
+<td>Binary target</td>
+<td>0/1 encoding</td>
+<td>–</td>
+<td>Target</td>
+</tr>
+<tr class="odd">
+<td>MonthlyRevenue</td>
+<td>Original</td>
+<td>billing_economics</td>
+<td>Continuous</td>
+<td>log, winsor</td>
+<td>N/Y/N</td>
+<td>Replace</td>
+</tr>
+<tr class="even">
+<td>MonthlyMinutes</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Continuous</td>
+<td>log, winsor</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>TotalRecurringCharge</td>
+<td>Original</td>
+<td>billing_economics</td>
+<td>Continuous</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>DirectorAssistedCalls</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Continuous</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>OverageMinutes</td>
+<td>Original</td>
+<td>billing_economics</td>
+<td>Continuous</td>
+<td>log, winsor</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>RoamingCalls</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Continuous</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>PercChangeMinutes</td>
+<td>Original</td>
+<td>billing_economics</td>
+<td>Momentum</td>
+<td>winsor</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>PercChangeRevenues</td>
+<td>Original</td>
+<td>billing_economics</td>
+<td>Momentum</td>
+<td>winsor</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>DroppedCalls</td>
+<td>Original</td>
+<td>quality_experience</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Replace</td>
+</tr>
+<tr class="even">
+<td>BlockedCalls</td>
+<td>Original</td>
+<td>quality_experience</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Replace</td>
+</tr>
+<tr class="odd">
+<td>UnansweredCalls</td>
+<td>Original</td>
+<td>quality_experience</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>CustomerCareCalls</td>
+<td>Original</td>
+<td>support_retention</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Replace</td>
+</tr>
+<tr class="odd">
+<td>ThreewayCalls</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>ReceivedCalls</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>OutboundCalls</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Count</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>InboundCalls</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>PeakCallsInOut</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>OffPeakCallsInOut</td>
+<td>Original</td>
+<td>usage_activity</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>DroppedBlockedCalls</td>
+<td>Original</td>
+<td>quality_experience</td>
+<td>Count</td>
+<td>log, winsor</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>CallForwardingCalls</td>
+<td>Original</td>
+<td>quality_experience</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>CallWaitingCalls</td>
+<td>Original</td>
+<td>quality_experience</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>MonthsInService</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Integer</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>UniqueSubs</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>ActiveSubs</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Count</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>ServiceArea</td>
+<td>Original</td>
+<td>geo_segmentation</td>
+<td>Nominal (747)</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>Handsets</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>HandsetModels</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>CurrentEquipmentDays</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Integer</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>AgeHH1</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Continuous</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>AgeHH2</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Continuous</td>
+<td>–</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>ChildrenInHH</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>HandsetRefurbished</td>
+<td>Original</td>
+<td>equipment</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>HandsetWebCapable</td>
+<td>Original</td>
+<td>equipment</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>TruckOwner</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>RVOwner</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>Homeownership</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>BuysViaMailOrder</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>RespondsToMailOffers</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>OptOutMailings</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>NonUSTravel</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>OwnsComputer</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>HasCreditCard</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>RetentionCalls</td>
+<td>Original</td>
+<td>support_retention</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td><strong>EXCLUDE</strong></td>
+</tr>
+<tr class="even">
+<td>RetentionOffersAccepted</td>
+<td>Original</td>
+<td>support_retention</td>
+<td>Count</td>
+<td>–</td>
+<td>N/N/N</td>
+<td><strong>EXCLUDE</strong></td>
+</tr>
+<tr class="odd">
+<td>NewCellphoneUser</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>NotNewCellphoneUser</td>
+<td>Original</td>
+<td>account_tenure</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="odd">
+<td>ReferralsMadeBySubscriber</td>
+<td>Original</td>
+<td>engagement</td>
+<td>Count</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>IncomeGroup</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Ordinal</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>OwnsMotorcycle</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td>Drop</td>
+</tr>
+<tr class="even">
+<td>AdjustmentsToCreditRating</td>
+<td>Original</td>
+<td>billing_economics</td>
+<td>Integer</td>
+<td>–</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>HandsetPrice</td>
+<td>Original</td>
+<td>equipment</td>
+<td>Ordinal</td>
+<td>target encode</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>MadeCallToRetentionTeam</td>
+<td>Original</td>
+<td>support_retention</td>
+<td>Binary</td>
+<td>Yes/No→1/0</td>
+<td>N/N/N</td>
+<td><strong>EXCLUDE</strong></td>
+</tr>
+<tr class="odd">
+<td>CreditRating</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Ordinal</td>
+<td>target encode</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>PrizmCode</td>
+<td>Original</td>
+<td>geo_segmentation</td>
+<td>Nominal</td>
+<td>target encode</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="odd">
+<td>Occupation</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Nominal</td>
+<td>target encode</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+<tr class="even">
+<td>MaritalStatus</td>
+<td>Original</td>
+<td>demographics</td>
+<td>Nominal</td>
+<td>one-hot</td>
+<td>Y/Y/Y</td>
+<td>Keep</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Legend:</strong></p>
+<ul>
+<li><strong>Keep (GLM/Tree/NN)</strong>: Y = included, N = excluded for that model family</li>
+<li><strong>EXCLUDE</strong>: Features excluded due to data leakage risk (post-decision variables)</li>
+<li><strong>Transform</strong>: log = log1p transformation, winsor = winsorization at 1st/99th percentile</li>
+</ul>
+</section>
+<section id="sec-appendix-a2" class="level3" data-number="A.2.2">
+<h3 data-number="A.2.2" class="anchored" data-anchor-id="sec-appendix-a2"><span class="header-section-number">A.2.2</span> Semantic Feature Grouping</h3>
+<p>Features were organized into semantic groups to facilitate domain-driven feature engineering and interpretability analysis.</p>
+<div id="tbl-semantic-grouping" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-semantic-grouping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.2: Semantic grouping of features for domain-driven analysis
+</figcaption>
+<div aria-describedby="tbl-semantic-grouping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 25%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Semantic Group</th>
+<th>Features</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>id_target</strong></td>
+<td>CustomerID, Churn</td>
+<td>Identifier and target variable</td>
+</tr>
+<tr class="even">
+<td><strong>billing_economics</strong></td>
+<td>MonthlyRevenue, TotalRecurringCharge, OverageMinutes, PercChangeMinutes, PercChangeRevenues, AdjustmentsToCreditRating</td>
+<td>Financial and billing-related metrics</td>
+</tr>
+<tr class="odd">
+<td><strong>usage_activity</strong></td>
+<td>MonthlyMinutes, DirectorAssistedCalls, RoamingCalls, ThreewayCalls, ReceivedCalls, OutboundCalls, InboundCalls, PeakCallsInOut, OffPeakCallsInOut</td>
+<td>Call volume and usage patterns</td>
+</tr>
+<tr class="even">
+<td><strong>quality_experience</strong></td>
+<td>DroppedCalls, BlockedCalls, UnansweredCalls, DroppedBlockedCalls, CallForwardingCalls, CallWaitingCalls</td>
+<td>Service quality indicators</td>
+</tr>
+<tr class="odd">
+<td><strong>support_retention</strong></td>
+<td>CustomerCareCalls, RetentionCalls, RetentionOffersAccepted, MadeCallToRetentionTeam</td>
+<td>Customer support interactions</td>
+</tr>
+<tr class="even">
+<td><strong>account_tenure</strong></td>
+<td>MonthsInService, UniqueSubs, ActiveSubs, Handsets, HandsetModels, CurrentEquipmentDays, NewCellphoneUser, NotNewCellphoneUser</td>
+<td>Account age and device history</td>
+</tr>
+<tr class="odd">
+<td><strong>demographics</strong></td>
+<td>AgeHH1, AgeHH2, ChildrenInHH, TruckOwner, RVOwner, Homeownership, BuysViaMailOrder, RespondsToMailOffers, OptOutMailings, NonUSTravel, OwnsComputer, HasCreditCard, IncomeGroup, OwnsMotorcycle, MaritalStatus, Occupation, CreditRating</td>
+<td>Customer demographic attributes</td>
+</tr>
+<tr class="even">
+<td><strong>equipment</strong></td>
+<td>HandsetRefurbished, HandsetWebCapable, HandsetPrice</td>
+<td>Device characteristics</td>
+</tr>
+<tr class="odd">
+<td><strong>geo_segmentation</strong></td>
+<td>ServiceArea, PrizmCode</td>
+<td>Geographic and market segmentation</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-a3" class="level3" data-number="A.2.3">
+<h3 data-number="A.2.3" class="anchored" data-anchor-id="sec-appendix-a3"><span class="header-section-number">A.2.3</span> Leakage Risk Assessment</h3>
+<p>A systematic leakage scan was conducted to identify features that could leak future information. Features were ranked by their potential leakage risk based on temporal relationship with the churn event.</p>
+<div id="tbl-leakage-risk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-leakage-risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.3: Leakage risk assessment for retention-related features
+</figcaption>
+<div aria-describedby="tbl-leakage-risk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 40%">
+<col style="width: 17%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Leakage Risk Score</th>
+<th>Status</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MadeCallToRetentionTeam</td>
+<td>0.9500</td>
+<td><strong>EXCLUDED</strong></td>
+<td>Post-decision: Customer called retention team after deciding to churn</td>
+</tr>
+<tr class="even">
+<td>RetentionCalls</td>
+<td>0.9200</td>
+<td><strong>EXCLUDED</strong></td>
+<td>Post-decision: Retention outreach triggered by churn indicators</td>
+</tr>
+<tr class="odd">
+<td>RetentionOffersAccepted</td>
+<td>0.9000</td>
+<td><strong>EXCLUDED</strong></td>
+<td>Post-decision: Offers made only to at-risk customers</td>
+</tr>
+<tr class="even">
+<td>CustomerCareCalls</td>
+<td>0.3500</td>
+<td>Monitored</td>
+<td>May include pre-churn complaints but also routine inquiries</td>
+</tr>
+<tr class="odd">
+<td>PercChangeMinutes</td>
+<td>0.2500</td>
+<td>Retained</td>
+<td>Behavioral trend, not post-decision action</td>
+</tr>
+<tr class="even">
+<td>PercChangeRevenues</td>
+<td>0.2500</td>
+<td>Retained</td>
+<td>Behavioral trend, not post-decision action</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-b" class="level2" data-number="A.3">
+<h2 data-number="A.3" class="anchored" data-anchor-id="sec-appendix-b"><span class="header-section-number">A.3</span> Baseline Model Details (Logistic Regression)</h2>
+<section id="sec-appendix-b1" class="level3" data-number="A.3.1">
+<h3 data-number="A.3.1" class="anchored" data-anchor-id="sec-appendix-b1"><span class="header-section-number">A.3.1</span> Grid Search Results</h3>
+<p>Exhaustive grid search was performed over regularization strength (C) and penalty type to establish baseline performance.</p>
+<div id="tbl-logreg-gridsearch" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-logreg-gridsearch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.4: Logistic Regression Grid Search Results (5-fold Stratified CV)
+</figcaption>
+<div aria-describedby="tbl-logreg-gridsearch-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>C</th>
+<th>Penalty</th>
+<th>CV ROC-AUC (mean)</th>
+<th>CV ROC-AUC (std)</th>
+<th>Rank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.0010</td>
+<td>L2</td>
+<td>0.5821</td>
+<td>0.0089</td>
+<td>8</td>
+</tr>
+<tr class="even">
+<td>0.0100</td>
+<td>L2</td>
+<td>0.5867</td>
+<td>0.0082</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td><strong>0.1000</strong></td>
+<td><strong>L2</strong></td>
+<td><strong>0.5883</strong></td>
+<td><strong>0.0078</strong></td>
+<td><strong>1</strong></td>
+</tr>
+<tr class="even">
+<td>1.0</td>
+<td>L2</td>
+<td>0.5878</td>
+<td>0.0081</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>10.0</td>
+<td>L2</td>
+<td>0.5872</td>
+<td>0.0083</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>0.0010</td>
+<td>L1</td>
+<td>0.5798</td>
+<td>0.0095</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td>0.0100</td>
+<td>L1</td>
+<td>0.5856</td>
+<td>0.0086</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>0.1000</td>
+<td>L1</td>
+<td>0.5864</td>
+<td>0.0084</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>1.0</td>
+<td>L1</td>
+<td>0.5851</td>
+<td>0.0088</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Selected Configuration:</strong> C=0.1000, L2 penalty (elastic-net with l1_ratio=0 equivalent)</p>
+</section>
+<section id="sec-appendix-b2" class="level3" data-number="A.3.2">
+<h3 data-number="A.3.2" class="anchored" data-anchor-id="sec-appendix-b2"><span class="header-section-number">A.3.2</span> Threshold Sweep Analysis</h3>
+<p>Classification thresholds were swept from 0.1000 to 0.5000 on the validation set to understand precision-recall trade-offs.</p>
+<div id="tbl-logreg-threshold-sweep" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-logreg-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.5: Logistic Regression Threshold Sweep on Validation Set
+</figcaption>
+<div aria-describedby="tbl-logreg-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Threshold</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1-Score</th>
+<th>Specificity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.1000</td>
+<td>0.3120</td>
+<td>0.8920</td>
+<td>0.4630</td>
+<td>0.2340</td>
+</tr>
+<tr class="even">
+<td>0.1500</td>
+<td>0.3280</td>
+<td>0.8410</td>
+<td>0.4720</td>
+<td>0.2980</td>
+</tr>
+<tr class="odd">
+<td>0.2000</td>
+<td>0.3510</td>
+<td>0.7830</td>
+<td>0.4850</td>
+<td>0.3780</td>
+</tr>
+<tr class="even">
+<td>0.2500</td>
+<td>0.3820</td>
+<td>0.7120</td>
+<td>0.4970</td>
+<td>0.4670</td>
+</tr>
+<tr class="odd">
+<td><strong>0.2900</strong></td>
+<td><strong>0.4120</strong></td>
+<td><strong>0.6510</strong></td>
+<td><strong>0.5040</strong></td>
+<td><strong>0.5420</strong></td>
+</tr>
+<tr class="even">
+<td>0.3500</td>
+<td>0.4580</td>
+<td>0.5670</td>
+<td>0.5060</td>
+<td>0.6340</td>
+</tr>
+<tr class="odd">
+<td>0.4000</td>
+<td>0.5010</td>
+<td>0.4780</td>
+<td>0.4890</td>
+<td>0.7120</td>
+</tr>
+<tr class="even">
+<td>0.4500</td>
+<td>0.5480</td>
+<td>0.3890</td>
+<td>0.4550</td>
+<td>0.7830</td>
+</tr>
+<tr class="odd">
+<td>0.5000</td>
+<td>0.5920</td>
+<td>0.3010</td>
+<td>0.3990</td>
+<td>0.8450</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Optimal threshold:</strong> τ = 0.2900 (maximizing F1-score on validation set)</p>
+</section>
+<section id="sec-appendix-b3" class="level3" data-number="A.3.3">
+<h3 data-number="A.3.3" class="anchored" data-anchor-id="sec-appendix-b3"><span class="header-section-number">A.3.3</span> Logistic Regression Diagnostic Plots</h3>
+<div id="fig-logit-roc" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logit-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/logit_roc_curves.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.1: ROC curves for logistic regression model on train/validation/test sets.
+</figcaption>
+</figure>
+</div>
+<div id="fig-logit-pr" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logit-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/logit_pr_curves.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.2: Precision-Recall curves for logistic regression model.
+</figcaption>
+</figure>
+</div>
+<div id="fig-logit-threshold" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logit-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/logit_threshold_sweep.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.3: Precision, recall, and F1-score as functions of classification threshold.
+</figcaption>
+</figure>
+</div>
+<div id="fig-logit-confusion" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-logit-confusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/logit_confusion_matrices.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-logit-confusion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.4: Confusion matrices for logistic regression at different thresholds.
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-c" class="level2" data-number="A.4">
+<h2 data-number="A.4" class="anchored" data-anchor-id="sec-appendix-c"><span class="header-section-number">A.4</span> Tree and GBM Model Supplements</h2>
+<section id="sec-appendix-c0" class="level3" data-number="A.4.1">
+<h3 data-number="A.4.1" class="anchored" data-anchor-id="sec-appendix-c0"><span class="header-section-number">A.4.1</span> Single Decision Tree Visualization</h3>
+<p>A shallow decision tree (max_depth=3) provides an interpretable view of the top decision rules learned from the data. This visualization demonstrates explainability and helps validate that the model captures sensible business logic.</p>
+<div id="fig-single-tree" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-single-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/04_decision_tree_viz_depth3.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-single-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.5: Single decision tree (depth=3) showing top decision rules for churn prediction.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-c0b" class="level3" data-number="A.4.2">
+<h3 data-number="A.4.2" class="anchored" data-anchor-id="sec-appendix-c0b"><span class="header-section-number">A.4.2</span> Hyperparameter Search Space</h3>
+<p>The following table documents the hyperparameter search space used for tree-based models, supporting reproducibility.</p>
+<div id="tbl-hyperparam-search" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-hyperparam-search-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.6: Hyperparameter search space and best values for tree-based models
+</figcaption>
+<div aria-describedby="tbl-hyperparam-search-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Parameter</th>
+<th>Search Range</th>
+<th>Best Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Random Forest</strong></td>
+<td>n_estimators</td>
+<td>[100, 500]</td>
+<td>300</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>max_depth</td>
+<td>[5, 15, None]</td>
+<td>12</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>min_samples_split</td>
+<td>[2, 5, 10]</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>min_samples_leaf</td>
+<td>[1, 2, 4]</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td><strong>XGBoost</strong></td>
+<td>n_estimators</td>
+<td>[100, 500]</td>
+<td>312</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>max_depth</td>
+<td>[3, 6, 9]</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>learning_rate</td>
+<td>[0.01, 0.3]</td>
+<td>0.0847</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>subsample</td>
+<td>[0.6, 1.0]</td>
+<td>0.8234</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>colsample_bytree</td>
+<td>[0.6, 1.0]</td>
+<td>0.7891</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>min_child_weight</td>
+<td>[1, 7]</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>reg_alpha</td>
+<td>[0, 1]</td>
+<td>0.0123</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>reg_lambda</td>
+<td>[0, 3]</td>
+<td>1.2456</td>
+</tr>
+<tr class="odd">
+<td><strong>LightGBM</strong></td>
+<td>n_estimators</td>
+<td>[100, 500]</td>
+<td>280</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>max_depth</td>
+<td>[3, 9]</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>learning_rate</td>
+<td>[0.01, 0.3]</td>
+<td>0.0756</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>num_leaves</td>
+<td>[20, 100]</td>
+<td>64</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>min_child_samples</td>
+<td>[10, 50]</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-c1" class="level3" data-number="A.4.3">
+<h3 data-number="A.4.3" class="anchored" data-anchor-id="sec-appendix-c1"><span class="header-section-number">A.4.3</span> Threshold Sweep for Tree Models</h3>
+<div id="tbl-tree-threshold-sweep" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tree-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.7: Optimal thresholds and metrics for tree-based models (validation set)
+</figcaption>
+<div aria-describedby="tbl-tree-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Optimal τ</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1-Score</th>
+<th>ROC-AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Random Forest</td>
+<td>0.3200</td>
+<td>0.4780</td>
+<td>0.6120</td>
+<td>0.5370</td>
+<td>0.6523</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>0.3100</td>
+<td>0.4920</td>
+<td>0.6280</td>
+<td>0.5520</td>
+<td>0.6687</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>0.3000</td>
+<td>0.4850</td>
+<td>0.6340</td>
+<td>0.5490</td>
+<td>0.6654</td>
+</tr>
+<tr class="even">
+<td>CatBoost</td>
+<td>0.3100</td>
+<td>0.4890</td>
+<td>0.6210</td>
+<td>0.5470</td>
+<td>0.6642</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-c2" class="level3" data-number="A.4.4">
+<h3 data-number="A.4.4" class="anchored" data-anchor-id="sec-appendix-c2"><span class="header-section-number">A.4.4</span> Optuna Optimization Diagnostics</h3>
+<p>Bayesian hyperparameter optimization was conducted using Optuna with 100 trials for XGBoost.</p>
+<div id="fig-optuna-history" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-optuna-history-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/optuna/04_xgb_optuna_optimization_history.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-optuna-history-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.6: Optimization history showing trial objective values over 100 iterations.
+</figcaption>
+</figure>
+</div>
+<div id="fig-optuna-parallel" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-optuna-parallel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/optuna/04_xgb_optuna_parallel_coordinate.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-optuna-parallel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.7: Parallel coordinate visualization of hyperparameter configurations across trials.
+</figcaption>
+</figure>
+</div>
+<div id="fig-optuna-importance" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-optuna-importance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/optuna/04_xgb_optuna_param_importances.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-optuna-importance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.8: Relative importance of each hyperparameter in determining model performance.
+</figcaption>
+</figure>
+</div>
+<div id="tbl-optuna-importance-table" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-optuna-importance-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.8: Optuna hyperparameter importance for XGBoost optimization
+</figcaption>
+<div aria-describedby="tbl-optuna-importance-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Hyperparameter</th>
+<th>Importance Score</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>learning_rate</td>
+<td>0.4200</td>
+<td>Step size shrinkage</td>
+</tr>
+<tr class="even">
+<td>max_depth</td>
+<td>0.1800</td>
+<td>Maximum tree depth</td>
+</tr>
+<tr class="odd">
+<td>n_estimators</td>
+<td>0.1400</td>
+<td>Number of boosting rounds</td>
+</tr>
+<tr class="even">
+<td>min_child_weight</td>
+<td>0.1100</td>
+<td>Minimum sum of instance weight</td>
+</tr>
+<tr class="odd">
+<td>subsample</td>
+<td>0.0800</td>
+<td>Row sampling ratio</td>
+</tr>
+<tr class="even">
+<td>colsample_bytree</td>
+<td>0.0700</td>
+<td>Column sampling ratio</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Best hyperparameters found:</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.0847</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="dv">6</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: <span class="dv">312</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_weight'</span>: <span class="dv">3</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: <span class="fl">0.8234</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bytree'</span>: <span class="fl">0.7891</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'reg_alpha'</span>: <span class="fl">0.0123</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'reg_lambda'</span>: <span class="fl">1.2456</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sec-appendix-c3" class="level3" data-number="A.4.5">
+<h3 data-number="A.4.5" class="anchored" data-anchor-id="sec-appendix-c3"><span class="header-section-number">A.4.5</span> Feature Importance Comparison</h3>
+<div id="tbl-feature-importance-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-feature-importance-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.9: Top-7 feature importance ranking across tree-based models
+</figcaption>
+<div aria-describedby="tbl-feature-importance-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Rank</th>
+<th>XGBoost</th>
+<th>LightGBM</th>
+<th>Random Forest</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>CurrentEquipmentDays</td>
+<td>MonthsInService</td>
+<td>CurrentEquipmentDays</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>MonthsInService</td>
+<td>CurrentEquipmentDays</td>
+<td>MonthsInService</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>MonthlyMinutes</td>
+<td>MonthlyMinutes</td>
+<td>AgeHH1</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>PercChangeMinutes</td>
+<td>PercChangeMinutes</td>
+<td>MonthlyMinutes</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>DroppedBlockedCalls</td>
+<td>OverageMinutes</td>
+<td>IncomeGroup</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>OverageMinutes</td>
+<td>AgeHH1</td>
+<td>PercChangeMinutes</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>AgeHH1</td>
+<td>DroppedBlockedCalls</td>
+<td>OverageMinutes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-d" class="level2" data-number="A.5">
+<h2 data-number="A.5" class="anchored" data-anchor-id="sec-appendix-d"><span class="header-section-number">A.5</span> Deep Learning Training Dynamics</h2>
+<section id="sec-appendix-d1" class="level3" data-number="A.5.1">
+<h3 data-number="A.5.1" class="anchored" data-anchor-id="sec-appendix-d1"><span class="header-section-number">A.5.1</span> Neural Network Experiment Leaderboard</h3>
+<p>All neural network experiments tracked via MLflow with systematic architecture variations.</p>
+<div id="tbl-nn-experiment-leaderboard" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-experiment-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.10: Neural Network Experiment Leaderboard (sorted by Test ROC-AUC)
+</figcaption>
+<div aria-describedby="tbl-nn-experiment-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 19%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Experiment</th>
+<th>Architecture</th>
+<th>Loss</th>
+<th>Test ROC-AUC</th>
+<th>Test PR-AUC</th>
+<th>Brier Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>exp_001</td>
+<td>MLP-3L-256</td>
+<td>BCE</td>
+<td>0.6423</td>
+<td>0.4012</td>
+<td>0.2120</td>
+</tr>
+<tr class="even">
+<td>exp_002</td>
+<td>MLP-3L-256</td>
+<td>Focal</td>
+<td>0.6512</td>
+<td>0.4189</td>
+<td>0.2050</td>
+</tr>
+<tr class="odd">
+<td>exp_003</td>
+<td>MLP-4L-512</td>
+<td>BCE</td>
+<td>0.6398</td>
+<td>0.3987</td>
+<td>0.2180</td>
+</tr>
+<tr class="even">
+<td>exp_004</td>
+<td>Wide&amp;Deep</td>
+<td>BCE</td>
+<td>0.6534</td>
+<td>0.4234</td>
+<td>0.2010</td>
+</tr>
+<tr class="odd">
+<td><strong>exp_005</strong></td>
+<td><strong>Wide&amp;Deep</strong></td>
+<td><strong>Focal</strong></td>
+<td><strong>0.6615</strong></td>
+<td><strong>0.4356</strong></td>
+<td><strong>0.1970</strong></td>
+</tr>
+<tr class="even">
+<td>exp_006</td>
+<td>ResNet-style</td>
+<td>BCE</td>
+<td>0.6478</td>
+<td>0.4156</td>
+<td>0.2080</td>
+</tr>
+<tr class="odd">
+<td>exp_007</td>
+<td>ResNet-style</td>
+<td>Focal</td>
+<td>0.6589</td>
+<td>0.4298</td>
+<td>0.1990</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-d2" class="level3" data-number="A.5.2">
+<h3 data-number="A.5.2" class="anchored" data-anchor-id="sec-appendix-d2"><span class="header-section-number">A.5.2</span> Alternative Architecture Training Curves</h3>
+<div id="fig-nn-dense-baseline" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-dense-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/05_nn_dense_baseline_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-dense-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.9: Training dynamics for the MLP dense baseline architecture.
+</figcaption>
+</figure>
+</div>
+<div id="fig-nn-embedding-baseline" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-embedding-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/05_nn_embedding_baseline_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-embedding-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.10: Training dynamics for the embedding-based MLP architecture.
+</figcaption>
+</figure>
+</div>
+<div id="fig-nn-wide-deep" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-wide-deep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/05_nn_wide_and_deep_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-wide-deep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.11: Training dynamics for the Wide &amp; Deep architecture with BCE loss.
+</figcaption>
+</figure>
+</div>
+<div id="fig-nn-wide-deep-deeper" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-wide-deep-deeper-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-wide-deep-deeper-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.12: Training dynamics for the deeper Wide &amp; Deep architecture variant.
+</figcaption>
+</figure>
+</div>
+<div id="fig-nn-embedding-focal" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-embedding-focal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/05_nn_embedding_focal_loss_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-embedding-focal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.13: Training dynamics for embedding MLP with focal loss.
+</figcaption>
+</figure>
+</div>
+<div id="fig-nn-embedding-weight" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nn-embedding-weight-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/05_nn_embedding_strong_weight_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-embedding-weight-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.14: Training dynamics for embedding MLP with strong class weight.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-d3" class="level3" data-number="A.5.3">
+<h3 data-number="A.5.3" class="anchored" data-anchor-id="sec-appendix-d3"><span class="header-section-number">A.5.3</span> Architecture Specifications</h3>
+<div id="tbl-nn-architecture-specs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-architecture-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.11: Neural network architecture specifications
+</figcaption>
+<div aria-describedby="tbl-nn-architecture-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 11%">
+<col style="width: 20%">
+<col style="width: 13%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Architecture</th>
+<th>Layers</th>
+<th>Hidden Units</th>
+<th>Dropout</th>
+<th>Activation</th>
+<th>Parameters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MLP-3L-256</td>
+<td>3</td>
+<td>[256, 128, 64]</td>
+<td>0.3000</td>
+<td>ReLU</td>
+<td>~98K</td>
+</tr>
+<tr class="even">
+<td>MLP-4L-512</td>
+<td>4</td>
+<td>[512, 256, 128, 64]</td>
+<td>0.4000</td>
+<td>ReLU</td>
+<td>~312K</td>
+</tr>
+<tr class="odd">
+<td>Wide&amp;Deep</td>
+<td>3+1</td>
+<td>[256, 128, 64] + Linear</td>
+<td>0.3000</td>
+<td>ReLU/Linear</td>
+<td>~105K</td>
+</tr>
+<tr class="even">
+<td>ResNet-style</td>
+<td>4</td>
+<td>[256, 256, 128, 64]</td>
+<td>0.3000</td>
+<td>ReLU + Skip</td>
+<td>~142K</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-e" class="level2" data-number="A.6">
+<h2 data-number="A.6" class="anchored" data-anchor-id="sec-appendix-e"><span class="header-section-number">A.6</span> Unsupervised and Semi-Supervised Diagnostics</h2>
+<section id="sec-appendix-e1" class="level3" data-number="A.6.1">
+<h3 data-number="A.6.1" class="anchored" data-anchor-id="sec-appendix-e1"><span class="header-section-number">A.6.1</span> Autoencoder Reconstruction Error Distribution</h3>
+<div id="fig-recon-error" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-recon-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/06_recon_error_by_label.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recon-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.15: Distribution of autoencoder reconstruction errors for churners vs.&nbsp;non-churners, showing modest separation.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-e2" class="level3" data-number="A.6.2">
+<h3 data-number="A.6.2" class="anchored" data-anchor-id="sec-appendix-e2"><span class="header-section-number">A.6.2</span> Latent Space Visualization</h3>
+<div id="fig-latent-tsne" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-latent-tsne-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/06_latent_tsne.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-latent-tsne-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.16: t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-e3" class="level3" data-number="A.6.3">
+<h3 data-number="A.6.3" class="anchored" data-anchor-id="sec-appendix-e3"><span class="header-section-number">A.6.3</span> Autoencoder Ablation Study</h3>
+<div id="fig-ablation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/06_ablation_comparison.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.17: Comparison of autoencoder variants and their impact on downstream model performance.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-e4" class="level3" data-number="A.6.4">
+<h3 data-number="A.6.4" class="anchored" data-anchor-id="sec-appendix-e4"><span class="header-section-number">A.6.4</span> Pseudo-Labeling Performance Summary</h3>
+<div id="tbl-pseudo-label-summary" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pseudo-label-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.12: Pseudo-labeling performance across confidence thresholds
+</figcaption>
+<div aria-describedby="tbl-pseudo-label-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 23%">
+<col style="width: 28%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Confidence Threshold</th>
+<th>Holdout Coverage</th>
+<th>Pseudo-label Accuracy</th>
+<th>Final Test AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.9000</td>
+<td>18.3%</td>
+<td>0.8920</td>
+<td>0.6623</td>
+</tr>
+<tr class="even">
+<td>0.8500</td>
+<td>28.7%</td>
+<td>0.8710</td>
+<td>0.6645</td>
+</tr>
+<tr class="odd">
+<td><strong>0.8000</strong></td>
+<td><strong>42.1%</strong></td>
+<td><strong>0.8530</strong></td>
+<td><strong>0.6687</strong></td>
+</tr>
+<tr class="even">
+<td>0.7500</td>
+<td>56.4%</td>
+<td>0.8310</td>
+<td>0.6672</td>
+</tr>
+<tr class="odd">
+<td>0.7000</td>
+<td>68.9%</td>
+<td>0.8120</td>
+<td>0.6641</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Selected threshold:</strong> 0.8000 (balancing coverage and pseudo-label quality)</p>
+</section>
+<section id="sec-appendix-e5" class="level3" data-number="A.6.5">
+<h3 data-number="A.6.5" class="anchored" data-anchor-id="sec-appendix-e5"><span class="header-section-number">A.6.5</span> Denoising Autoencoder Configuration</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>DAE_CONFIG <span class="op">=</span> {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'encoder_dims'</span>: [<span class="dv">128</span>, <span class="dv">64</span>, <span class="dv">32</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'decoder_dims'</span>: [<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'latent_dim'</span>: <span class="dv">32</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'noise_factor'</span>: <span class="fl">0.1500</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'dropout'</span>: <span class="fl">0.2000</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'activation'</span>: <span class="st">'leaky_relu'</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.0010</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'batch_size'</span>: <span class="dv">256</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'epochs'</span>: <span class="dv">100</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'early_stopping_patience'</span>: <span class="dv">10</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-f" class="level2" data-number="A.7">
+<h2 data-number="A.7" class="anchored" data-anchor-id="sec-appendix-f"><span class="header-section-number">A.7</span> Ensemble Diversity and Weights</h2>
+<section id="sec-appendix-f1" class="level3" data-number="A.7.1">
+<h3 data-number="A.7.1" class="anchored" data-anchor-id="sec-appendix-f1"><span class="header-section-number">A.7.1</span> Base Model Prediction Correlation Matrix</h3>
+<div id="tbl-correlation-matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-correlation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.13: Pearson correlation of predicted probabilities on validation set
+</figcaption>
+<div aria-describedby="tbl-correlation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Logistic</th>
+<th>XGBoost</th>
+<th>LightGBM</th>
+<th>CatBoost</th>
+<th>RF</th>
+<th>Wide&amp;Deep</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic</td>
+<td>1.00</td>
+<td>0.4700</td>
+<td>0.4800</td>
+<td>0.4700</td>
+<td>0.4500</td>
+<td>0.5200</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>0.4700</td>
+<td>1.00</td>
+<td>0.9300</td>
+<td>0.9100</td>
+<td>0.8700</td>
+<td>0.7800</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>0.4800</td>
+<td>0.9300</td>
+<td>1.00</td>
+<td>0.9200</td>
+<td>0.8800</td>
+<td>0.7900</td>
+</tr>
+<tr class="even">
+<td>CatBoost</td>
+<td>0.4700</td>
+<td>0.9100</td>
+<td>0.9200</td>
+<td>1.00</td>
+<td>0.8900</td>
+<td>0.7700</td>
+</tr>
+<tr class="odd">
+<td>RF</td>
+<td>0.4500</td>
+<td>0.8700</td>
+<td>0.8800</td>
+<td>0.8900</td>
+<td>1.00</td>
+<td>0.7400</td>
+</tr>
+<tr class="even">
+<td>Wide&amp;Deep</td>
+<td>0.5200</td>
+<td>0.7800</td>
+<td>0.7900</td>
+<td>0.7700</td>
+<td>0.7400</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Insight:</strong> Logistic regression and neural network predictions show lower correlation with tree ensemble predictions, suggesting potential diversity benefits for stacking.</p>
+</section>
+<section id="sec-appendix-f2" class="level3" data-number="A.7.2">
+<h3 data-number="A.7.2" class="anchored" data-anchor-id="sec-appendix-f2"><span class="header-section-number">A.7.2</span> Ensemble Blending Weights</h3>
+<div id="tbl-ensemble-weights" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.14: Blending weights under different weighting schemes
+</figcaption>
+<div aria-describedby="tbl-ensemble-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>AUC-Weighted</th>
+<th>NNLS-Optimized</th>
+<th>Equal Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic</td>
+<td>0.0890</td>
+<td>0.0520</td>
+<td>0.1670</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>0.2010</td>
+<td>0.2870</td>
+<td>0.1670</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>0.1890</td>
+<td>0.2340</td>
+<td>0.1670</td>
+</tr>
+<tr class="even">
+<td>CatBoost</td>
+<td>0.1780</td>
+<td>0.1980</td>
+<td>0.1670</td>
+</tr>
+<tr class="odd">
+<td>RF</td>
+<td>0.1560</td>
+<td>0.1120</td>
+<td>0.1670</td>
+</tr>
+<tr class="even">
+<td>Wide&amp;Deep</td>
+<td>0.1870</td>
+<td>0.1170</td>
+<td>0.1670</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-f3" class="level3" data-number="A.7.3">
+<h3 data-number="A.7.3" class="anchored" data-anchor-id="sec-appendix-f3"><span class="header-section-number">A.7.3</span> Stacking Meta-Learner Coefficients</h3>
+<p>Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Meta<span class="op">-</span>learner coefficients (Ridge, alpha<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Logistic_OOF'</span>: <span class="fl">0.2340</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'XGBoost_OOF'</span>: <span class="fl">0.4120</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'LightGBM_OOF'</span>: <span class="fl">0.1560</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CatBoost_OOF'</span>: <span class="fl">0.0890</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'RF_OOF'</span>: <span class="fl">0.0230</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'WideDeep_OOF'</span>: <span class="fl">0.0860</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'intercept'</span>: <span class="op">-</span><span class="fl">0.8920</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sec-appendix-f4" class="level3" data-number="A.7.4">
+<h3 data-number="A.7.4" class="anchored" data-anchor-id="sec-appendix-f4"><span class="header-section-number">A.7.4</span> Ensemble Performance Comparison</h3>
+<div id="tbl-ensemble-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.15: Ensemble method comparison with computational costs
+</figcaption>
+<div aria-describedby="tbl-ensemble-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ensemble Method</th>
+<th>Val ROC-AUC</th>
+<th>Test ROC-AUC</th>
+<th>Test PR-AUC</th>
+<th>Training Time (s)</th>
+<th>Inference Time (ms)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Best Single (XGBoost)</td>
+<td>0.6654</td>
+<td>0.6687</td>
+<td>0.4298</td>
+<td>42.3</td>
+<td>2.1</td>
+</tr>
+<tr class="even">
+<td>Simple Average</td>
+<td>0.6698</td>
+<td>0.6712</td>
+<td>0.4345</td>
+<td>245.8</td>
+<td>12.4</td>
+</tr>
+<tr class="odd">
+<td>AUC-Weighted</td>
+<td>0.6712</td>
+<td>0.6723</td>
+<td>0.4367</td>
+<td>245.8</td>
+<td>12.5</td>
+</tr>
+<tr class="even">
+<td>NNLS-Optimized</td>
+<td>0.6724</td>
+<td>0.6734</td>
+<td>0.4378</td>
+<td>247.2</td>
+<td>12.5</td>
+</tr>
+<tr class="odd">
+<td><strong>OOF Stacking</strong></td>
+<td><strong>0.6745</strong></td>
+<td><strong>0.6726</strong></td>
+<td><strong>0.4389</strong></td>
+<td><strong>278.4</strong></td>
+<td><strong>14.2</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Observation:</strong> OOF stacking achieves the best validation AUC but slightly lower test AUC than NNLS blending, suggesting mild overfitting to validation folds.</p>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-g" class="level2" data-number="A.8">
+<h2 data-number="A.8" class="anchored" data-anchor-id="sec-appendix-g"><span class="header-section-number">A.8</span> Supplementary SHAP Analysis</h2>
+<section id="sec-appendix-g1" class="level3" data-number="A.8.1">
+<h3 data-number="A.8.1" class="anchored" data-anchor-id="sec-appendix-g1"><span class="header-section-number">A.8.1</span> SHAP Feature Importance Bar Plot</h3>
+<div id="fig-shap-importance-appendix" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shap-importance-appendix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/08_shap_importance.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-importance-appendix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.18: Mean absolute SHAP values showing global feature importance ranking.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-g2" class="level3" data-number="A.8.2">
+<h3 data-number="A.8.2" class="anchored" data-anchor-id="sec-appendix-g2"><span class="header-section-number">A.8.2</span> SHAP Interaction Effects</h3>
+<div id="tbl-shap-interaction-table" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shap-interaction-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.16: Top SHAP interaction effects between feature pairs
+</figcaption>
+<div aria-describedby="tbl-shap-interaction-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Feature Pair</th>
+<th>Mean Interaction Effect</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CurrentEquipmentDays × MonthsInService</td>
+<td>0.0234</td>
+<td>Synergistic</td>
+</tr>
+<tr class="even">
+<td>MonthlyMinutes × PercChangeMinutes</td>
+<td>0.0189</td>
+<td>Synergistic</td>
+</tr>
+<tr class="odd">
+<td>OverageMinutes × MonthlyRevenue</td>
+<td>0.0156</td>
+<td>Synergistic</td>
+</tr>
+<tr class="even">
+<td>AgeHH1 × Homeownership</td>
+<td>0.0098</td>
+<td>Antagonistic</td>
+</tr>
+<tr class="odd">
+<td>DroppedBlockedCalls × CustomerCareCalls_flag</td>
+<td>0.0087</td>
+<td>Synergistic</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-g3" class="level3" data-number="A.8.3">
+<h3 data-number="A.8.3" class="anchored" data-anchor-id="sec-appendix-g3"><span class="header-section-number">A.8.3</span> Semi-Supervised Learning SHAP Analysis</h3>
+<div id="fig-ssl-summary" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ssl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/08_ssl_summary.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.19: Summary of semi-supervised learning experiments with pseudo-labeling.
+</figcaption>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-h" class="level2" data-number="A.9">
+<h2 data-number="A.9" class="anchored" data-anchor-id="sec-appendix-h"><span class="header-section-number">A.9</span> Final Model Comparison and Evaluation</h2>
+<section id="sec-appendix-h1" class="level3" data-number="A.9.1">
+<h3 data-number="A.9.1" class="anchored" data-anchor-id="sec-appendix-h1"><span class="header-section-number">A.9.1</span> Model Comparison Curves</h3>
+<div id="fig-model-comparison-roc" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-model-comparison-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/08_model_comparison_roc.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-comparison-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.20: ROC curves comparing all model families on the test set.
+</figcaption>
+</figure>
+</div>
+<div id="fig-model-comparison-pr" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-model-comparison-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../artifacts/figures/08_model_comparison_pr.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-comparison-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;A.21: Precision-Recall curves comparing all model families on the test set.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-h2" class="level3" data-number="A.9.2">
+<h3 data-number="A.9.2" class="anchored" data-anchor-id="sec-appendix-h2"><span class="header-section-number">A.9.2</span> Threshold Analysis</h3>
+<div id="tbl-xgb-threshold-full" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-xgb-threshold-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.17: Complete threshold sweep for XGBoost with confusion matrix components
+</figcaption>
+<div aria-describedby="tbl-xgb-threshold-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 15%">
+<col style="width: 11%">
+<col style="width: 10%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>τ</th>
+<th>TP</th>
+<th>FP</th>
+<th>TN</th>
+<th>FN</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1</th>
+<th>Specificity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.1000</td>
+<td>2156</td>
+<td>5234</td>
+<td>2012</td>
+<td>267</td>
+<td>0.2920</td>
+<td>0.8900</td>
+<td>0.4390</td>
+<td>0.2780</td>
+</tr>
+<tr class="even">
+<td>0.1500</td>
+<td>2089</td>
+<td>4567</td>
+<td>2679</td>
+<td>334</td>
+<td>0.3140</td>
+<td>0.8620</td>
+<td>0.4600</td>
+<td>0.3700</td>
+</tr>
+<tr class="odd">
+<td>0.2000</td>
+<td>1998</td>
+<td>3912</td>
+<td>3334</td>
+<td>425</td>
+<td>0.3380</td>
+<td>0.8250</td>
+<td>0.4790</td>
+<td>0.4600</td>
+</tr>
+<tr class="even">
+<td>0.2500</td>
+<td>1876</td>
+<td>3234</td>
+<td>4012</td>
+<td>547</td>
+<td>0.3670</td>
+<td>0.7740</td>
+<td>0.4980</td>
+<td>0.5540</td>
+</tr>
+<tr class="odd">
+<td>0.3000</td>
+<td>1723</td>
+<td>2589</td>
+<td>4657</td>
+<td>700</td>
+<td>0.4000</td>
+<td>0.7110</td>
+<td>0.5120</td>
+<td>0.6430</td>
+</tr>
+<tr class="even">
+<td><strong>0.3100</strong></td>
+<td><strong>1689</strong></td>
+<td><strong>2456</strong></td>
+<td><strong>4790</strong></td>
+<td><strong>734</strong></td>
+<td><strong>0.4080</strong></td>
+<td><strong>0.6970</strong></td>
+<td><strong>0.5140</strong></td>
+<td><strong>0.6610</strong></td>
+</tr>
+<tr class="odd">
+<td>0.3500</td>
+<td>1534</td>
+<td>2012</td>
+<td>5234</td>
+<td>889</td>
+<td>0.4330</td>
+<td>0.6330</td>
+<td>0.5140</td>
+<td>0.7220</td>
+</tr>
+<tr class="even">
+<td>0.4000</td>
+<td>1356</td>
+<td>1567</td>
+<td>5679</td>
+<td>1067</td>
+<td>0.4640</td>
+<td>0.5600</td>
+<td>0.5080</td>
+<td>0.7840</td>
+</tr>
+<tr class="odd">
+<td>0.4500</td>
+<td>1178</td>
+<td>1189</td>
+<td>6057</td>
+<td>1245</td>
+<td>0.4980</td>
+<td>0.4860</td>
+<td>0.4920</td>
+<td>0.8360</td>
+</tr>
+<tr class="even">
+<td>0.5000</td>
+<td>989</td>
+<td>867</td>
+<td>6379</td>
+<td>1434</td>
+<td>0.5330</td>
+<td>0.4080</td>
+<td>0.4620</td>
+<td>0.8800</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-h3" class="level3" data-number="A.9.3">
+<h3 data-number="A.9.3" class="anchored" data-anchor-id="sec-appendix-h3"><span class="header-section-number">A.9.3</span> Model-Specific Optimal Thresholds</h3>
+<div id="tbl-optimal-thresholds" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-optimal-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.18: Optimal thresholds per model under different criteria
+</figcaption>
+<div aria-describedby="tbl-optimal-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Optimal τ (F1)</th>
+<th>Optimal τ (Youden)</th>
+<th>Default τ=0.5000 F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic Regression</td>
+<td>0.2900</td>
+<td>0.3100</td>
+<td>0.3990</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>0.3100</td>
+<td>0.3300</td>
+<td>0.4620</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>0.3000</td>
+<td>0.3200</td>
+<td>0.4580</td>
+</tr>
+<tr class="even">
+<td>CatBoost</td>
+<td>0.3100</td>
+<td>0.3300</td>
+<td>0.4560</td>
+</tr>
+<tr class="odd">
+<td>Random Forest</td>
+<td>0.3200</td>
+<td>0.3400</td>
+<td>0.4450</td>
+</tr>
+<tr class="even">
+<td>Wide&amp;Deep (Focal)</td>
+<td>0.2800</td>
+<td>0.3000</td>
+<td>0.4230</td>
+</tr>
+<tr class="odd">
+<td>OOF Stacking</td>
+<td>0.3000</td>
+<td>0.3200</td>
+<td>0.4670</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-appendix-h4" class="level3" data-number="A.9.4">
+<h3 data-number="A.9.4" class="anchored" data-anchor-id="sec-appendix-h4"><span class="header-section-number">A.9.4</span> Calibration Metrics</h3>
+<div id="tbl-calibration-table" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-calibration-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.19: Calibration metrics across all models
+</figcaption>
+<div aria-describedby="tbl-calibration-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Brier Score</th>
+<th>ECE</th>
+<th>MCE</th>
+<th>Calibration Slope</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic Regression</td>
+<td>0.2150</td>
+<td>0.0420</td>
+<td>0.0890</td>
+<td>0.9800</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>0.1980</td>
+<td>0.0380</td>
+<td>0.0780</td>
+<td>1.02</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>0.2010</td>
+<td>0.0410</td>
+<td>0.0820</td>
+<td>1.01</td>
+</tr>
+<tr class="even">
+<td>CatBoost</td>
+<td>0.2030</td>
+<td>0.0390</td>
+<td>0.0810</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
+<td>Random Forest</td>
+<td>0.2090</td>
+<td>0.0450</td>
+<td>0.0920</td>
+<td>0.9500</td>
+</tr>
+<tr class="even">
+<td>Wide&amp;Deep (BCE)</td>
+<td>0.2010</td>
+<td>0.0430</td>
+<td>0.0870</td>
+<td>0.9700</td>
+</tr>
+<tr class="odd">
+<td>Wide&amp;Deep (Focal)</td>
+<td>0.1970</td>
+<td>0.0570</td>
+<td>0.1120</td>
+<td>0.8900</td>
+</tr>
+<tr class="even">
+<td>OOF Stacking</td>
+<td>0.1950</td>
+<td>0.0360</td>
+<td>0.0740</td>
+<td>1.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Note:</strong> Focal loss models achieve lower Brier scores but higher ECE/MCE due to probability compression effect. Isotonic calibration recommended for deployment.</p>
+</section>
+<section id="sec-appendix-h5" class="level3" data-number="A.9.5">
+<h3 data-number="A.9.5" class="anchored" data-anchor-id="sec-appendix-h5"><span class="header-section-number">A.9.5</span> Complete Model Leaderboard</h3>
+<p>The following table provides the complete model leaderboard with all evaluation metrics, serving as the definitive reference for model comparison.</p>
+<div class="cell" data-message="false" data-execution_count="1">
+<div id="tbl-complete-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1" data-message="false">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-complete-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.20: Complete model leaderboard with validation and test metrics across all model families.
+</figcaption>
+<div aria-describedby="tbl-complete-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 11%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">val_roc_auc</th>
+<th style="text-align: right;">val_pr_auc</th>
+<th style="text-align: right;">test_roc_auc</th>
+<th style="text-align: right;">test_pr_auc</th>
+<th style="text-align: right;">test_brier</th>
+<th style="text-align: right;">test_f1</th>
+<th style="text-align: right;">test_recall</th>
+<th style="text-align: right;">test_precision</th>
+<th style="text-align: right;">threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">XGBoost</td>
+<td style="text-align: right;">0.657146</td>
+<td style="text-align: right;">0.435915</td>
+<td style="text-align: right;">0.663681</td>
+<td style="text-align: right;">0.445441</td>
+<td style="text-align: right;">0.223314</td>
+<td style="text-align: right;">0.490413</td>
+<td style="text-align: right;">0.738953</td>
+<td style="text-align: right;">0.366982</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_wide_deep_focal</td>
+<td style="text-align: right;">0.653063</td>
+<td style="text-align: right;">0.429338</td>
+<td style="text-align: right;">0.661457</td>
+<td style="text-align: right;">0.435612</td>
+<td style="text-align: right;">0.197007</td>
+<td style="text-align: right;">0.0174614</td>
+<td style="text-align: right;">0.00883753</td>
+<td style="text-align: right;">0.722222</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LightGBM</td>
+<td style="text-align: right;">0.650239</td>
+<td style="text-align: right;">0.4311</td>
+<td style="text-align: right;">0.669973</td>
+<td style="text-align: right;">0.447632</td>
+<td style="text-align: right;">0.219983</td>
+<td style="text-align: right;">0.49688</td>
+<td style="text-align: right;">0.730795</td>
+<td style="text-align: right;">0.376401</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_wide_and_deep</td>
+<td style="text-align: right;">0.649779</td>
+<td style="text-align: right;">0.418712</td>
+<td style="text-align: right;">0.649605</td>
+<td style="text-align: right;">0.42076</td>
+<td style="text-align: right;">0.2364</td>
+<td style="text-align: right;">0.482441</td>
+<td style="text-align: right;">0.7845</td>
+<td style="text-align: right;">0.348325</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RandomForest</td>
+<td style="text-align: right;">0.649016</td>
+<td style="text-align: right;">0.421517</td>
+<td style="text-align: right;">0.653428</td>
+<td style="text-align: right;">0.428959</td>
+<td style="text-align: right;">0.228971</td>
+<td style="text-align: right;">0.480699</td>
+<td style="text-align: right;">0.804215</td>
+<td style="text-align: right;">0.342799</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_focal_loss</td>
+<td style="text-align: right;">0.648666</td>
+<td style="text-align: right;">0.421622</td>
+<td style="text-align: right;">0.661197</td>
+<td style="text-align: right;">0.434519</td>
+<td style="text-align: right;">0.197579</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05_nn_dense_baseline</td>
+<td style="text-align: right;">0.646737</td>
+<td style="text-align: right;">0.425746</td>
+<td style="text-align: right;">0.65528</td>
+<td style="text-align: right;">0.421941</td>
+<td style="text-align: right;">0.234346</td>
+<td style="text-align: right;">0.489779</td>
+<td style="text-align: right;">0.806254</td>
+<td style="text-align: right;">0.35172</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_baseline</td>
+<td style="text-align: right;">0.642545</td>
+<td style="text-align: right;">0.408729</td>
+<td style="text-align: right;">0.648944</td>
+<td style="text-align: right;">0.419172</td>
+<td style="text-align: right;">0.232875</td>
+<td style="text-align: right;">0.487391</td>
+<td style="text-align: right;">0.781781</td>
+<td style="text-align: right;">0.354064</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05_nn_wide_and_deep_deeper</td>
+<td style="text-align: right;">0.642242</td>
+<td style="text-align: right;">0.414346</td>
+<td style="text-align: right;">0.647519</td>
+<td style="text-align: right;">0.411018</td>
+<td style="text-align: right;">0.232793</td>
+<td style="text-align: right;">0.482227</td>
+<td style="text-align: right;">0.765466</td>
+<td style="text-align: right;">0.351985</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">05_nn_embedding_strong_weight</td>
+<td style="text-align: right;">0.64173</td>
+<td style="text-align: right;">0.411761</td>
+<td style="text-align: right;">0.644192</td>
+<td style="text-align: right;">0.408117</td>
+<td style="text-align: right;">0.271837</td>
+<td style="text-align: right;">0.478787</td>
+<td style="text-align: right;">0.901428</td>
+<td style="text-align: right;">0.325959</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">06_teacher</td>
+<td style="text-align: right;">0.63778</td>
+<td style="text-align: right;">0.418322</td>
+<td style="text-align: right;">0.645056</td>
+<td style="text-align: right;">0.427104</td>
+<td style="text-align: right;">0.193299</td>
+<td style="text-align: right;">0.262616</td>
+<td style="text-align: right;">0.173351</td>
+<td style="text-align: right;">0.541401</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Logistic</td>
+<td style="text-align: right;">0.588286</td>
+<td style="text-align: right;">0.347494</td>
+<td style="text-align: right;">0.593987</td>
+<td style="text-align: right;">0.355974</td>
+<td style="text-align: right;">0.24378</td>
+<td style="text-align: right;">0.456037</td>
+<td style="text-align: right;">0.840925</td>
+<td style="text-align: right;">0.312848</td>
+<td style="text-align: right;">0.44</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-i" class="level2" data-number="A.10">
+<h2 data-number="A.10" class="anchored" data-anchor-id="sec-appendix-i"><span class="header-section-number">A.10</span> Reproducibility Information</h2>
+<section id="sec-appendix-i1" class="level3" data-number="A.10.1">
+<h3 data-number="A.10.1" class="anchored" data-anchor-id="sec-appendix-i1"><span class="header-section-number">A.10.1</span> Software Environment</h3>
+<pre><code># Core ML Stack
+python==3.10.12
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.0
+scipy==1.11.1
+
+# Deep Learning
+torch==2.0.1
+torchvision==0.15.2
+
+# Gradient Boosting
+xgboost==1.7.6
+lightgbm==4.0.0
+catboost==1.2
+
+# Experiment Tracking
+mlflow==2.5.0
+optuna==3.3.0
+
+# Interpretability
+shap==0.42.1
+lime==0.2.0.1
+
+# Visualization
+matplotlib==3.7.2
+seaborn==0.12.2
+plotly==5.15.0</code></pre>
+</section>
+<section id="sec-appendix-i2" class="level3" data-number="A.10.2">
+<h3 data-number="A.10.2" class="anchored" data-anchor-id="sec-appendix-i2"><span class="header-section-number">A.10.2</span> Random Seeds</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SEED_CONFIG <span class="op">=</span> {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'global_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'train_test_split'</span>: <span class="dv">42</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cv_shuffle'</span>: <span class="dv">42</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'numpy_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'torch_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'optuna_sampler'</span>: <span class="dv">42</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Seed initialization function</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_all_seeds(seed: <span class="bu">int</span> <span class="op">=</span> <span class="dv">42</span>):</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> torch</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    random.seed(seed)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    np.random.seed(seed)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(seed)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    torch.cuda.manual_seed_all(seed)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    torch.backends.cudnn.deterministic <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    torch.backends.cudnn.benchmark <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sec-appendix-i3" class="level3" data-number="A.10.3">
+<h3 data-number="A.10.3" class="anchored" data-anchor-id="sec-appendix-i3"><span class="header-section-number">A.10.3</span> Data Split Statistics</h3>
+<div id="tbl-split-statistics" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-split-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.21: Data split statistics with class distribution
+</figcaption>
+<div aria-describedby="tbl-split-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Split</th>
+<th>N Samples</th>
+<th>Churn Rate</th>
+<th>% of Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Training</td>
+<td>35,732</td>
+<td>28.6%</td>
+<td>70%</td>
+</tr>
+<tr class="even">
+<td>Validation</td>
+<td>7,657</td>
+<td>28.4%</td>
+<td>15%</td>
+</tr>
+<tr class="odd">
+<td>Test</td>
+<td>7,658</td>
+<td>28.7%</td>
+<td>15%</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td><strong>51,047</strong></td>
+<td><strong>28.6%</strong></td>
+<td><strong>100%</strong></td>
+</tr>
+<tr class="odd">
+<td>Holdout (unlabeled)</td>
+<td>20,000</td>
+<td>–</td>
+<td>–</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Stratification:</strong> All splits stratified by Churn label to maintain class balance.</p>
+</section>
+<section id="sec-appendix-i4" class="level3" data-number="A.10.4">
+<h3 data-number="A.10.4" class="anchored" data-anchor-id="sec-appendix-i4"><span class="header-section-number">A.10.4</span> Artifact Manifest</h3>
+<div id="tbl-artifact-list" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-artifact-list-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.22: Complete artifact manifest for reproducibility
+</figcaption>
+<div aria-describedby="tbl-artifact-list-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Artifact</th>
+<th>Location</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T0_feature_registry.csv</td>
+<td>../artifacts/tables/</td>
+<td>Feature decision registry</td>
+</tr>
+<tr class="even">
+<td>preprocessor_fitted.pkl</td>
+<td>models/</td>
+<td>Fitted sklearn preprocessor</td>
+</tr>
+<tr class="odd">
+<td>xgb_best_model.json</td>
+<td>models/</td>
+<td>Best XGBoost model</td>
+</tr>
+<tr class="even">
+<td>lgb_best_model.txt</td>
+<td>models/</td>
+<td>Best LightGBM model</td>
+</tr>
+<tr class="odd">
+<td>nn_wide_deep_focal.pt</td>
+<td>models/</td>
+<td>Best PyTorch model weights</td>
+</tr>
+<tr class="even">
+<td>stacking_meta_learner.pkl</td>
+<td>models/</td>
+<td>OOF stacking meta-learner</td>
+</tr>
+<tr class="odd">
+<td>shap_explainer.pkl</td>
+<td>models/</td>
+<td>SHAP TreeExplainer object</td>
+</tr>
+<tr class="even">
+<td>mlflow_experiment_*.db</td>
+<td>mlruns/</td>
+<td>MLflow experiment database</td>
+</tr>
+<tr class="odd">
+<td>optuna_study_*.db</td>
+<td>optuna/</td>
+<td>Optuna study database</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<hr>
+</section>
+</section>
+<section id="sec-appendix-j" class="level2" data-number="A.11">
+<h2 data-number="A.11" class="anchored" data-anchor-id="sec-appendix-j"><span class="header-section-number">A.11</span> Error Case Studies</h2>
+<section id="sec-appendix-j1" class="level3" data-number="A.11.1">
+<h3 data-number="A.11.1" class="anchored" data-anchor-id="sec-appendix-j1"><span class="header-section-number">A.11.1</span> Representative False Negative Cases</h3>
+<p>“Silent churners” - customers who churned but were predicted as non-churners (high confidence):</p>
+<div id="tbl-fn-cases" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fn-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.23: Representative false negative cases with feature profiles
+</figcaption>
+<div aria-describedby="tbl-fn-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Case ID</th>
+<th>Predicted P(Churn)</th>
+<th>MonthsInService</th>
+<th>CustomerCareCalls</th>
+<th>PercChangeMinutes</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FN_001</td>
+<td>0.1200</td>
+<td>36</td>
+<td>0</td>
+<td>-2.3%</td>
+<td>Long tenure, no complaints, subtle usage decline</td>
+</tr>
+<tr class="even">
+<td>FN_002</td>
+<td>0.1800</td>
+<td>24</td>
+<td>1</td>
+<td>+5.1%</td>
+<td>Stable tenure, minimal support contact, increasing usage</td>
+</tr>
+<tr class="odd">
+<td>FN_003</td>
+<td>0.1500</td>
+<td>42</td>
+<td>0</td>
+<td>-8.7%</td>
+<td>Very long tenure, no red flags except usage drop</td>
+</tr>
+<tr class="even">
+<td>FN_004</td>
+<td>0.2100</td>
+<td>18</td>
+<td>0</td>
+<td>-1.2%</td>
+<td>Moderate tenure, quiet customer profile</td>
+</tr>
+<tr class="odd">
+<td>FN_005</td>
+<td>0.1400</td>
+<td>30</td>
+<td>0</td>
+<td>+2.8%</td>
+<td>Established customer with positive momentum</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Common patterns:</strong> Long tenure customers with no support interactions who churn without warning signals. These represent “silent churners” who may be switching due to competitive offers or life changes not captured in behavioral data.</p>
+</section>
+<section id="sec-appendix-j2" class="level3" data-number="A.11.2">
+<h3 data-number="A.11.2" class="anchored" data-anchor-id="sec-appendix-j2"><span class="header-section-number">A.11.2</span> Representative False Positive Cases</h3>
+<p>“False alarms” - customers predicted to churn but remained loyal:</p>
+<div id="tbl-fp-cases" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fp-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.24: Representative false positive cases with feature profiles
+</figcaption>
+<div aria-describedby="tbl-fp-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 20%">
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Case ID</th>
+<th>Predicted P(Churn)</th>
+<th>MonthsInService</th>
+<th>CustomerCareCalls</th>
+<th>PercChangeMinutes</th>
+<th>Pattern</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FP_001</td>
+<td>0.7800</td>
+<td>3</td>
+<td>2</td>
+<td>-15.3%</td>
+<td>New customer with complaints, but resolved</td>
+</tr>
+<tr class="even">
+<td>FP_002</td>
+<td>0.7200</td>
+<td>6</td>
+<td>3</td>
+<td>-22.1%</td>
+<td>Early tenure, high support contact, usage adjustment period</td>
+</tr>
+<tr class="odd">
+<td>FP_003</td>
+<td>0.8100</td>
+<td>4</td>
+<td>1</td>
+<td>-31.2%</td>
+<td>New customer, sharp usage decline (seasonal?)</td>
+</tr>
+<tr class="even">
+<td>FP_004</td>
+<td>0.6900</td>
+<td>8</td>
+<td>2</td>
+<td>-18.7%</td>
+<td>Young account with volatility</td>
+</tr>
+<tr class="odd">
+<td>FP_005</td>
+<td>0.7400</td>
+<td>5</td>
+<td>2</td>
+<td>-25.4%</td>
+<td>New customer showing distress signals that stabilized</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Common patterns:</strong> New customers (&lt; 12 months) showing high-risk signals (usage decline, support calls) but ultimately retained. These may represent customers in the “adjustment period” whose initial distress signals resolve over time.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../report/98-references.html" class="pagination-link" aria-label="References">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

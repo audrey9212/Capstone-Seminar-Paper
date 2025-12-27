@@ -1,0 +1,22 @@
+{
+  "batch_size": 256,
+  "epochs": 100,
+  "lr": 0.001,
+  "patience": 15,
+  "pos_weight": 2.469878494349562,
+  "model_type": "embedding",
+  "embedding_dim": 8,
+  "hidden_dims": [
+    128,
+    64
+  ],
+  "dropout": 0.3,
+  "loss_type": "focal",
+  "focal_alpha": 0.25,
+  "focal_gamma": 2.0,
+  "feature_signature": "bb398aea7dc3d310",
+  "config_hash": "cc78d361971d57fc",
+  "best_epoch": 49,
+  "train_time": 42.94638180732727,
+  "n_params": 19905
+}

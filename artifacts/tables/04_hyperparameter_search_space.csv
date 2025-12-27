@@ -1,0 +1,10 @@
+Parameter,Type,Range,Step
+max_depth,Integer,3 - 10,1
+learning_rate,Float (Log),0.01 - 0.3,-
+n_estimators,Integer,100 - 500,50
+subsample,Float,0.6 - 1.0,-
+colsample_bytree,Float,0.6 - 1.0,-
+min_child_weight,Integer,1 - 10,1
+gamma,Float,0.0 - 5.0,-
+reg_alpha,Float,0.0 - 1.0,-
+reg_lambda,Float,0.0 - 1.0,-
