@@ -32,10 +32,10 @@ To address the above gaps, this study is organized around three research questio
 
 This study makes the following contributions, emphasizing a unified pipeline that balances predictive performance and interpretability:
 
-- **Comparative modeling under consistent controls**: Multiple model families are implemented and evaluated in a standardized setting, spanning interpretable baselines and higher-capacity learners reported as strong performers in churn prediction research [@lemmens2006baggingboostingclassification; @bogaert2023ensemblemethodscustomer;  @lalwani2022customerchurnprediction].
+- **Comparative modeling under consistent controls**: Multiple model families are implemented and evaluated in a standardized setting, spanning interpretable baselines and higher-capacity learners reported as strong performers in churn prediction research [@lemmens2006baggingboostingclassification; @bogaert2023ensemblemethodscustomer; @lalwani2022customerchurnprediction].
 - **Imbalance-aware evaluation emphasis**: The study foregrounds pitfalls of accuracy-dominated reporting and motivates decision-relevant evaluation under imbalance, consistent with prior findings in churn prediction methodology research [@burez2009handlingclassimbalance; @akosa2017predictiveaccuracymisleading; @zhu2023baggingbasedselectiveensemble].
 - **Interpretability aligned with deployment needs**: The research treats interpretability as an operational requirement: model outputs are framed as inputs to retention actions (not solely as predictive scores), with the objective of producing explanations that support practical intervention design.
-- **Planned extension beyond supervised learning**: In addition to supervised modeling, a semi-supervised direction is articulated as future work in response to practical constraints highlighted in recent reviews, acknowledging that real-world churn labeling can be incomplete or delayed [@imanievaluatingclassificationsampling].
+- **Extension beyond supervised learning**: In addition to supervised modeling, a semi-supervised extension using a denoising autoencoder and pseudo-labeling is implemented and evaluated, addressing practical constraints in churn settings where labeling can be incomplete or delayed [@imanievaluatingclassificationsampling].
 
 ## Paper Roadmap
 
