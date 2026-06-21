@@ -159,7 +159,7 @@ Each categorical feature is mapped to a learnable embedding vector. The embeddin
 The concatenated representation (embeddings + continuous + binary) is passed through a feedforward network with ReLU activations and dropout regularization between layers. A typical configuration uses two hidden layers with decreasing width (e.g., 128 → 64), though the exact architecture can be varied experimentally.
 
 #### Output head.
-A final linear layer with a single output unit produces a logit, which is passed through a sigmoid activation to yield a churn probability. For training, the loss is computed directly on the logit (using `BCEWithLogitsLoss` or focal loss variants), which is numerically more stable than applying sigmoid before loss computation.
+A final linear layer with a single output unit produces a logit, which is passed through a sigmoid activation to yield a churn probability. For training, the loss is computed directly on the logit (using BCEWithLogitsLoss or focal loss variants), which is numerically more stable than applying sigmoid before loss computation.
 
 ```{python}
 #| label: fig-embedding-mlp
@@ -392,7 +392,7 @@ fig_dir = root / "artifacts" / "figures"
 
 candidates = []
 if fig_dir.exists():
-    for pat in ["07_stacking*.png", "*stacking*arch*.png", "*oof*stacking*.png"]:
+    for pat in ["stacking_schematic*.png", "07_stacking*.png", "*stacking*arch*.png", "*oof*stacking*.png"]:
         candidates.extend(sorted(fig_dir.glob(pat)))
 
 img_path = candidates[0] if candidates else None
