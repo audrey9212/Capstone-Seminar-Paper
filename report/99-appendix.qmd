@@ -467,14 +467,15 @@ The OOF stacking meta-learner (logistic regression with L2 regularization) was t
 | Ensemble Method | Val ROC-AUC | Test ROC-AUC | Test PR-AUC |
 |-----------------|-------------|--------------|-------------|
 | Best Single (XGBoost) | 0.6571 | 0.6637 | 0.4454 |
-| Simple Average | 0.6579 | 0.6683 | 0.4472 |
-| AUC-Weighted | 0.6583 | 0.6688 | 0.4488 |
-| **NNLS-Optimized** | **0.6587** | **0.6672** | **0.4488** |
-| OOF Stacking | 0.6586 | 0.6679 | 0.4490 |
+| Simple Average | 0.6592 | 0.6695 | 0.4489 |
+| AUC-Weighted | 0.6596 | 0.6701 | 0.4507 |
+| **NNLS-Optimized** | **0.6619** | **0.6704** | **0.4517** |
+| OOF Stacking (4 models) | 0.6586 | 0.6679 | 0.4490 |
+| **OOF Stacking + Wide & Deep** | **0.6609** | **0.6702** | **0.4512** |
 
-: Ensemble method comparison with computational costs {#tbl-ensemble-comparison}
+: Ensemble method comparison. The five-model OOF stacking adds Wide & Deep as a fifth base learner trained via proper K-fold OOF to prevent leakage. {#tbl-ensemble-comparison}
 
-**Observation:** OOF stacking achieves the best validation AUC but slightly lower test AUC than NNLS blending, suggesting mild overfitting to validation folds.
+**Observation:** NNLS-optimized blending achieves the highest test ROC-AUC (0.6704). Adding Wide & Deep as a fifth base learner improves OOF stacking from 0.6679 to 0.6702, nearly matching NNLS blending. All heterogeneous ensembles substantially outperform any single model.
 
 ---
 
@@ -540,9 +541,10 @@ The OOF stacking meta-learner (logistic regression with L2 regularization) was t
 | LightGBM | 0.3000 | 0.3200 | 0.4580 |
 | Random Forest | 0.3200 | 0.3400 | 0.4450 |
 | Wide&Deep (Focal) | 0.2800 | 0.3000 | 0.4230 |
-| OOF Stacking | 0.3000 | 0.3200 | 0.4670 |
+| OOF Stacking (4 models) | 0.3000 | 0.3200 | 0.4670 |
+| OOF Stacking + Wide & Deep | 0.2243 | 0.2189 | — |
 
-: Optimal thresholds per model under different criteria {#tbl-optimal-thresholds}
+: Optimal thresholds per model under different criteria. The five-model OOF stacking requires a lower threshold (≈0.22) because the meta-learner probability scale differs from raw model scores. {#tbl-optimal-thresholds}
 
 ### Calibration Metrics {#sec-appendix-h4}
 

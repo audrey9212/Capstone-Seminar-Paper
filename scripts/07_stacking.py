@@ -36,6 +36,7 @@ import numpy as np
 import pandas as pd
 
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import KFold, cross_val_predict
 
 import utils as U
 import src.ensemble_models as EM
@@ -101,10 +102,228 @@ def _first_existing(paths: List[Path]) -> Path:
     raise FileNotFoundError(f"None of the candidate model paths exist: {[str(p) for p in paths]}")
 
 
+def load_nn_predictions() -> Dict[str, np.ndarray]:
+    """
+    Load pre-computed Wide & Deep (focal) val/test probabilities saved by 05_nn.py.
+    Returns dict with 'val' and 'test' arrays, or empty dict if files not found.
+    """
+    preds_dir = U.DIRS.artifacts / "preds"
+    val_path  = preds_dir / "05_nn_wide_deep_focal_val_proba.npy"
+    test_path = preds_dir / "05_nn_wide_deep_focal_test_proba.npy"
+    if val_path.exists() and test_path.exists():
+        return {
+            "val":  np.load(val_path).reshape(-1),
+            "test": np.load(test_path).reshape(-1),
+        }
+    print("  [WARN] Wide & Deep predictions not found; skipping NN base model.")
+    return {}
+
+
+def load_deep_data() -> Dict | None:
+    """
+    Load deep-feature splits (X_*_deep) and feature groups for Wide & Deep OOF.
+    Returns None if the deep CSV files are not present.
+    """
+    data_dir = U.DIRS.processed
+    paths = [data_dir / "X_train_deep.csv", data_dir / "X_val_deep.csv", data_dir / "X_test_deep.csv"]
+    if not all(p.exists() for p in paths):
+        print("  [WARN] X_*_deep.csv files not found; Wide & Deep OOF will be skipped.")
+        return None
+
+    X_train = pd.read_csv(paths[0])
+    X_val   = pd.read_csv(paths[1])
+    X_test  = pd.read_csv(paths[2])
+
+    # Load feature groups
+    pp_path = data_dir / "preprocess_params.json"
+    fg_path = U.DIRS.meta / "feature_groups.json"
+    feature_groups: Dict = {}
+    cat_mappings: Dict = {}
+
+    if fg_path.exists():
+        feature_groups = U.load_json(fg_path)
+        feature_groups = {k: [c for c in v if c in X_train.columns] for k, v in feature_groups.items()}
+    elif pp_path.exists():
+        pp = U.load_json(pp_path)
+        if "feature_groups" in pp:
+            feature_groups = pp["feature_groups"]
+            feature_groups = {k: [c for c in v if c in X_train.columns] for k, v in feature_groups.items()}
+        else:
+            # Infer from categorical_mappings / numeric_scaler keys
+            cat_mappings = pp.get("categorical_mappings", {})
+            cat_cols_inferred  = sorted(set(cat_mappings.keys()) & set(X_train.columns))
+            cont_cols_inferred = sorted(set(pp.get("numeric_scaler", {}).keys()) & set(X_train.columns))
+            bin_cols_inferred  = sorted(
+                c for c in X_train.columns
+                if c not in cat_cols_inferred and c not in cont_cols_inferred
+                and X_train[c].nunique() == 2
+            )
+            feature_groups = {
+                "continuous": cont_cols_inferred,
+                "categorical": cat_cols_inferred,
+                "binary": bin_cols_inferred,
+            }
+        cat_mappings = pp.get("categorical_mappings", {})
+
+    # Build categorical cardinalities
+    cat_cols = feature_groups.get("categorical", [])
+    cat_cards: Dict[str, int] = {}
+    for col in cat_cols:
+        if col in cat_mappings:
+            cat_cards[col] = max(cat_mappings[col].values()) + 1 if cat_mappings[col] else 1
+        else:
+            cat_cards[col] = int(X_train[col].max() + 1)
+
+    return {
+        "X_train": X_train, "X_val": X_val, "X_test": X_test,
+        "feature_groups": feature_groups,
+        "cat_cards": cat_cards,
+    }
+
+
+def _build_nn_loader(X_df: pd.DataFrame, y_arr: np.ndarray, feature_groups: Dict,
+                     cat_cards: Dict, batch_size: int, shuffle: bool, seed: int = 42):
+    """Create a DataLoader and return (loader, input_dims)."""
+    import torch
+    from torch.utils.data import DataLoader
+    sys.path.insert(0, str(PROJECT_ROOT / "src"))
+    import nn_models as NM
+
+    dataset = NM.ChurnDataset(
+        X_df, y_arr,
+        continuous_cols=feature_groups.get("continuous", []),
+        categorical_cols=feature_groups.get("categorical", []),
+        binary_cols=feature_groups.get("binary", []),
+        categorical_cardinalities=cat_cards,
+    )
+    g = torch.Generator()
+    g.manual_seed(seed)
+    loader = DataLoader(
+        dataset, batch_size=batch_size, shuffle=shuffle,
+        generator=g if shuffle else None,
+        num_workers=0,
+    )
+    return loader, dataset.get_input_dims()
+
+
+def _train_one_fold_nn(X_train_f, y_train_f, X_val_f, y_val_f,
+                       feature_groups, cat_cards, input_dims, device,
+                       epochs: int, batch_size: int, patience: int, seed: int):
+    """Train a single Wide & Deep fold; return (model, oof_val_proba)."""
+    import inspect
+    import torch
+    sys.path.insert(0, str(PROJECT_ROOT / "src"))
+    import nn_models as NM
+
+    train_loader, _ = _build_nn_loader(X_train_f, y_train_f, feature_groups, cat_cards, batch_size, True,  seed)
+    val_loader,   _ = _build_nn_loader(X_val_f,   y_val_f,   feature_groups, cat_cards, batch_size, False, seed)
+
+    model = NM.create_wide_deep_model(
+        input_dims, embedding_dim=8, deep_hidden_dims=[128, 64], dropout=0.3, alpha=0.5,
+    ).to(device)
+
+    criterion = NM.FocalLoss(alpha=0.25, gamma=2.0)
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)
+    scheduler_kwargs = dict(mode="max", factor=0.5, patience=5, min_lr=1e-6)
+    sig = inspect.signature(torch.optim.lr_scheduler.ReduceLROnPlateau.__init__)
+    if "verbose" in sig.parameters:
+        scheduler_kwargs["verbose"] = False
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, **scheduler_kwargs)
+
+    _, best_state, _, _ = NM.train_model(
+        model, train_loader, val_loader, criterion, optimizer, scheduler,
+        epochs=epochs, device=device, patience=patience, verbose=False,
+    )
+    model.load_state_dict(best_state)
+
+    _, val_proba, _ = NM.evaluate_model(model, val_loader, device)
+    return model, val_proba
+
+
+def _predict_nn(model, X_df: pd.DataFrame, y_dummy: np.ndarray,
+                feature_groups: Dict, cat_cards: Dict, batch_size: int, device) -> np.ndarray:
+    """Get probability predictions from a Wide & Deep model."""
+    sys.path.insert(0, str(PROJECT_ROOT / "src"))
+    import nn_models as NM
+    loader, _ = _build_nn_loader(X_df, y_dummy, feature_groups, cat_cards, batch_size, False)
+    _, proba, _ = NM.evaluate_model(model, loader, device)
+    return proba
+
+
+def train_wide_deep_oof(
+    X_train_deep: pd.DataFrame,
+    y_train: np.ndarray,
+    X_val_deep: pd.DataFrame,
+    X_test_deep: pd.DataFrame,
+    feature_groups: Dict,
+    cat_cards: Dict,
+    cv_folds: int = 5,
+    seed: int = 42,
+    epochs: int = 50,
+    batch_size: int = 256,
+    patience: int = 10,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    5-fold OOF training of Wide & Deep (focal) model.
+    Returns (oof_train_preds, val_preds, test_preds).
+    val/test predictions are averaged across the 5 fold models.
+    """
+    try:
+        import torch
+        sys.path.insert(0, str(PROJECT_ROOT / "src"))
+        import nn_models as NM
+    except ImportError as exc:
+        raise RuntimeError(f"PyTorch / nn_models required for Wide & Deep OOF: {exc}")
+
+    NM.set_seed(seed)
+    device = NM.DEVICE
+
+    kf = KFold(n_splits=cv_folds, shuffle=True, random_state=seed)
+    oof_preds = np.zeros(len(y_train))
+    y_dummy_val  = np.zeros(len(X_val_deep),  dtype=np.float32)
+    y_dummy_test = np.zeros(len(X_test_deep), dtype=np.float32)
+
+    # Derive input_dims from first fold's training slice
+    first_train_idx = next(iter(kf.split(X_train_deep)))[0]
+    _, input_dims = _build_nn_loader(
+        X_train_deep.iloc[first_train_idx], y_train[first_train_idx],
+        feature_groups, cat_cards, batch_size=batch_size, shuffle=False, seed=seed,
+    )
+
+    fold_val_preds  = []
+    fold_test_preds = []
+
+    for fold, (train_idx, val_idx) in enumerate(kf.split(X_train_deep)):
+        print(f"    Fold {fold + 1}/{cv_folds}  (train={len(train_idx)}, oof={len(val_idx)}) ...", flush=True)
+
+        X_fold_tr = X_train_deep.iloc[train_idx].reset_index(drop=True)
+        X_fold_va = X_train_deep.iloc[val_idx].reset_index(drop=True)
+        y_fold_tr = y_train[train_idx].astype(np.float32)
+        y_fold_va = y_train[val_idx].astype(np.float32)
+
+        fold_model, oof_fold_proba = _train_one_fold_nn(
+            X_fold_tr, y_fold_tr, X_fold_va, y_fold_va,
+            feature_groups, cat_cards, input_dims, device,
+            epochs=epochs, batch_size=batch_size, patience=patience, seed=seed + fold,
+        )
+
+        oof_preds[val_idx] = oof_fold_proba
+        fold_val_preds.append( _predict_nn(fold_model, X_val_deep,  y_dummy_val,  feature_groups, cat_cards, batch_size, device))
+        fold_test_preds.append(_predict_nn(fold_model, X_test_deep, y_dummy_test, feature_groups, cat_cards, batch_size, device))
+
+        del fold_model
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+    val_preds  = np.mean(fold_val_preds,  axis=0)
+    test_preds = np.mean(fold_test_preds, axis=0)
+    return oof_preds, val_preds, test_preds
+
+
 def load_base_models() -> Dict[str, Dict]:
     """
-    Load the 4 base models from disk.
-    Adjust the candidate paths if your repo stores them differently.
+    Load the 4 sklearn base models from disk.
+    Wide & Deep is handled separately via load_nn_predictions().
     """
     models_dir = U.DIRS.models
     meta_dir = U.DIRS.meta
@@ -154,9 +373,11 @@ def generate_base_predictions(
     base_models: Dict[str, Dict],
     data: Dict,
     features: List[str],
+    nn_preds: Dict[str, np.ndarray] | None = None,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Dict]]:
     """
-    Predict on val/test using loaded models.
+    Predict on val/test using loaded sklearn models, then optionally merge
+    pre-computed Wide & Deep predictions (nn_preds).
     Returns val_preds_df, test_preds_df, and per-model metrics.
     """
     y_val = data["y_val"]
@@ -178,6 +399,16 @@ def generate_base_predictions(
         test_preds[name] = p_test
         metrics[name] = {"val_auc": val_auc, "test_auc": test_auc, "model_path": info["path"]}
 
+    # Merge pre-computed Wide & Deep predictions (blending only; not used in OOF)
+    if nn_preds:
+        p_val  = nn_preds["val"]
+        p_test = nn_preds["test"]
+        val_auc  = float(roc_auc_score(y_val,  p_val))
+        test_auc = float(roc_auc_score(y_test, p_test))
+        val_preds["WideDeep"]  = p_val
+        test_preds["WideDeep"] = p_test
+        metrics["WideDeep"] = {"val_auc": val_auc, "test_auc": test_auc, "model_path": "precomputed_npy"}
+
     return pd.DataFrame(val_preds), pd.DataFrame(test_preds), metrics
 
 
@@ -188,19 +419,24 @@ def run_experiments(
     fixed_threshold: float,
     cv_folds: int,
     seed: int,
+    nn_preds: Dict[str, np.ndarray] | None = None,
+    deep_data: Dict | None = None,
 ) -> Dict[str, Dict]:
     """
     Run:
-    - blends: avg / weighted(AUC) / NNLS / rank-avg
-    - stacking: OOF
+    - blends: avg / weighted(AUC) / NNLS / rank-avg  (includes WideDeep if available)
+    - stacking: Stacking_OOF  (4 sklearn base models via StackingClassifier)
+    - stacking: Stacking_OOF_5  (4 sklearn + Wide & Deep, manual OOF; only if deep_data provided)
     """
     results: Dict[str, Dict] = {}
 
     y_val = data["y_val"]
     y_test = data["y_test"]
 
-    # Base prediction matrices
-    val_preds_df, test_preds_df, base_metrics = generate_base_predictions(base_models, data, features)
+    # Base prediction matrices (includes WideDeep for blending)
+    val_preds_df, test_preds_df, base_metrics = generate_base_predictions(
+        base_models, data, features, nn_preds=nn_preds
+    )
 
     # 1) Simple average
     p_val = EM.blend_simple_average(val_preds_df)
@@ -257,6 +493,59 @@ def run_experiments(
         "test": EM.evaluate_probs(y_test, p_test, fixed_threshold=fixed_threshold).__dict__,
     }
 
+    # 6) Stacking OOF with Wide & Deep as 5th base learner (proper OOF for NN)
+    if deep_data is not None:
+        print("\n  [Stacking_OOF_5] Computing sklearn OOF predictions via cross_val_predict ...")
+        base_estimators_dict = {name: info["model"] for name, info in base_models.items()}
+        kf = KFold(n_splits=cv_folds, shuffle=True, random_state=seed)
+        sklearn_oof: Dict[str, np.ndarray] = {}
+        for name, model in base_estimators_dict.items():
+            print(f"    {name} (cross_val_predict) ...")
+            sklearn_oof[name] = cross_val_predict(
+                model, data["X_train"][features], data["y_train"],
+                cv=kf, method="predict_proba", n_jobs=1,
+            )[:, 1]
+
+        # Shut down loky worker pool before starting PyTorch to avoid OpenMP deadlock
+        try:
+            from joblib.externals.loky import get_reusable_executor
+            get_reusable_executor().shutdown(wait=True)
+        except Exception:
+            pass
+        import torch as _torch
+        _torch.set_num_threads(1)
+
+        print("\n  [Stacking_OOF_5] Training Wide & Deep 5-fold OOF ...")
+        wd_oof, wd_val, wd_test = train_wide_deep_oof(
+            deep_data["X_train"], data["y_train"],
+            deep_data["X_val"], deep_data["X_test"],
+            deep_data["feature_groups"], deep_data["cat_cards"],
+            cv_folds=cv_folds, seed=seed, epochs=50, batch_size=256, patience=10,
+        )
+
+        # Build meta-feature matrices
+        sklearn_names = list(sklearn_oof.keys())
+        oof_matrix  = np.column_stack([sklearn_oof[n] for n in sklearn_names] + [wd_oof])
+        val_meta    = np.column_stack([val_preds_df[n].values for n in sklearn_names] + [wd_val])
+        test_meta   = np.column_stack([test_preds_df[n].values for n in sklearn_names] + [wd_test])
+
+        from sklearn.linear_model import LogisticRegression as _MetaLR
+        meta_lr = _MetaLR(max_iter=2000, random_state=seed)
+        meta_lr.fit(oof_matrix, data["y_train"])
+
+        p_val  = meta_lr.predict_proba(val_meta)[:, 1]
+        p_test = meta_lr.predict_proba(test_meta)[:, 1]
+
+        results["Stacking_OOF_5"] = {
+            "val":  EM.evaluate_probs(y_val,  p_val,  fixed_threshold=fixed_threshold).__dict__,
+            "test": EM.evaluate_probs(y_test, p_test, fixed_threshold=fixed_threshold).__dict__,
+        }
+
+        # Persist WideDeep OOF val/test preds for downstream use
+        results["_wd_oof"]  = wd_oof
+        results["_wd_val"]  = wd_val
+        results["_wd_test"] = wd_test
+
     # Also return base preds & base metrics for saving
     results["_base_val_preds_df"] = val_preds_df
     results["_base_test_preds_df"] = test_preds_df
@@ -277,6 +566,16 @@ def save_outputs(results: Dict[str, Dict], fixed_threshold: float, features: Lis
     test_preds_df: pd.DataFrame = results.pop("_base_test_preds_df")
     base_metrics: Dict[str, Dict] = results.pop("_base_metrics")
     base_model_paths: Dict[str, str] = results.pop("_base_model_paths")
+    # Pop WideDeep OOF arrays if present (not JSON-serialisable as-is)
+    wd_oof  = results.pop("_wd_oof",  None)
+    wd_val  = results.pop("_wd_val",  None)
+    wd_test = results.pop("_wd_test", None)
+    if wd_oof is not None:
+        preds_dir = U.DIRS.artifacts / "preds"
+        preds_dir.mkdir(exist_ok=True, parents=True)
+        np.save(preds_dir / "07_wd_oof_train_proba.npy",  wd_oof)
+        np.save(preds_dir / "07_wd_oof_val_proba.npy",    wd_val)
+        np.save(preds_dir / "07_wd_oof_test_proba.npy",   wd_test)
 
     # Base preds (for appendix / diagnostics)
     U.save_df(val_preds_df, U.DIRS.tables / "07_base_pred_val.csv")
@@ -384,6 +683,21 @@ def main():
     for k, v in base_models.items():
         print(f"  [OK] {k} loaded from {v['path']}")
 
+    print("\nLoading Wide & Deep predictions (blending)...")
+    nn_preds = load_nn_predictions()
+    if nn_preds:
+        print(f"  [OK] WideDeep val/test proba loaded (val_auc will be computed)")
+    else:
+        print("  [SKIP] WideDeep predictions not available")
+
+    print("\nLoading Wide & Deep deep features (OOF stacking)...")
+    deep_data = load_deep_data()
+    if deep_data is not None:
+        print(f"  [OK] Deep features loaded: X_train={deep_data['X_train'].shape}, "
+              f"feature_groups keys={list(deep_data['feature_groups'].keys())}")
+    else:
+        print("  [SKIP] Deep features not available; Stacking_OOF_5 will be skipped")
+
     print("\nRunning ensemble experiments...")
     results = run_experiments(
         base_models=base_models,
@@ -392,6 +706,8 @@ def main():
         fixed_threshold=fixed_threshold,
         cv_folds=args.cv_folds,
         seed=args.seed,
+        nn_preds=nn_preds or None,
+        deep_data=deep_data,
     )
 
     print("\nSaving outputs...")

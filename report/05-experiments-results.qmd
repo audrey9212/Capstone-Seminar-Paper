@@ -613,7 +613,7 @@ Additional diagnostics, including latent t-SNE visualization (@fig-latent-tsne i
 
 ## Ensemble Results (Blending vs. OOF Stacking) {#sec-ensemble-results}
 
-To test whether combining heterogeneous learners could yield incremental gains beyond the best single model, several ensemble strategies were evaluated built on the same base predictors (Logistic Regression, XGBoost, LightGBM, Random Forest). @tbl-ensemble-leaderboard summarizes validation and test ranking performance.
+To test whether combining heterogeneous learners could yield incremental gains beyond the best single model, several ensemble strategies were evaluated. Blending methods use five base predictors (Logistic Regression, XGBoost, LightGBM, Random Forest, and Wide & Deep), while the four-model OOF stacking uses the four tree/linear models; a five-model OOF stacking variant additionally incorporates Wide & Deep predictions trained via proper K-fold out-of-fold to avoid meta-level leakage. @tbl-ensemble-leaderboard summarizes validation and test ranking performance.
 
 ```{python}
 #| label: tbl-ensemble-leaderboard
@@ -652,13 +652,15 @@ else:
 
 ### Blending Results
 
-Overall, blending delivered the strongest and most stable results, with Blend_WeightedAUC achieving the highest test ROC-AUC (0.6688) and a test PR-AUC of 0.4488. A simple unweighted average (Blend_SimpleAvg) performed nearly identically (test ROC-AUC 0.6683; PR-AUC 0.4472), suggesting that most of the ensemble benefit comes from variance reduction rather than finely tuned weights. The NNLS-constrained blend (Blend_NNLS) also matched this band (test ROC-AUC 0.6672; PR-AUC 0.4488).
+Overall, blending delivered strong results. The NNLS-constrained blend achieved the highest test ROC-AUC (0.6704; test PR-AUC 0.4517), followed closely by AUC-weighted blending (test ROC-AUC 0.6701; PR-AUC 0.4507). A simple unweighted average (Blend_SimpleAvg) performed nearly identically (test ROC-AUC 0.6695; PR-AUC 0.4489), suggesting that most of the ensemble benefit comes from variance reduction rather than finely tuned weights.
 
 Compared with the best single tree/GBM model from @sec-tree-gbm-results, these ensembles largely preserve discrimination while providing a small but consistent PR-AUC lift, which is most relevant under class imbalance. For operating-point comparability across all model families, the fixed threshold = 0.4400 is maintained for the main cross-section comparisons; tuned thresholds and blending weights for each ensemble are detailed in @sec-appendix-f4 (@tbl-ensemble-comparison).
 
 ### OOF Stacking Results
 
-OOF stacking (Stacking_OOF) performed competitively but not decisively better than blending: it reached test ROC-AUC 0.6679 and the highest test PR-AUC 0.4490 among the listed ensembles. Notably, its optimal threshold is much lower (approximately 0.2260) than the blending variants (approximately 0.4200), which is consistent with the meta-learner producing probabilities on a different scale (or less calibrated) even when ranking quality is similar. This makes stacking attractive for ranking, but it requires explicit threshold re-selection or calibration if deployed as a decision rule (see @sec-appendix-h4 and @tbl-optimal-thresholds for threshold sensitivity analysis). In this dataset, the near-tie between stacking and blending suggests that the relationship between base model scores is close to linear, so a learned meta-combination provides limited additional upside over robust averaging.
+Two OOF stacking variants were evaluated. The four-model stacking (Stacking_OOF, using Logistic Regression, XGBoost, LightGBM, and Random Forest) achieved test ROC-AUC 0.6679 and test PR-AUC 0.4490. Extending to five base learners by incorporating Wide & Deep neural network predictions generated via proper K-fold out-of-fold training (Stacking_OOF_5) improved performance to test ROC-AUC 0.6702 and test PR-AUC 0.4512, nearly matching NNLS blending (0.6704). This improvement demonstrates that the neural network contributes complementary signal as a meta-feature even after the tree models are included.
+
+Notably, stacking optimal thresholds are substantially lower (approximately 0.22–0.23) than the blending variants (approximately 0.40–0.44), which is consistent with the meta-learner producing probabilities on a different scale even when ranking quality is similar. This makes stacking attractive for ranking tasks, but it requires explicit threshold recalibration for deployment as a decision rule (see @sec-appendix-h4 and @tbl-optimal-thresholds for threshold sensitivity analysis). The near-tie between five-model stacking and NNLS blending suggests that the relationship between base model scores is approximately linear, so a learned meta-combination provides limited additional upside over robust averaging.
 
 The stacking meta-learner combines base model predictions $z(x)$ using logistic regression:
 
@@ -848,7 +850,7 @@ The experimental results across all model families can be summarized as follows:
 
 3. **Autoencoder-based representation learning provides limited incremental value.** Latent features from a denoising autoencoder did not meaningfully improve downstream classification beyond the original feature set. Pseudo-labeling with conservative confidence thresholds yielded insufficient coverage for semi-supervised learning.
 
-4. **Ensemble methods provide modest but consistent gains.** Blending and OOF stacking reached approximately 0.6690 test ROC-AUC and 0.4490 test PR-AUC, representing a small lift over the best single model. The benefits derive primarily from diversity between linear (logistic regression) and nonlinear (tree-based) base learners.
+4. **Ensemble methods provide modest but consistent gains.** Blending and OOF stacking reached up to test ROC-AUC = 0.6704 and test PR-AUC = 0.4517, representing a small lift over the best single model. Adding Wide & Deep as a fifth OOF stacking base learner improved test ROC-AUC from 0.6679 to 0.6702, confirming that the neural network contributes complementary diversity. The benefits derive primarily from diversity between linear (logistic regression), nonlinear (tree-based), and deep (neural network) base learners.
 
 5. **Operating threshold selection is critical for deployment.** At the fixed threshold $\tau = 0.4400$, the champion models achieve recall around 73–74% with precision around 37%, suitable for targeted retention campaigns. Different models require different optimal thresholds, highlighting the importance of calibration in production.
 
