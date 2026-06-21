@@ -24,7 +24,7 @@ export CAPSTONE_ROOT="$(pwd)"
 # Run full pipeline
 python scripts/02_preprocess.py           # Data preprocessing and feature engineering
 python scripts/03_logit.py                # Baseline: Logistic Regression
-python scripts/04_trees_gbm.py --fast     # Tree-based models (XGBoost, LightGBM, CatBoost)
+python scripts/04_trees_gbm.py --fast     # Tree-based models (XGBoost, LightGBM)
 python scripts/05_nn.py --fast            # Deep learning (PyTorch Wide and Deep)
 python scripts/07_stacking.py             # Ensemble stacking
 python scripts/08_interpretation.py --fast # SHAP interpretation
@@ -199,7 +199,7 @@ Exhaustive grid search was performed over regularization strength (C) and penalt
 
 Classification thresholds were swept from 0.1000 to 0.5000 on the validation set to understand precision-recall trade-offs.
 
-| Threshold | Precision | Recall | F1-Score | Specificity |
+| Threshold | Precision | Recall | F1 | Specificity |
 |-----------|-----------|--------|----------|-------------|
 | 0.1000 | 0.3120 | 0.8920 | 0.4630 | 0.2340 |
 | 0.1500 | 0.3280 | 0.8410 | 0.4720 | 0.2980 |
@@ -267,12 +267,11 @@ The following table documents the hyperparameter search space used for tree-base
 
 ### Threshold Sweep for Tree Models {#sec-appendix-c1}
 
-| Model | Optimal τ | Precision | Recall | F1-Score | ROC-AUC |
+| Model | Optimal τ | Precision | Recall | F1 | ROC-AUC |
 |-------|-----------|-----------|--------|----------|---------|
 | Random Forest | 0.3200 | 0.4780 | 0.6120 | 0.5370 | 0.6523 |
 | XGBoost | 0.3100 | 0.4920 | 0.6280 | 0.5520 | 0.6687 |
 | LightGBM | 0.3000 | 0.4850 | 0.6340 | 0.5490 | 0.6654 |
-| CatBoost | 0.3100 | 0.4890 | 0.6210 | 0.5470 | 0.6642 |
 
 : Optimal thresholds and metrics for tree-based models (validation set) {#tbl-tree-threshold-sweep}
 
@@ -435,14 +434,12 @@ DAE_CONFIG = {
 
 ### Base Model Prediction Correlation Matrix {#sec-appendix-f1}
 
-| | Logistic | XGBoost | LightGBM | CatBoost | RF | Wide&Deep |
-|----------|----------|---------|----------|----------|----|-----------|
-| Logistic | 1.00 | 0.4700 | 0.4800 | 0.4700 | 0.4500 | 0.5200 |
-| XGBoost | 0.4700 | 1.00 | 0.9300 | 0.9100 | 0.8700 | 0.7800 |
-| LightGBM | 0.4800 | 0.9300 | 1.00 | 0.9200 | 0.8800 | 0.7900 |
-| CatBoost | 0.4700 | 0.9100 | 0.9200 | 1.00 | 0.8900 | 0.7700 |
-| RF | 0.4500 | 0.8700 | 0.8800 | 0.8900 | 1.00 | 0.7400 |
-| Wide&Deep | 0.5200 | 0.7800 | 0.7900 | 0.7700 | 0.7400 | 1.00 |
+| | Logistic | XGBoost | LightGBM | RF |
+|----------|----------|---------|----------|----|
+| Logistic | 1.0000 | 0.4778 | 0.4685 | 0.4739 |
+| XGBoost | 0.4778 | 1.0000 | 0.9313 | 0.8786 |
+| LightGBM | 0.4685 | 0.9313 | 1.0000 | 0.8691 |
+| RF | 0.4739 | 0.8786 | 0.8691 | 1.0000 |
 
 : Pearson correlation of predicted probabilities on validation set {#tbl-correlation-matrix}
 
@@ -452,12 +449,10 @@ DAE_CONFIG = {
 
 | Model | AUC-Weighted | NNLS-Optimized | Equal Weight |
 |-------|--------------|----------------|--------------|
-| Logistic | 0.0890 | 0.0520 | 0.1670 |
-| XGBoost | 0.2010 | 0.2870 | 0.1670 |
-| LightGBM | 0.1890 | 0.2340 | 0.1670 |
-| CatBoost | 0.1780 | 0.1980 | 0.1670 |
-| RF | 0.1560 | 0.1120 | 0.1670 |
-| Wide&Deep | 0.1870 | 0.1170 | 0.1670 |
+| Logistic | 0.1621 | 0.0651 | 0.2500 |
+| XGBoost | 0.2886 | 0.5866 | 0.2500 |
+| LightGBM | 0.2759 | 0.1751 | 0.2500 |
+| RF | 0.2734 | 0.1731 | 0.2500 |
 
 : Blending weights under different weighting schemes {#tbl-ensemble-weights}
 
@@ -465,28 +460,17 @@ DAE_CONFIG = {
 
 Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:
 
-```python
-Meta-learner coefficients (Ridge, alpha=1.0):
-{
-    'Logistic_OOF': 0.2340,
-    'XGBoost_OOF': 0.4120,
-    'LightGBM_OOF': 0.1560,
-    'CatBoost_OOF': 0.0890,
-    'RF_OOF': 0.0230,
-    'WideDeep_OOF': 0.0860,
-    'intercept': -0.8920
-}
-```
+The OOF stacking meta-learner (logistic regression with L2 regularization) was trained on out-of-fold predictions from four base models: Logistic Regression, XGBoost, LightGBM, and Random Forest. XGBoost and LightGBM received the largest weights, consistent with their superior individual ranking performance.
 
 ### Ensemble Performance Comparison {#sec-appendix-f4}
 
-| Ensemble Method | Val ROC-AUC | Test ROC-AUC | Test PR-AUC | Training Time (s) | Inference Time (ms) |
-|-----------------|-------------|--------------|-------------|-------------------|---------------------|
-| Best Single (XGBoost) | 0.6654 | 0.6687 | 0.4298 | 42.3 | 2.1 |
-| Simple Average | 0.6698 | 0.6712 | 0.4345 | 245.8 | 12.4 |
-| AUC-Weighted | 0.6712 | 0.6723 | 0.4367 | 245.8 | 12.5 |
-| NNLS-Optimized | 0.6724 | 0.6734 | 0.4378 | 247.2 | 12.5 |
-| **OOF Stacking** | **0.6745** | **0.6726** | **0.4389** | **278.4** | **14.2** |
+| Ensemble Method | Val ROC-AUC | Test ROC-AUC | Test PR-AUC |
+|-----------------|-------------|--------------|-------------|
+| Best Single (XGBoost) | 0.6571 | 0.6637 | 0.4454 |
+| Simple Average | 0.6579 | 0.6683 | 0.4472 |
+| AUC-Weighted | 0.6583 | 0.6688 | 0.4488 |
+| **NNLS-Optimized** | **0.6587** | **0.6672** | **0.4488** |
+| OOF Stacking | 0.6586 | 0.6679 | 0.4490 |
 
 : Ensemble method comparison with computational costs {#tbl-ensemble-comparison}
 
@@ -554,7 +538,6 @@ Meta-learner coefficients (Ridge, alpha=1.0):
 | Logistic Regression | 0.2900 | 0.3100 | 0.3990 |
 | XGBoost | 0.3100 | 0.3300 | 0.4620 |
 | LightGBM | 0.3000 | 0.3200 | 0.4580 |
-| CatBoost | 0.3100 | 0.3300 | 0.4560 |
 | Random Forest | 0.3200 | 0.3400 | 0.4450 |
 | Wide&Deep (Focal) | 0.2800 | 0.3000 | 0.4230 |
 | OOF Stacking | 0.3000 | 0.3200 | 0.4670 |
@@ -563,18 +546,16 @@ Meta-learner coefficients (Ridge, alpha=1.0):
 
 ### Calibration Metrics {#sec-appendix-h4}
 
-| Model | Brier Score | ECE | MCE | Calibration Slope |
-|-------|-------------|-----|-----|-------------------|
-| Logistic Regression | 0.2150 | 0.0420 | 0.0890 | 0.9800 |
-| XGBoost | 0.1980 | 0.0380 | 0.0780 | 1.02 |
-| LightGBM | 0.2010 | 0.0410 | 0.0820 | 1.01 |
-| CatBoost | 0.2030 | 0.0390 | 0.0810 | 1.00 |
-| Random Forest | 0.2090 | 0.0450 | 0.0920 | 0.9500 |
-| Wide&Deep (BCE) | 0.2010 | 0.0430 | 0.0870 | 0.9700 |
-| Wide&Deep (Focal) | 0.1970 | 0.0570 | 0.1120 | 0.8900 |
-| OOF Stacking | 0.1950 | 0.0360 | 0.0740 | 1.01 |
+| Model | Brier Score |
+|-------|-------------|
+| Logistic Regression | 0.2438 |
+| XGBoost | 0.2233 |
+| LightGBM | 0.2200 |
+| Random Forest | 0.2290 |
+| Wide&Deep (BCE) | 0.2364 |
+| Wide&Deep (Focal) | 0.1970 |
 
-: Calibration metrics across all models {#tbl-calibration-table}
+: Brier scores across model families on the test set {#tbl-calibration-table}
 
 **Note:** Focal loss models achieve lower Brier scores but higher ECE/MCE due to probability compression effect. Isotonic calibration recommended for deployment.
 
@@ -635,7 +616,6 @@ torchvision==0.15.2
 # Gradient Boosting
 xgboost==1.7.6
 lightgbm==4.0.0
-catboost==1.2
 
 # Experiment Tracking
 mlflow==2.5.0
@@ -643,7 +623,6 @@ optuna==3.3.0
 
 # Interpretability
 shap==0.42.1
-lime==0.2.0.1
 
 # Visualization
 matplotlib==3.7.2

@@ -40,13 +40,3 @@ This study makes the following contributions, emphasizing a unified pipeline tha
 ## Paper Roadmap
 
 The remainder of this thesis is structured as follows. Section 2 reviews related work on churn mechanisms, telecom data characteristics, modeling approaches, evaluation under class imbalance, and emerging research trends. Section 3 defines the dataset and prediction task, describes the experimental setup, and details preprocessing choices designed to support fair model comparison. Subsequent sections present the implemented modeling approaches, report experimental results, and provide interpretation-driven analysis aimed at connecting churn prediction to actionable retention insights.
-<!--
-Chapter 1: Introduction (sections 1.1-1.6)
-This chapter introduces the churn prediction problem, motivation, and study scope,
-and outlines the research questions and contributions.
--->
-<!--
-Chapter 1: Introduction (sections 1.1-1.6)
-This chapter introduces the churn prediction problem, motivation, and study scope,
-and outlines the research questions and contributions.
--->

@@ -1,10 +1,3 @@
-<!--
-This chapter is generated from your Word section “2. Literature Review (2.1–2.5)”.
-Citations were converted from (Author, Year) to Quarto/Pandoc syntax like [authorYear].
-
-Note: You must export a complete report/references.bib from Zotero (Better BibTeX).
-If your citekeys differ from the placeholders below, update either the .bib keys or the citekeys in this file.
--->
 
 # Literature Review
 
