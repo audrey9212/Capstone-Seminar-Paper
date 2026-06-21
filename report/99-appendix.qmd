@@ -374,7 +374,7 @@ All neural network experiments tracked via MLflow with systematic architecture v
 | Wide & Deep | 2 + wide | [128, 64] + Linear | 0.30 | ReLU/Linear | ~20K |
 | Wide & Deep (Deeper) | 3 + wide | [256, 128, 64] + Linear | 0.30 | ReLU/Linear | ~64K |
 
-: Neural network architecture specifications. Parameter counts are from actual training artifacts (`n_params` field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs. {#tbl-nn-architecture-specs}
+: Neural network architecture specifications. Parameter counts are from actual training artifacts (n_params field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs. {#tbl-nn-architecture-specs}
 
 ---
 

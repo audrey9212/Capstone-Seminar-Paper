@@ -237,7 +237,7 @@ Finally, it is worth noting that the **performance ceiling** observed (AUC in th
 
 ### External Validity and Generalizability
 
-All experiments were conducted on a single publicly available dataset (Cell2Cell), a US telecom provider operating at a specific point in time. Performance figures may not generalize to other carriers, geographies, or time periods. Market structure, competitive dynamics, and customer demographics differ substantially across telecom environments; a model trained on this dataset should be validated on internal data before deployment elsewhere. Temporal drift is also a concern: features such as `CurrentEquipmentDays` and `MonthsInService` are relative to the data collection date, and their predictive relationships may shift as technology and customer behavior evolve.
+All experiments were conducted on a single publicly available dataset (Cell2Cell), a US telecom provider operating at a specific point in time. Performance figures may not generalize to other carriers, geographies, or time periods. Market structure, competitive dynamics, and customer demographics differ substantially across telecom environments; a model trained on this dataset should be validated on internal data before deployment elsewhere. Temporal drift is also a concern: features such as CurrentEquipmentDays and MonthsInService are relative to the data collection date, and their predictive relationships may shift as technology and customer behavior evolve.
 
 ### Statistical Significance of Performance Differences
 

@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>2&nbsp; Introduction – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -24,7 +27,6 @@ ul.task-list li input[type="checkbox"] {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -54,15 +56,14 @@ div.csl-indent {
 <link href="../index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-87aed0b8589e23e45aa8556edf37a91b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -116,9 +117,7 @@ div.csl-indent {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
     </div>
@@ -249,15 +248,15 @@ div.csl-indent {
 
 <section id="background-motivation" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="background-motivation"><span class="header-section-number">2.1</span> Background &amp; Motivation</h2>
-<p>Customer churn, defined as customers canceling service or switching to a competing provider, is a major driver of revenue loss in the telecommunications industry. In saturated mobile markets, where growth through new subscriptions is constrained, retaining existing customers becomes strategically as important as acquiring new ones. Prior telecom studies document substantial churn levels and the operational difficulty of stabilizing subscriber bases over time <span class="citation" data-cites="ahn2006customerchurnanalysis wei2002turningtelecommunicationscall">(<a href="98-references.html#ref-ahn2006customerchurnanalysis" role="doc-biblioref">Ahn, Han, and Lee 2006</a>; <a href="98-references.html#ref-wei2002turningtelecommunicationscall" role="doc-biblioref">Wei and Chiu 2002</a>)</span>.</p>
-<p>Churn directly erodes recurring revenue and increases operating costs because replacement typically requires additional spending on marketing, onboarding, and incentives. Retention-oriented marketing research further suggests that acquiring a new customer may cost multiple times more than retaining an existing customer, reinforcing why churn prevention is frequently treated as a high-impact managerial priority <span class="citation" data-cites="sonkova2015customerengagementtransactional rosenberg1984marketingapproachcustomer">(<a href="98-references.html#ref-sonkova2015customerengagementtransactional" role="doc-biblioref">Šonková and Grabowska 2015</a>; <a href="98-references.html#ref-rosenberg1984marketingapproachcustomer" role="doc-biblioref">Rosenberg and Czepiel 1984</a>)</span>. Customer churn can also weaken longer-term customer equity by reducing lifetime value and creating a compounding revenue gap in subscription settings <span class="citation" data-cites="geiler2022effectivestrategychurn">(<a href="98-references.html#ref-geiler2022effectivestrategychurn" role="doc-biblioref">Geiler, Affeldt, and Nadif 2022</a>)</span>.</p>
+<p>Customer churn, defined as customers canceling service or switching to a competing provider, is a major driver of revenue loss in the telecommunications industry. In saturated mobile markets, where growth through new subscriptions is constrained, retaining existing customers becomes strategically as important as acquiring new ones. Prior telecom studies document substantial churn levels and the operational difficulty of stabilizing subscriber bases over time <span class="citation" data-cites="ahn2006customerchurnanalysis wei2002turningtelecommunicationscall">(<a href="98-references.html#ref-ahn2006customerchurnanalysis" role="doc-biblioref">Ahn et al. 2006</a>; <a href="98-references.html#ref-wei2002turningtelecommunicationscall" role="doc-biblioref">Wei and Chiu 2002</a>)</span>.</p>
+<p>Churn directly erodes recurring revenue and increases operating costs because replacement typically requires additional spending on marketing, onboarding, and incentives. Retention-oriented marketing research further suggests that acquiring a new customer may cost multiple times more than retaining an existing customer, reinforcing why churn prevention is frequently treated as a high-impact managerial priority <span class="citation" data-cites="sonkova2015customerengagementtransactional rosenberg1984marketingapproachcustomer">(<a href="98-references.html#ref-sonkova2015customerengagementtransactional" role="doc-biblioref">Šonková and Grabowska 2015</a>; <a href="98-references.html#ref-rosenberg1984marketingapproachcustomer" role="doc-biblioref">Rosenberg and Czepiel 1984</a>)</span>. Customer churn can also weaken longer-term customer equity by reducing lifetime value and creating a compounding revenue gap in subscription settings <span class="citation" data-cites="geiler2022effectivestrategychurn">(<a href="98-references.html#ref-geiler2022effectivestrategychurn" role="doc-biblioref">Geiler et al. 2022</a>)</span>.</p>
 <p>These economic and strategic pressures explain why churn prediction has become a standard analytics application in customer relationship management. By identifying high-risk customers in advance, telecom operators can prioritize proactive interventions and allocate retention budgets more efficiently. However, in operational contexts, predictive performance alone is insufficient. Retention teams typically require explanations of why a customer is flagged as high risk, because different churn drivers imply different actions (e.g., service quality remediation vs.&nbsp;price-based incentives). As a result, the churn modeling task is inherently dual-purpose: producing accurate risk scores while enabling actionable interpretation that supports decision-making.</p>
 </section>
 <section id="research-gap" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="research-gap"><span class="header-section-number">2.2</span> Research Gap</h2>
 <p>Two persistent gaps motivate the present study.</p>
-<p>First, although many churn prediction studies have progressively adopted higher-capacity machine learning models, transparency and managerial actionability are not consistently addressed. Early work frequently relied on interpretable models such as logistic regression and decision trees, which can provide direct insight into drivers but may underperform when churn patterns are nonlinear or driven by complex feature interactions <span class="citation" data-cites="lemmens2006baggingboostingclassification bogaert2023ensemblemethodscustomer">(<a href="98-references.html#ref-lemmens2006baggingboostingclassification" role="doc-biblioref">Lemmens and Croux 2006</a>; <a href="98-references.html#ref-bogaert2023ensemblemethodscustomer" role="doc-biblioref">Bogaert and Delaere 2023</a>)</span>. Recent work has moved beyond linear baselines and highlights ensemble and other flexible nonlinear models, including random forests, gradient boosting, support vector machines, and neural networks, which have been shown to improve predictive performance in churn prediction tasks <span class="citation" data-cites="vafeiadis2015comparisonmachinelearning bogaert2023ensemblemethodscustomer">(<a href="98-references.html#ref-vafeiadis2015comparisonmachinelearning" role="doc-biblioref">Vafeiadis et al. 2015</a>; <a href="98-references.html#ref-bogaert2023ensemblemethodscustomer" role="doc-biblioref">Bogaert and Delaere 2023</a>)</span>. At the same time, this shift can reduce transparency, making it harder to convert model outputs into targeted retention actions.</p>
-<p>Second, evaluation practices and “real-world” data constraints remain unevenly handled across the literature. Telecom churn data are commonly imbalanced, and naive reporting of accuracy can be misleading because a model can appear strong while failing to identify churners effectively <span class="citation" data-cites="burez2009handlingclassimbalance akosa2017predictiveaccuracymisleading">(<a href="98-references.html#ref-burez2009handlingclassimbalance" role="doc-biblioref">Burez and Van Den Poel 2009</a>; <a href="98-references.html#ref-akosa2017predictiveaccuracymisleading" role="doc-biblioref">Akosa 2017</a>)</span>. Empirical work comparing imbalance-handling strategies highlights that model selection and thresholding decisions materially affect minority-class performance, yet such considerations are not always reflected in standard reporting practices <span class="citation" data-cites="zhu2023baggingbasedselectiveensemble">(<a href="98-references.html#ref-zhu2023baggingbasedselectiveensemble" role="doc-biblioref">Zhu et al. 2023</a>)</span>. Recent reviews further emphasize that churn prediction research continues to face challenges related to robustness and practical deployment considerations, including mismatches between experimental assumptions and production settings <span class="citation" data-cites="imanievaluatingclassificationsampling">(<a href="98-references.html#ref-imanievaluatingclassificationsampling" role="doc-biblioref">Imani 2024</a>)</span>.</p>
+<p>First, although many churn prediction studies have progressively adopted higher-capacity machine learning models, transparency and managerial actionability are not consistently addressed. Early work frequently relied on interpretable models such as logistic regression and decision trees, which can provide direct insight into drivers but may underperform when churn patterns are nonlinear or driven by complex feature interactions <span class="citation" data-cites="lemmens2006baggingboostingclassification bogaert2023ensemblemethodscustomer">(<a href="98-references.html#ref-lemmens2006baggingboostingclassification" role="doc-biblioref">Lemmens and Croux 2006</a>; <a href="98-references.html#ref-bogaert2023ensemblemethodscustomer" role="doc-biblioref">Bogaert and Delaere 2023</a>)</span>. Recent work has moved beyond linear baselines and highlights ensemble and other flexible nonlinear models, including random forests, gradient boosting, support vector machines, and neural networks, which have been shown to improve predictive performance in churn prediction tasks <span class="citation" data-cites="vafeiadis2015comparisonmachinelearning bogaert2023ensemblemethodscustomer">(<a href="98-references.html#ref-vafeiadis2015comparisonmachinelearning" role="doc-biblioref">Vafeiadis et al. 2015</a>; <a href="98-references.html#ref-bogaert2023ensemblemethodscustomer" role="doc-biblioref">Bogaert and Delaere 2023</a>)</span>. This study focuses on gradient-boosted trees, tabular neural networks, and heterogeneous ensembles as the primary nonlinear families; support vector machines, while cited in the literature, are excluded from implementation due to their quadratic scaling behavior on the ~40,000-sample training set and limited compatibility with the SHAP-based interpretability framework adopted in this study. At the same time, this shift toward higher-capacity methods can reduce transparency, making it harder to convert model outputs into targeted retention actions.</p>
+<p>Second, evaluation practices and “real-world” data constraints remain unevenly handled across the literature. Telecom churn data are commonly imbalanced, and naive reporting of accuracy can be misleading because a model can appear strong while failing to identify churners effectively <span class="citation" data-cites="burez2009handlingclassimbalance akosa2017predictiveaccuracymisleading">(<a href="98-references.html#ref-burez2009handlingclassimbalance" role="doc-biblioref">Burez and Van Den Poel 2009</a>; <a href="98-references.html#ref-akosa2017predictiveaccuracymisleading" role="doc-biblioref">Akosa 2017</a>)</span>. Empirical work comparing imbalance-handling strategies highlights that model selection and thresholding decisions materially affect minority-class performance, yet such considerations are not always reflected in standard reporting practices <span class="citation" data-cites="zhu2023baggingbasedselectiveensemble">(<a href="98-references.html#ref-zhu2023baggingbasedselectiveensemble" role="doc-biblioref"><span class="nocase">Zhu et al.</span> 2023</a>)</span>. Recent reviews further emphasize that churn prediction research continues to face challenges related to robustness and practical deployment considerations, including mismatches between experimental assumptions and production settings <span class="citation" data-cites="imanievaluatingclassificationsampling">(<a href="98-references.html#ref-imanievaluatingclassificationsampling" role="doc-biblioref">Imani 2024</a>)</span>.</p>
 <p>Together, these gaps indicate a need for churn research that simultaneously (i) benchmarks strong predictive model families under a consistent experimental design and (ii) treats interpretability and decision-oriented evaluation as core requirements, not as secondary considerations.</p>
 </section>
 <section id="research-questions" class="level2" data-number="2.3">
@@ -274,30 +273,22 @@ div.csl-indent {
 <p>This study makes the following contributions, emphasizing a unified pipeline that balances predictive performance and interpretability:</p>
 <ul>
 <li><strong>Comparative modeling under consistent controls</strong>: Multiple model families are implemented and evaluated in a standardized setting, spanning interpretable baselines and higher-capacity learners reported as strong performers in churn prediction research <span class="citation" data-cites="lemmens2006baggingboostingclassification bogaert2023ensemblemethodscustomer lalwani2022customerchurnprediction">(<a href="98-references.html#ref-lemmens2006baggingboostingclassification" role="doc-biblioref">Lemmens and Croux 2006</a>; <a href="98-references.html#ref-bogaert2023ensemblemethodscustomer" role="doc-biblioref">Bogaert and Delaere 2023</a>; <a href="98-references.html#ref-lalwani2022customerchurnprediction" role="doc-biblioref">Lalwani et al. 2022</a>)</span>.</li>
-<li><strong>Imbalance-aware evaluation emphasis</strong>: The study foregrounds pitfalls of accuracy-dominated reporting and motivates decision-relevant evaluation under imbalance, consistent with prior findings in churn prediction methodology research <span class="citation" data-cites="burez2009handlingclassimbalance akosa2017predictiveaccuracymisleading zhu2023baggingbasedselectiveensemble">(<a href="98-references.html#ref-burez2009handlingclassimbalance" role="doc-biblioref">Burez and Van Den Poel 2009</a>; <a href="98-references.html#ref-akosa2017predictiveaccuracymisleading" role="doc-biblioref">Akosa 2017</a>; <a href="98-references.html#ref-zhu2023baggingbasedselectiveensemble" role="doc-biblioref">Zhu et al. 2023</a>)</span>.</li>
+<li><strong>Imbalance-aware evaluation emphasis</strong>: The study foregrounds pitfalls of accuracy-dominated reporting and motivates decision-relevant evaluation under imbalance, consistent with prior findings in churn prediction methodology research <span class="citation" data-cites="burez2009handlingclassimbalance akosa2017predictiveaccuracymisleading zhu2023baggingbasedselectiveensemble">(<a href="98-references.html#ref-burez2009handlingclassimbalance" role="doc-biblioref">Burez and Van Den Poel 2009</a>; <a href="98-references.html#ref-akosa2017predictiveaccuracymisleading" role="doc-biblioref">Akosa 2017</a>; <a href="98-references.html#ref-zhu2023baggingbasedselectiveensemble" role="doc-biblioref"><span class="nocase">Zhu et al.</span> 2023</a>)</span>.</li>
 <li><strong>Interpretability aligned with deployment needs</strong>: The research treats interpretability as an operational requirement: model outputs are framed as inputs to retention actions (not solely as predictive scores), with the objective of producing explanations that support practical intervention design.</li>
-<li><strong>Planned extension beyond supervised learning</strong>: In addition to supervised modeling, a semi-supervised direction is articulated as future work in response to practical constraints highlighted in recent reviews, acknowledging that real-world churn labeling can be incomplete or delayed <span class="citation" data-cites="imanievaluatingclassificationsampling">(<a href="98-references.html#ref-imanievaluatingclassificationsampling" role="doc-biblioref">Imani 2024</a>)</span>.</li>
+<li><strong>Extension beyond supervised learning</strong>: In addition to supervised modeling, a semi-supervised extension using a denoising autoencoder and pseudo-labeling is implemented and evaluated, addressing practical constraints in churn settings where labeling can be incomplete or delayed <span class="citation" data-cites="imanievaluatingclassificationsampling">(<a href="98-references.html#ref-imanievaluatingclassificationsampling" role="doc-biblioref">Imani 2024</a>)</span>.</li>
 </ul>
 </section>
 <section id="paper-roadmap" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="paper-roadmap"><span class="header-section-number">2.5</span> Paper Roadmap</h2>
-<p>The remainder of this thesis is structured as follows. Section 2 reviews related work on churn mechanisms, telecom data characteristics, modeling approaches, evaluation under class imbalance, and emerging research trends. Section 3 defines the dataset and prediction task, describes the experimental setup, and details preprocessing choices designed to support fair model comparison. Subsequent sections present the implemented modeling approaches, report experimental results, and provide interpretation-driven analysis aimed at connecting churn prediction to actionable retention insights. <!--
-Chapter 1: Introduction (sections 1.1-1.6)
-This chapter introduces the churn prediction problem, motivation, and study scope,
-and outlines the research questions and contributions.
---> <!--
-Chapter 1: Introduction (sections 1.1-1.6)
-This chapter introduces the churn prediction problem, motivation, and study scope,
-and outlines the research questions and contributions.
---></p>
+<p>The remainder of this thesis is structured as follows. Section 2 reviews related work on churn mechanisms, telecom data characteristics, modeling approaches, evaluation under class imbalance, and emerging research trends. Section 3 defines the dataset and prediction task, describes the experimental setup, and details preprocessing choices designed to support fair model comparison. Subsequent sections present the implemented modeling approaches, report experimental results, and provide interpretation-driven analysis aimed at connecting churn prediction to actionable retention insights.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-ahn2006customerchurnanalysis" class="csl-entry" role="listitem">
 Ahn, Jae-Hyeon, Sang Pil Han, and Yung-Seop Lee. 2006. <span>“Customer Churn Analysis: <span>Churn</span> Determinants and Mediation Effects of Partial Defection in the <span>Korean</span> Mobile Telecommunications Service Industry.”</span> <em>Telecommunications Policy</em> 30 (November): 552–68. <a href="https://doi.org/10.1016/j.telpol.2006.09.006">https://doi.org/10.1016/j.telpol.2006.09.006</a>.
 </div>
 <div id="ref-akosa2017predictiveaccuracymisleading" class="csl-entry" role="listitem">
-Akosa, J. 2017. <span>“Predictive <span>Accuracy</span> : <span>A Misleading Performance Measure</span> for <span>Highly Imbalanced Data</span>.”</span> In.
+Akosa, J. 2017. <span>“Predictive <span>Accuracy</span> : <span>A Misleading Performance Measure</span> for <span>Highly Imbalanced Data</span>.”</span>
 </div>
 <div id="ref-bogaert2023ensemblemethodscustomer" class="csl-entry" role="listitem">
 Bogaert, Matthias, and Lex Delaere. 2023. <span>“Ensemble <span>Methods</span> in <span>Customer Churn Prediction</span>: <span>A Comparative Analysis</span> of the <span class="nocase">State-of-the-Art</span>.”</span> <em>Mathematics</em> 11 (February): 1137. <a href="https://doi.org/10.3390/math11051137">https://doi.org/10.3390/math11051137</a>.
@@ -309,7 +300,7 @@ Burez, J., and D. Van Den Poel. 2009. <span>“Handling Class Imbalance in Custo
 Geiler, Louis, Séverine Affeldt, and Mohamed Nadif. 2022. <span>“An Effective Strategy for Churn Prediction and Customer Profiling.”</span> <em>Data &amp; Knowledge Engineering</em> 142 (November): 102100. <a href="https://doi.org/10.1016/j.datak.2022.102100">https://doi.org/10.1016/j.datak.2022.102100</a>.
 </div>
 <div id="ref-imanievaluatingclassificationsampling" class="csl-entry" role="listitem">
-Imani, Mehdi. 2024. <span>“Evaluating <span>Classification</span> and <span>Sampling Methods</span> for <span>Customer Churn Prediction</span> Under <span>Varying Imbalance Levels</span>.”</span>
+Imani, Mehdi. 2024. <em>Evaluating <span>Classification</span> and <span>Sampling Methods</span> for <span>Customer Churn Prediction</span> Under <span>Varying Imbalance Levels</span>.</em>
 </div>
 <div id="ref-lalwani2022customerchurnprediction" class="csl-entry" role="listitem">
 Lalwani, Praveen, Manas Kumar Mishra, Jasroop Singh Chadha, and Pratyush Sethi. 2022. <span>“Customer Churn Prediction System: A Machine Learning Approach.”</span> <em>Computing</em> 104 (2): 271–94. <a href="https://doi.org/10.1007/s00607-021-00908-y">https://doi.org/10.1007/s00607-021-00908-y</a>.
@@ -330,7 +321,7 @@ Vafeiadis, T., K. I. Diamantaras, G. Sarigiannidis, and K.Ch. Chatzisavvas. 2015
 Wei, Chih-Ping, and I-Tang Chiu. 2002. <span>“Turning Telecommunications Call Details to Churn Prediction: A Data Mining Approach.”</span> <em>Expert Systems with Applications</em> 23 (2): 103–12. <a href="https://doi.org/10.1016/S0957-4174(02)00030-1">https://doi.org/10.1016/S0957-4174(02)00030-1</a>.
 </div>
 <div id="ref-zhu2023baggingbasedselectiveensemble" class="csl-entry" role="listitem">
-Zhu, Bing, Cheng Qian, Seppe vanden Broucke, Jin Xiao, and Yuanyuan Li. 2023. <span>“A Bagging-Based Selective Ensemble Model for Churn Prediction on Imbalanced Data.”</span> <em>Expert Systems with Applications</em> 227 (October): 120223. <a href="https://doi.org/10.1016/j.eswa.2023.120223">https://doi.org/10.1016/j.eswa.2023.120223</a>.
+<span class="nocase">Zhu, Bing, Cheng Qian, Seppe vanden Broucke, Jin Xiao, and Yuanyuan Li</span>. 2023. <span>“A Bagging-Based Selective Ensemble Model for Churn Prediction on Imbalanced Data.”</span> <em>Expert Systems with Applications</em> 227 (October): 120223. <a href="https://doi.org/10.1016/j.eswa.2023.120223">https://doi.org/10.1016/j.eswa.2023.120223</a>.
 </div>
 </div>
 </section>

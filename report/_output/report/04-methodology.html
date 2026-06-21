@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>5&nbsp; Methodology – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -34,15 +37,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="../report/03-data-and-problem.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-87aed0b8589e23e45aa8556edf37a91b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -72,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -125,9 +127,7 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
     </div>
@@ -284,11 +284,6 @@ window.Quarto = {
 </header>
 
 
-<!--
-Chapter 4: Methodology (sections 4.1–4.7)
-This chapter explains preprocessing, baseline modeling, tree/GBM approaches, deep learning architectures,
-the autoencoder extension, and ensemble design.
--->
 <section id="sec-preprocess" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="sec-preprocess"><span class="header-section-number">5.1</span> Data Preprocessing Pipeline</h2>
 <p>The preprocessing pipeline transforms the raw Cell2Cell features into a modeling-ready format while strictly preventing data leakage between training, validation, and test splits. All pipeline parameters are estimated on the training set only and then applied unchanged to validation and test sets.</p>
@@ -391,11 +386,11 @@ Figure&nbsp;5.1: Preprocessing pipeline overview showing data flow from raw feat
 </section>
 <section id="mlp-trunk." class="level4" data-number="5.5.2.2">
 <h4 data-number="5.5.2.2" class="anchored" data-anchor-id="mlp-trunk."><span class="header-section-number">5.5.2.2</span> MLP trunk.</h4>
-<p>The concatenated representation (embeddings + continuous + binary) is passed through a feedforward network with ReLU activations and dropout regularization between layers. A typical configuration uses three hidden layers with decreasing width (e.g., 256 → 128 → 64), though the exact architecture can be varied experimentally.</p>
+<p>The concatenated representation (embeddings + continuous + binary) is passed through a feedforward network with ReLU activations and dropout regularization between layers. A typical configuration uses two hidden layers with decreasing width (e.g., 128 → 64), though the exact architecture can be varied experimentally.</p>
 </section>
 <section id="output-head." class="level4" data-number="5.5.2.3">
 <h4 data-number="5.5.2.3" class="anchored" data-anchor-id="output-head."><span class="header-section-number">5.5.2.3</span> Output head.</h4>
-<p>A final linear layer with a single output unit produces a logit, which is passed through a sigmoid activation to yield a churn probability. For training, the loss is computed directly on the logit (using <code>BCEWithLogitsLoss</code> or focal loss variants), which is numerically more stable than applying sigmoid before loss computation.</p>
+<p>A final linear layer with a single output unit produces a logit, which is passed through a sigmoid activation to yield a churn probability. For training, the loss is computed directly on the logit (using BCEWithLogitsLoss or focal loss variants), which is numerically more stable than applying sigmoid before loss computation.</p>
 <div id="cell-fig-embedding-mlp" class="cell" data-message="false" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div id="fig-embedding-mlp" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Diagram showing embedding lookup, concatenation, and MLP layers.">
@@ -473,7 +468,7 @@ Figure&nbsp;5.3: Wide &amp; Deep architecture combining a linear ‘wide’ path
 </section>
 <section id="sec-uae" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="sec-uae"><span class="header-section-number">5.6</span> Unsupervised and Semi-supervised Extension</h2>
-<p>Beyond purely supervised learning, I investigated whether unlabeled customer records could be exploited to improve churn prediction through (i) unsupervised representation learning and (ii) confidence-based pseudo-labeling. The core idea is that, even without labels, the marginal distribution of customer behavior may contain useful structure (e.g., common usage profiles and atypical patterns) that can be distilled into a compact latent representation and transferred to the downstream churn model. Consistent with <a href="#sec-preprocess" class="quarto-xref"><span>Section 5.1</span></a>, this extension operates on the same cleaned feature schema, while <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a> defines the evaluation protocol used to compare all variants.</p>
+<p>Beyond purely supervised learning, this study investigated whether unlabeled customer records could be exploited to improve churn prediction through (i) unsupervised representation learning and (ii) confidence-based pseudo-labeling. The core idea is that, even without labels, the marginal distribution of customer behavior may contain useful structure (e.g., common usage profiles and atypical patterns) that can be distilled into a compact latent representation and transferred to the downstream churn model. Consistent with <a href="#sec-preprocess" class="quarto-xref"><span>Section 5.1</span></a>, this extension operates on the same cleaned feature schema, while <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a> defines the evaluation protocol used to compare all variants.</p>
 <section id="denoising-autoencoder-dae" class="level3" data-number="5.6.1">
 <h3 data-number="5.6.1" class="anchored" data-anchor-id="denoising-autoencoder-dae"><span class="header-section-number">5.6.1</span> Denoising Autoencoder (DAE)</h3>
 <p>A denoising autoencoder was trained on the numeric feature subset (all continuous columns) without using churn labels. The DAE consists of:</p>
@@ -503,7 +498,7 @@ Figure&nbsp;5.3: Wide &amp; Deep architecture combining a linear ‘wide’ path
 </section>
 <section id="sec-stacking" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="sec-stacking"><span class="header-section-number">5.7</span> Heterogeneous Stacking Ensemble</h2>
-<p>To improve robustness beyond any single model family, I implemented a heterogeneous ensemble that combines complementary inductive biases through probability-level aggregation. Rather than relying on a single “best” learner, the ensemble treats each trained model as a noisy but informative estimator of churn risk, and then learns (or prescribes) a principled rule for combining their probability outputs. This section describes the ensemble design and training protocol; performance comparisons are reported later under the common evaluation policy defined in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>.</p>
+<p>To improve robustness beyond any single model family, a heterogeneous ensemble was implemented that combines complementary inductive biases through probability-level aggregation. Rather than relying on a single “best” learner, the ensemble treats each trained model as a noisy but informative estimator of churn risk, and then learns (or prescribes) a principled rule for combining their probability outputs. This section describes the ensemble design and training protocol; performance comparisons are reported later under the common evaluation policy defined in <a href="#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>.</p>
 <section id="base-learners" class="level3" data-number="5.7.1">
 <h3 data-number="5.7.1" class="anchored" data-anchor-id="base-learners"><span class="header-section-number">5.7.1</span> Base Learners</h3>
 <p>The ensemble uses the following base learners, all trained on the same feature representation and data splits:</p>
@@ -518,23 +513,24 @@ Figure&nbsp;5.3: Wide &amp; Deep architecture combining a linear ‘wide’ path
 </section>
 <section id="blending-strategies" class="level3" data-number="5.7.2">
 <h3 data-number="5.7.2" class="anchored" data-anchor-id="blending-strategies"><span class="header-section-number">5.7.2</span> Blending Strategies</h3>
-<p>Three blending strategies were evaluated:</p>
+<p>Four blending strategies were evaluated:</p>
 <ol type="1">
 <li><p><strong>Simple Average</strong>: Equal-weight averaging of predicted probabilities: <span class="math inline">\(\hat{p}_{\text{blend}} = \frac{1}{K} \sum_{k=1}^{K} \hat{p}_k\)</span></p></li>
-<li><p><strong>AUC-Weighted Average</strong>: Weights proportional to each model’s validation ROC-AUC: <span class="math inline">\(w_k = \frac{\text{AUC}_k}{\sum_j \text{AUC}_j}\)</span></p></li>
+<li><p><strong>AUC-Weighted Average</strong>: Weights proportional to excess validation ROC-AUC above the random baseline (<span class="math inline">\(0.5\)</span>): <span class="math inline">\(w_k \propto \max(\text{AUC}_k - 0.5,\; 0)\)</span>. This assigns zero weight to models that perform no better than chance and allows strong models to dominate.</p></li>
 <li><p><strong>NNLS-Optimized Weights</strong>: Non-negative least squares regression on validation predictions to find optimal weights that minimize squared error relative to true labels.</p></li>
+<li><p><strong>Rank Average</strong>: Each model’s predictions are rank-transformed independently and the ranks are averaged. This reduces sensitivity to individual model calibration and outlier scores.</p></li>
 </ol>
 </section>
 <section id="out-of-fold-oof-stacking" class="level3" data-number="5.7.3">
 <h3 data-number="5.7.3" class="anchored" data-anchor-id="out-of-fold-oof-stacking"><span class="header-section-number">5.7.3</span> Out-of-Fold (OOF) Stacking</h3>
-<p><strong>Leakage Control via OOF.</strong> The key methodological requirement for stacking is leakage control, as the meta-learner must be trained on base predictions that are out-of-sample with respect to the base learners. I therefore used a <span class="math inline">\(K\)</span>-fold Out-of-Fold (OOF) protocol on the training split. For each fold <span class="math inline">\(k\)</span>, each base estimator is fit on the <span class="math inline">\(K - 1\)</span> training folds and used to predict probabilities on the held-out fold. Concatenating held-out predictions across folds yields an OOF prediction matrix <span class="math inline">\(Z_{OOF}\)</span> where every row corresponds to a training instance and every column to a base learner, with the guarantee that each entry was generated by a model that did not train on that instance.</p>
+<p><strong>Leakage Control via OOF.</strong> The key methodological requirement for stacking is leakage control, as the meta-learner must be trained on base predictions that are out-of-sample with respect to the base learners. A <span class="math inline">\(K\)</span>-fold Out-of-Fold (OOF) protocol was therefore applied on the training split. For each fold <span class="math inline">\(k\)</span>, each base estimator is fit on the <span class="math inline">\(K - 1\)</span> training folds and used to predict probabilities on the held-out fold. Concatenating held-out predictions across folds yields an OOF prediction matrix <span class="math inline">\(Z_{OOF}\)</span> where every row corresponds to a training instance and every column to a base learner, with the guarantee that each entry was generated by a model that did not train on that instance.</p>
 <p><strong>Meta-Learner Training.</strong> A Ridge logistic regression meta-learner is trained on <span class="math inline">\(Z_{OOF}\)</span> to learn optimal combination weights. The meta-learner’s coefficients indicate the relative contribution of each base learner to the final ensemble prediction.</p>
 <div id="cell-fig-stacking" class="cell" data-message="false" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div id="fig-stacking" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Diagram showing K-fold OOF prediction generation and meta-learner training.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stacking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="04-methodology_files/figure-html/fig-stacking-output-1.png" alt="Diagram showing K-fold OOF prediction generation and meta-learner training." width="490" height="317" class="figure-img">
+<img src="04-methodology_files/figure-html/fig-stacking-output-1.png" alt="Diagram showing K-fold OOF prediction generation and meta-learner training." width="466" height="317" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacking-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.4: OOF stacking architecture: base learners produce out-of-fold predictions that are combined by a meta-learner.
@@ -552,7 +548,7 @@ Figure&nbsp;5.4: OOF stacking architecture: base learners produce out-of-fold pr
 <div id="fig-stacking-weights" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Bar chart of meta-learner coefficients for each base model.">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-stacking-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="04-methodology_files/figure-html/fig-stacking-weights-output-1.png" alt="Bar chart of meta-learner coefficients for each base model." width="490" height="249" class="figure-img">
+<img src="04-methodology_files/figure-html/fig-stacking-weights-output-1.png" alt="Bar chart of meta-learner coefficients for each base model." width="490" height="212" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacking-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.5: Meta-learner coefficients showing the contribution of each base model to the stacking ensemble.

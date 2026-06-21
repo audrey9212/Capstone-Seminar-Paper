@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>4&nbsp; Data and Problem Setup – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -34,15 +37,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="../report/02-literature-review.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-87aed0b8589e23e45aa8556edf37a91b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -99,9 +101,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
     </div>
@@ -200,18 +200,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#data-sources-and-study-scope" id="toc-data-sources-and-study-scope" class="nav-link active" data-scroll-target="#data-sources-and-study-scope"><span class="header-section-number">4.1</span> Data sources and study scope</a></li>
-  <li><a href="#prediction-target-and-observation-window" id="toc-prediction-target-and-observation-window" class="nav-link" data-scroll-target="#prediction-target-and-observation-window"><span class="header-section-number">4.2</span> Prediction target and observation window</a></li>
-  <li><a href="#data-documentation-and-feature-organization" id="toc-data-documentation-and-feature-organization" class="nav-link" data-scroll-target="#data-documentation-and-feature-organization"><span class="header-section-number">4.3</span> Data documentation and feature organization</a></li>
-  <li><a href="#sec-eda" id="toc-sec-eda" class="nav-link" data-scroll-target="#sec-eda"><span class="header-section-number">4.4</span> Exploratory data analysis: what the data “looks like” and why it matters</a>
+  <li><a href="#data-sources-and-study-scope" id="toc-data-sources-and-study-scope" class="nav-link active" data-scroll-target="#data-sources-and-study-scope"><span class="header-section-number">4.1</span> Data Sources and Study Scope</a></li>
+  <li><a href="#prediction-target-and-observation-window" id="toc-prediction-target-and-observation-window" class="nav-link" data-scroll-target="#prediction-target-and-observation-window"><span class="header-section-number">4.2</span> Prediction Target and Observation Window</a></li>
+  <li><a href="#data-documentation-and-feature-organization" id="toc-data-documentation-and-feature-organization" class="nav-link" data-scroll-target="#data-documentation-and-feature-organization"><span class="header-section-number">4.3</span> Data Documentation and Feature Organization</a></li>
+  <li><a href="#sec-eda" id="toc-sec-eda" class="nav-link" data-scroll-target="#sec-eda"><span class="header-section-number">4.4</span> Exploratory Data Analysis</a>
   <ul class="collapse">
-  <li><a href="#class-balance-and-baseline-difficulty" id="toc-class-balance-and-baseline-difficulty" class="nav-link" data-scroll-target="#class-balance-and-baseline-difficulty"><span class="header-section-number">4.4.1</span> Class balance and baseline difficulty</a></li>
-  <li><a href="#missingness-sparsity-and-zero-inflation" id="toc-missingness-sparsity-and-zero-inflation" class="nav-link" data-scroll-target="#missingness-sparsity-and-zero-inflation"><span class="header-section-number">4.4.2</span> Missingness, sparsity, and “zero inflation”</a></li>
-  <li><a href="#ordinal-categorical-and-continuous-patterns" id="toc-ordinal-categorical-and-continuous-patterns" class="nav-link" data-scroll-target="#ordinal-categorical-and-continuous-patterns"><span class="header-section-number">4.4.3</span> Ordinal, categorical, and continuous patterns</a></li>
-  <li><a href="#sec-leakage-risk" id="toc-sec-leakage-risk" class="nav-link" data-scroll-target="#sec-leakage-risk"><span class="header-section-number">4.4.4</span> Leakage risk and variable exclusion</a></li>
+  <li><a href="#class-balance-and-baseline-difficulty" id="toc-class-balance-and-baseline-difficulty" class="nav-link" data-scroll-target="#class-balance-and-baseline-difficulty"><span class="header-section-number">4.4.1</span> Class Balance and Baseline Difficulty</a></li>
+  <li><a href="#missingness-sparsity-and-zero-inflation" id="toc-missingness-sparsity-and-zero-inflation" class="nav-link" data-scroll-target="#missingness-sparsity-and-zero-inflation"><span class="header-section-number">4.4.2</span> Missingness, Sparsity, and Zero Inflation</a></li>
+  <li><a href="#ordinal-categorical-and-continuous-patterns" id="toc-ordinal-categorical-and-continuous-patterns" class="nav-link" data-scroll-target="#ordinal-categorical-and-continuous-patterns"><span class="header-section-number">4.4.3</span> Ordinal, Categorical, and Continuous Patterns</a></li>
+  <li><a href="#sec-leakage-risk" id="toc-sec-leakage-risk" class="nav-link" data-scroll-target="#sec-leakage-risk"><span class="header-section-number">4.4.4</span> Leakage Risk and Variable Exclusion</a></li>
   </ul></li>
-  <li><a href="#artifacts-and-documentation-outputs" id="toc-artifacts-and-documentation-outputs" class="nav-link" data-scroll-target="#artifacts-and-documentation-outputs"><span class="header-section-number">4.5</span> Artifacts and documentation outputs</a></li>
-  <li><a href="#summary-of-data-constraints" id="toc-summary-of-data-constraints" class="nav-link" data-scroll-target="#summary-of-data-constraints"><span class="header-section-number">4.6</span> Summary of data constraints</a></li>
+  <li><a href="#artifacts-and-documentation-outputs" id="toc-artifacts-and-documentation-outputs" class="nav-link" data-scroll-target="#artifacts-and-documentation-outputs"><span class="header-section-number">4.5</span> Artifacts and Documentation Outputs</a></li>
+  <li><a href="#summary-of-data-constraints" id="toc-summary-of-data-constraints" class="nav-link" data-scroll-target="#summary-of-data-constraints"><span class="header-section-number">4.6</span> Summary of Data Constraints</a></li>
   </ul>
 </nav>
     </div>
@@ -238,18 +238,18 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="data-sources-and-study-scope" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="data-sources-and-study-scope"><span class="header-section-number">4.1</span> Data sources and study scope</h2>
+<h2 data-number="4.1" class="anchored" data-anchor-id="data-sources-and-study-scope"><span class="header-section-number">4.1</span> Data Sources and Study Scope</h2>
 <p>This study utilizes a single primary dataset, cell2celltrain.csv, a customer-level telecom churn dataset consisting of 51,047 customer records and 58 original columns (including the identifier and raw target label). To facilitate binary classification modeling, the original string-based churn label was encoded into a binary numerical format (1/0) to serve as the final prediction target. Each row corresponds to one customer, with CustomerID serving as a unique identifier; no duplicate CustomerID values were detected.</p>
 <p>To make feature handling auditable and reproducible across notebooks, the project also maintains a configuration-driven feature registry (built from feature_config_clean.csv) that specifies feature types (numeric/binary/ordinal/nominal), semantic groups, and risk/processing tags (e.g., “high_card”, “sparse_zero”, “zero_as_missing”). This design supports consistent “data scope” decisions (e.g., dropping identifiers, excluding leakage-prone fields) without hard-coding per-notebook logic.</p>
 <p>In addition, a Detailed Feature Decision Table and a Data Dictionary were created as formal documentation of the dataset’s columns and the feature inclusion/exclusion rationale. The decision table is treated as a “single source of truth” for feature-level decisions and is provided in <a href="99-appendix.html#sec-appendix-a1" class="quarto-xref"><span>Section A.2.1</span></a> (<a href="99-appendix.html#tbl-full-feature-registry" class="quarto-xref">Table&nbsp;<span>A.1</span></a>).</p>
 </section>
 <section id="prediction-target-and-observation-window" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="prediction-target-and-observation-window"><span class="header-section-number">4.2</span> Prediction target and observation window</h2>
-<p>The modeling task is a binary classification problem: predicting whether a customer will churn. The dataset’s churn definition is event-based: “customers who churned 31- 60 days later” are labeled as churners. Many behavioral variables are constructed as historical summaries (e.g., four-month means), which aligns with a practical churn prediction setting where features represent pre-outcome customer state rather than post-churn operational actions.</p>
+<h2 data-number="4.2" class="anchored" data-anchor-id="prediction-target-and-observation-window"><span class="header-section-number">4.2</span> Prediction Target and Observation Window</h2>
+<p>The modeling task is a binary classification problem: predicting whether a customer will churn. The dataset’s churn definition is event-based: “customers who churned 31–60 days later” are labeled as churners. Many behavioral variables are constructed as historical summaries (e.g., four-month means), which aligns with a practical churn prediction setting where features represent pre-outcome customer state rather than post-churn operational actions.</p>
 <p>From a business perspective, this framing supports proactive retention: the goal is to rank customers by churn risk so that limited retention resources can be targeted toward those most likely to leave.</p>
 </section>
 <section id="data-documentation-and-feature-organization" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="data-documentation-and-feature-organization"><span class="header-section-number">4.3</span> Data documentation and feature organization</h2>
+<h2 data-number="4.3" class="anchored" data-anchor-id="data-documentation-and-feature-organization"><span class="header-section-number">4.3</span> Data Documentation and Feature Organization</h2>
 <p>Because the dataset contains heterogeneous feature families (usage, billing, tenure, device, demographics, and operational indicators), EDA was used not only to summarize distributions but also to organize features into consistent groups for later modeling and interpretation. The project produced reusable documentation outputs, including a feature registry table (<a href="99-appendix.html#sec-appendix-a1" class="quarto-xref"><span>Section A.2.1</span></a>) and a semantic grouping table (<a href="99-appendix.html#sec-appendix-a2" class="quarto-xref"><span>Section A.2.2</span></a>).</p>
 <p>At a high level, the raw columns include a mixture of numeric, integer, and object-typed variables (29 float64, 7 int64, 22 object in the raw load). A structured type and tag system was maintained for each feature (e.g., some features are tagged as high-cardinality, some as zero-as-missing, some as sparse-zero), enabling later preprocessing and model design to follow a documented specification rather than ad hoc decisions.</p>
 <div class="cell" data-execution_count="1" data-tbl-cap-location="top">
@@ -263,7 +263,7 @@ Table&nbsp;4.1: Feature registry excerpt (top 5 rows).
 <div>
 
 
-<table class="dataframe do-not-create-environment cell caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe cell caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -351,10 +351,10 @@ Table&nbsp;4.1: Feature registry excerpt (top 5 rows).
 <p>The complete registry is provided in Appendix A (see <a href="99-appendix.html#sec-appendix-a1" class="quarto-xref"><span>Section A.2.1</span></a>, Complete Feature Registry).</p>
 </section>
 <section id="sec-eda" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="sec-eda"><span class="header-section-number">4.4</span> Exploratory data analysis: what the data “looks like” and why it matters</h2>
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-eda"><span class="header-section-number">4.4</span> Exploratory Data Analysis</h2>
 <p>EDA in this study was designed to (i) quantify the dataset’s major modeling constraints (imbalance, sparsity, nonlinearity), (ii) detect leakage risks, and (iii) create reproducible tables/figures that guide later methodological choices.</p>
 <section id="class-balance-and-baseline-difficulty" class="level3" data-number="4.4.1">
-<h3 data-number="4.4.1" class="anchored" data-anchor-id="class-balance-and-baseline-difficulty"><span class="header-section-number">4.4.1</span> Class balance and baseline difficulty</h3>
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="class-balance-and-baseline-difficulty"><span class="header-section-number">4.4.1</span> Class Balance and Baseline Difficulty</h3>
 <p>Churn is a minority class but not extremely rare: 14,711 churners (28.82%) versus 36,336 non-churners (71.18%). A naïve classifier that always predicts “non-churn” would achieve 0.7118 accuracy, demonstrating that accuracy alone is not a sufficient measure for this task.</p>
 <div id="fig-churn-distribution" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Donut chart showing churn vs non-churn share.">
 <figure class="quarto-float quarto-float-fig figure">
@@ -369,7 +369,7 @@ Figure&nbsp;4.1: Churn class distribution in the Cell2Cell training set.
 <p>This imbalance motivated evaluation choices later in the thesis (e.g., ranking metrics and precision/recall-focused diagnostics), but the formal metric definitions are deferred to the Methodology section.</p>
 </section>
 <section id="missingness-sparsity-and-zero-inflation" class="level3" data-number="4.4.2">
-<h3 data-number="4.4.2" class="anchored" data-anchor-id="missingness-sparsity-and-zero-inflation"><span class="header-section-number">4.4.2</span> Missingness, sparsity, and “zero inflation”</h3>
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="missingness-sparsity-and-zero-inflation"><span class="header-section-number">4.4.2</span> Missingness, Sparsity, and Zero Inflation</h3>
 <p>A key constraint in this telecom dataset is that many variables are structurally sparse, meaning they are missing for most customers or recorded as zeros that effectively encode “not applicable” or “not observed”. The EDA therefore tracked missing values and zero inflation together (a “missing+zero” sparsity score) and saved a ranked summary.</p>
 <p>The top-ranked features by combined sparsity were mainly zero-inflated retention and low-frequency call variables (e.g., CallForwardingCalls, RetentionOffersAccepted, RetentionCalls), followed by sparse call-behavior and customer-contact measures (e.g., ThreewayCalls, RoamingCalls, CustomerCareCalls) and high-missingness demographic/pricing proxies such as IncomeGroup, AgeHH1/AgeHH2, and HandsetPrice.</p>
 <div id="fig-sparsity" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Bar chart showing missing rate and zero rate by feature.">
@@ -384,7 +384,7 @@ Figure&nbsp;4.2: Missingness and zero-rate diagnostics for input features.
 </div>
 </section>
 <section id="ordinal-categorical-and-continuous-patterns" class="level3" data-number="4.4.3">
-<h3 data-number="4.4.3" class="anchored" data-anchor-id="ordinal-categorical-and-continuous-patterns"><span class="header-section-number">4.4.3</span> Ordinal, categorical, and continuous patterns</h3>
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="ordinal-categorical-and-continuous-patterns"><span class="header-section-number">4.4.3</span> Ordinal, Categorical, and Continuous Patterns</h3>
 <p>EDA included several diagnostic plots for ordinal and categorical features, examining the relationship between variable categories and churn rate. For example, <a href="#fig-ordinal-trends" class="quarto-xref">Figure&nbsp;<span>4.3</span></a> visualizes how churn risk varies across ordinal feature levels.</p>
 <div id="fig-ordinal-trends" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Stacked bar chart showing ordinal variable churn patterns.">
 <figure class="quarto-float quarto-float-fig figure">
@@ -409,7 +409,7 @@ Figure&nbsp;4.4: Cramér’s V association between top categorical features and 
 </div>
 </section>
 <section id="sec-leakage-risk" class="level3" data-number="4.4.4">
-<h3 data-number="4.4.4" class="anchored" data-anchor-id="sec-leakage-risk"><span class="header-section-number">4.4.4</span> Leakage risk and variable exclusion</h3>
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="sec-leakage-risk"><span class="header-section-number">4.4.4</span> Leakage Risk and Variable Exclusion</h3>
 <p>A central rigor requirement in churn modeling is avoiding predictors that implicitly contain post-outcome information. This study therefore treated leakage control as a data scoping decision: features that would not be available at prediction time (or that are only triggered once churn intent is revealed) were excluded from the modeling dataset.</p>
 <p>A dedicated leakage scan (saved as T5j_leakage_risk_rank.csv) ranked features by a composite leakage risk score (see <a href="99-appendix.html#sec-appendix-a3" class="quarto-xref"><span>Section A.2.3</span></a> for the complete ranking). In the scan, the highest-risk features were retention intervention variables such as MadeCallToRetentionTeam, RetentionCalls, and RetentionOffersAccepted, which were flagged as essentially post-churn indicators. The EDA further visualized these risks using leakage-flag churn comparisons and saved the summary plot.</p>
 <div id="fig-leakage-flags" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Bar chart comparing churn rates for leakage-prone features.">
@@ -426,7 +426,7 @@ Figure&nbsp;4.5: Leakage risk visualization: churn rates by retention-related fl
 </section>
 </section>
 <section id="artifacts-and-documentation-outputs" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="artifacts-and-documentation-outputs"><span class="header-section-number">4.5</span> Artifacts and documentation outputs</h2>
+<h2 data-number="4.5" class="anchored" data-anchor-id="artifacts-and-documentation-outputs"><span class="header-section-number">4.5</span> Artifacts and Documentation Outputs</h2>
 <p>Feature documentation artifacts (T0_feature_registry.csv, T0_semantic_groups_table.csv) were generated and reused across notebooks (see <a href="99-appendix.html#sec-appendix-a1" class="quarto-xref"><span>Section A.2.1</span></a> and <a href="99-appendix.html#sec-appendix-a2" class="quarto-xref"><span>Section A.2.2</span></a> for complete tables).</p>
 <p>The EDA stage produced:</p>
 <ul>
@@ -435,10 +435,9 @@ Figure&nbsp;4.5: Leakage risk visualization: churn rates by retention-related fl
 <li><strong>Categorical association analysis</strong> (T4_cramers_v_vs_churn.csv; see <a href="#fig-cramers-v-top" class="quarto-xref">Figure&nbsp;<span>4.4</span></a>).</li>
 <li><strong>Leakage risk ranking</strong> (T5j_leakage_risk_rank.csv; see <a href="#fig-leakage-flags" class="quarto-xref">Figure&nbsp;<span>4.5</span></a> and <a href="99-appendix.html#sec-appendix-a3" class="quarto-xref"><span>Section A.2.3</span></a> for the full ranking).</li>
 </ul>
-<p>The complete registry is provided in Appendix A (see <a href="99-appendix.html#sec-appendix-a1" class="quarto-xref"><span>Section A.2.1</span></a>, Complete Feature Registry).</p>
 </section>
 <section id="summary-of-data-constraints" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="summary-of-data-constraints"><span class="header-section-number">4.6</span> Summary of data constraints</h2>
+<h2 data-number="4.6" class="anchored" data-anchor-id="summary-of-data-constraints"><span class="header-section-number">4.6</span> Summary of Data Constraints</h2>
 <ol type="1">
 <li>moderate class imbalance (28.82% churn), (2) substantial sparsity and zero inflation across multiple feature families, (3) nonlinear churn patterns (e.g., a U-shaped CreditRating risk curve), and (4) high-stakes leakage risks in retention-related variables requiring explicit exclusion. These observations establish the constraints and motivations for the modeling comparisons presented in subsequent sections.</li>
 </ol>

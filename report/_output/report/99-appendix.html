@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Appendix A — Appendix – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -68,15 +71,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../report/98-references.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-87aed0b8589e23e45aa8556edf37a91b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -130,9 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
     </div>
@@ -281,8 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#sec-appendix-g" id="toc-sec-appendix-g" class="nav-link" data-scroll-target="#sec-appendix-g"><span class="header-section-number">A.8</span> Supplementary SHAP Analysis</a>
   <ul class="collapse">
   <li><a href="#sec-appendix-g1" id="toc-sec-appendix-g1" class="nav-link" data-scroll-target="#sec-appendix-g1"><span class="header-section-number">A.8.1</span> SHAP Feature Importance Bar Plot</a></li>
-  <li><a href="#sec-appendix-g2" id="toc-sec-appendix-g2" class="nav-link" data-scroll-target="#sec-appendix-g2"><span class="header-section-number">A.8.2</span> SHAP Interaction Effects</a></li>
-  <li><a href="#sec-appendix-g3" id="toc-sec-appendix-g3" class="nav-link" data-scroll-target="#sec-appendix-g3"><span class="header-section-number">A.8.3</span> Semi-Supervised Learning SHAP Analysis</a></li>
+  <li><a href="#sec-appendix-g3" id="toc-sec-appendix-g3" class="nav-link" data-scroll-target="#sec-appendix-g3"><span class="header-section-number">A.8.2</span> Semi-Supervised Learning SHAP Analysis</a></li>
   </ul></li>
   <li><a href="#sec-appendix-h" id="toc-sec-appendix-h" class="nav-link" data-scroll-target="#sec-appendix-h"><span class="header-section-number">A.9</span> Final Model Comparison and Evaluation</a>
   <ul class="collapse">
@@ -301,8 +300,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#sec-appendix-j" id="toc-sec-appendix-j" class="nav-link" data-scroll-target="#sec-appendix-j"><span class="header-section-number">A.11</span> Error Case Studies</a>
   <ul class="collapse">
-  <li><a href="#sec-appendix-j1" id="toc-sec-appendix-j1" class="nav-link" data-scroll-target="#sec-appendix-j1"><span class="header-section-number">A.11.1</span> Representative False Negative Cases</a></li>
-  <li><a href="#sec-appendix-j2" id="toc-sec-appendix-j2" class="nav-link" data-scroll-target="#sec-appendix-j2"><span class="header-section-number">A.11.2</span> Representative False Positive Cases</a></li>
+  <li><a href="#sec-appendix-j1" id="toc-sec-appendix-j1" class="nav-link" data-scroll-target="#sec-appendix-j1"><span class="header-section-number">A.11.1</span> False Negative Patterns</a></li>
+  <li><a href="#sec-appendix-j2" id="toc-sec-appendix-j2" class="nav-link" data-scroll-target="#sec-appendix-j2"><span class="header-section-number">A.11.2</span> False Positive Patterns</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -343,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run full pipeline</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/02_preprocess.py           <span class="co"># Data preprocessing and feature engineering</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/03_logit.py                <span class="co"># Baseline: Logistic Regression</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/04_trees_gbm.py <span class="at">--fast</span>     <span class="co"># Tree-based models (XGBoost, LightGBM, CatBoost)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/04_trees_gbm.py <span class="at">--fast</span>     <span class="co"># Tree-based models (XGBoost, LightGBM)</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/05_nn.py <span class="at">--fast</span>            <span class="co"># Deep learning (PyTorch Wide and Deep)</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/07_stacking.py             <span class="co"># Ensemble stacking</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> scripts/08_interpretation.py <span class="at">--fast</span> <span class="co"># SHAP interpretation</span></span>
@@ -1184,7 +1183,7 @@ Table&nbsp;A.4: Logistic Regression Grid Search Results (5-fold Stratified CV)
 <div id="tbl-logreg-threshold-sweep" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-logreg-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.5: Logistic Regression Threshold Sweep on Validation Set
+Table&nbsp;A.5: Logistic Regression threshold sweep on the validation set (representative rows).
 </figcaption>
 <div aria-describedby="tbl-logreg-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1193,80 +1192,58 @@ Table&nbsp;A.5: Logistic Regression Threshold Sweep on Validation Set
 <th>Threshold</th>
 <th>Precision</th>
 <th>Recall</th>
-<th>F1-Score</th>
-<th>Specificity</th>
+<th>F1</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>0.1000</td>
-<td>0.3120</td>
-<td>0.8920</td>
-<td>0.4630</td>
-<td>0.2340</td>
+<td>0.2882</td>
+<td>1.0000</td>
+<td>0.4474</td>
 </tr>
 <tr class="even">
-<td>0.1500</td>
-<td>0.3280</td>
-<td>0.8410</td>
-<td>0.4720</td>
-<td>0.2980</td>
-</tr>
-<tr class="odd">
 <td>0.2000</td>
-<td>0.3510</td>
-<td>0.7830</td>
-<td>0.4850</td>
-<td>0.3780</td>
-</tr>
-<tr class="even">
-<td>0.2500</td>
-<td>0.3820</td>
-<td>0.7120</td>
-<td>0.4970</td>
-<td>0.4670</td>
+<td>0.2925</td>
+<td>0.9980</td>
+<td>0.4525</td>
 </tr>
 <tr class="odd">
-<td><strong>0.2900</strong></td>
-<td><strong>0.4120</strong></td>
-<td><strong>0.6510</strong></td>
-<td><strong>0.5040</strong></td>
-<td><strong>0.5420</strong></td>
+<td>0.3000</td>
+<td>0.3125</td>
+<td>0.9293</td>
+<td>0.4677</td>
 </tr>
 <tr class="even">
 <td>0.3500</td>
-<td>0.4580</td>
-<td>0.5670</td>
-<td>0.5060</td>
-<td>0.6340</td>
+<td>0.3286</td>
+<td>0.8899</td>
+<td>0.4800</td>
 </tr>
 <tr class="odd">
 <td>0.4000</td>
-<td>0.5010</td>
-<td>0.4780</td>
-<td>0.4890</td>
-<td>0.7120</td>
+<td>0.3408</td>
+<td>0.8300</td>
+<td>0.4832</td>
 </tr>
 <tr class="even">
-<td>0.4500</td>
-<td>0.5480</td>
-<td>0.3890</td>
-<td>0.4550</td>
-<td>0.7830</td>
+<td><strong>0.4400</strong></td>
+<td><strong>0.3536</strong></td>
+<td><strong>0.7757</strong></td>
+<td><strong>0.4857</strong></td>
 </tr>
 <tr class="odd">
 <td>0.5000</td>
-<td>0.5920</td>
-<td>0.3010</td>
-<td>0.3990</td>
-<td>0.8450</td>
+<td>0.3821</td>
+<td>0.6587</td>
+<td>0.4837</td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<p><strong>Optimal threshold:</strong> τ = 0.2900 (maximizing F1-score on validation set)</p>
+<p><strong>Operational threshold:</strong> τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set. This unified threshold is applied to all models for comparability.</p>
 </section>
 <section id="sec-appendix-b3" class="level3" data-number="A.3.3">
 <h3 data-number="A.3.3" class="anchored" data-anchor-id="sec-appendix-b3"><span class="header-section-number">A.3.3</span> Logistic Regression Diagnostic Plots</h3>
@@ -1461,52 +1438,57 @@ Table&nbsp;A.6: Hyperparameter search space and best values for tree-based model
 <div id="tbl-tree-threshold-sweep" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tree-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.7: Optimal thresholds and metrics for tree-based models (validation set)
+Table&nbsp;A.7: Tree model performance at the fixed operational threshold τ = 0.4400. All three models use the same threshold for direct comparability.
 </figcaption>
 <div aria-describedby="tbl-tree-threshold-sweep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 19%">
+<col style="width: 15%">
+<col style="width: 10%">
+<col style="width: 13%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Model</th>
-<th>Optimal τ</th>
-<th>Precision</th>
-<th>Recall</th>
-<th>F1-Score</th>
-<th>ROC-AUC</th>
+<th>Val ROC-AUC</th>
+<th>Test ROC-AUC</th>
+<th>Test Precision</th>
+<th>Test Recall</th>
+<th>Test F1</th>
+<th>Threshold</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Random Forest</td>
-<td>0.3200</td>
-<td>0.4780</td>
-<td>0.6120</td>
-<td>0.5370</td>
-<td>0.6523</td>
+<td>0.6490</td>
+<td>0.6534</td>
+<td>0.3428</td>
+<td>0.8042</td>
+<td>0.4807</td>
+<td>0.4400</td>
 </tr>
 <tr class="even">
 <td>XGBoost</td>
-<td>0.3100</td>
-<td>0.4920</td>
-<td>0.6280</td>
-<td>0.5520</td>
-<td>0.6687</td>
+<td>0.6571</td>
+<td>0.6637</td>
+<td>0.3670</td>
+<td>0.7390</td>
+<td>0.4904</td>
+<td>0.4400</td>
 </tr>
 <tr class="odd">
 <td>LightGBM</td>
-<td>0.3000</td>
-<td>0.4850</td>
-<td>0.6340</td>
-<td>0.5490</td>
-<td>0.6654</td>
-</tr>
-<tr class="even">
-<td>CatBoost</td>
-<td>0.3100</td>
-<td>0.4890</td>
-<td>0.6210</td>
-<td>0.5470</td>
-<td>0.6642</td>
+<td>0.6502</td>
+<td>0.6700</td>
+<td>0.3764</td>
+<td>0.7308</td>
+<td>0.4969</td>
+<td>0.4400</td>
 </tr>
 </tbody>
 </table>
@@ -1685,7 +1667,7 @@ Table&nbsp;A.9: Top-7 feature importance ranking across tree-based models
 <div id="tbl-nn-experiment-leaderboard" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-experiment-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.10: Neural Network Experiment Leaderboard (sorted by Test ROC-AUC)
+Table&nbsp;A.10: Neural network experiment leaderboard sorted by Test ROC-AUC (descending). All experiments use early stopping (patience = 15) with the same train/validation/test split.
 </figcaption>
 <div aria-describedby="tbl-nn-experiment-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1709,60 +1691,60 @@ Table&nbsp;A.10: Neural Network Experiment Leaderboard (sorted by Test ROC-AUC)
 </thead>
 <tbody>
 <tr class="odd">
-<td>exp_001</td>
-<td>MLP-3L-256</td>
-<td>BCE</td>
-<td>0.6423</td>
-<td>0.4012</td>
-<td>0.2120</td>
-</tr>
-<tr class="even">
-<td>exp_002</td>
-<td>MLP-3L-256</td>
-<td>Focal</td>
-<td>0.6512</td>
-<td>0.4189</td>
-<td>0.2050</td>
-</tr>
-<tr class="odd">
-<td>exp_003</td>
-<td>MLP-4L-512</td>
-<td>BCE</td>
-<td>0.6398</td>
-<td>0.3987</td>
-<td>0.2180</td>
-</tr>
-<tr class="even">
-<td>exp_004</td>
-<td>Wide&amp;Deep</td>
-<td>BCE</td>
-<td>0.6534</td>
-<td>0.4234</td>
-<td>0.2010</td>
-</tr>
-<tr class="odd">
-<td><strong>exp_005</strong></td>
-<td><strong>Wide&amp;Deep</strong></td>
-<td><strong>Focal</strong></td>
+<td><strong>wide_deep_focal</strong></td>
+<td><strong>Wide &amp; Deep</strong></td>
+<td><strong>Focal (γ=2)</strong></td>
 <td><strong>0.6615</strong></td>
 <td><strong>0.4356</strong></td>
 <td><strong>0.1970</strong></td>
 </tr>
 <tr class="even">
-<td>exp_006</td>
-<td>ResNet-style</td>
-<td>BCE</td>
-<td>0.6478</td>
-<td>0.4156</td>
-<td>0.2080</td>
+<td>embedding_focal_loss</td>
+<td>Embedding MLP</td>
+<td>Focal (γ=2)</td>
+<td>0.6612</td>
+<td>0.4345</td>
+<td>0.1976</td>
 </tr>
 <tr class="odd">
-<td>exp_007</td>
-<td>ResNet-style</td>
-<td>Focal</td>
-<td>0.6589</td>
-<td>0.4298</td>
-<td>0.1990</td>
+<td>dense_baseline</td>
+<td>Dense MLP</td>
+<td>Weighted BCE</td>
+<td>0.6553</td>
+<td>0.4219</td>
+<td>0.2343</td>
+</tr>
+<tr class="even">
+<td>wide_and_deep</td>
+<td>Wide &amp; Deep</td>
+<td>Weighted BCE</td>
+<td>0.6496</td>
+<td>0.4208</td>
+<td>0.2364</td>
+</tr>
+<tr class="odd">
+<td>embedding_baseline</td>
+<td>Embedding MLP</td>
+<td>Weighted BCE</td>
+<td>0.6489</td>
+<td>0.4192</td>
+<td>0.2329</td>
+</tr>
+<tr class="even">
+<td>wide_and_deep_deeper</td>
+<td>Wide &amp; Deep (Deeper)</td>
+<td>Weighted BCE</td>
+<td>0.6475</td>
+<td>0.4110</td>
+<td>0.2328</td>
+</tr>
+<tr class="odd">
+<td>embedding_strong_weight</td>
+<td>Embedding MLP</td>
+<td>Weighted BCE (×1.5)</td>
+<td>0.6442</td>
+<td>0.4081</td>
+<td>0.2718</td>
 </tr>
 </tbody>
 </table>
@@ -1838,22 +1820,22 @@ Figure&nbsp;A.14: Training dynamics for embedding MLP with strong class weight.
 <div id="tbl-nn-architecture-specs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-architecture-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.11: Neural network architecture specifications
+Table&nbsp;A.11: Neural network architecture specifications. Parameter counts are from actual training artifacts (n_params field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs.
 </figcaption>
 <div aria-describedby="tbl-nn-architecture-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 11%">
-<col style="width: 20%">
-<col style="width: 13%">
+<col style="width: 18%">
 <col style="width: 17%">
-<col style="width: 17%">
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Architecture</th>
-<th>Layers</th>
+<th>Deep Layers</th>
 <th>Hidden Units</th>
 <th>Dropout</th>
 <th>Activation</th>
@@ -1862,36 +1844,36 @@ Table&nbsp;A.11: Neural network architecture specifications
 </thead>
 <tbody>
 <tr class="odd">
-<td>MLP-3L-256</td>
-<td>3</td>
-<td>[256, 128, 64]</td>
-<td>0.3000</td>
+<td>Dense MLP</td>
+<td>2</td>
+<td>[128, 64]</td>
+<td>0.30</td>
 <td>ReLU</td>
-<td>~98K</td>
+<td>~10K</td>
 </tr>
 <tr class="even">
-<td>MLP-4L-512</td>
-<td>4</td>
-<td>[512, 256, 128, 64]</td>
-<td>0.4000</td>
+<td>Embedding MLP</td>
+<td>2 + embed</td>
+<td>[128, 64] + embed(8)</td>
+<td>0.30</td>
 <td>ReLU</td>
-<td>~312K</td>
+<td>~20K</td>
 </tr>
 <tr class="odd">
-<td>Wide&amp;Deep</td>
-<td>3+1</td>
-<td>[256, 128, 64] + Linear</td>
-<td>0.3000</td>
+<td>Wide &amp; Deep</td>
+<td>2 + wide</td>
+<td>[128, 64] + Linear</td>
+<td>0.30</td>
 <td>ReLU/Linear</td>
-<td>~105K</td>
+<td>~20K</td>
 </tr>
 <tr class="even">
-<td>ResNet-style</td>
-<td>4</td>
-<td>[256, 256, 128, 64]</td>
-<td>0.3000</td>
-<td>ReLU + Skip</td>
-<td>~142K</td>
+<td>Wide &amp; Deep (Deeper)</td>
+<td>3 + wide</td>
+<td>[256, 128, 64] + Linear</td>
+<td>0.30</td>
+<td>ReLU/Linear</td>
+<td>~64K</td>
 </tr>
 </tbody>
 </table>
@@ -1947,61 +1929,47 @@ Figure&nbsp;A.17: Comparison of autoencoder variants and their impact on downstr
 <div id="tbl-pseudo-label-summary" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pseudo-label-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.12: Pseudo-labeling performance across confidence thresholds
+Table&nbsp;A.12: Pseudo-labeling experiment outcome. Conservative confidence thresholds produced near-zero coverage, making semi-supervised retraining infeasible at this stage.
 </figcaption>
 <div aria-describedby="tbl-pseudo-label-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 23%">
-<col style="width: 28%">
-<col style="width: 20%">
+<col style="width: 61%">
+<col style="width: 38%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Confidence Threshold</th>
-<th>Holdout Coverage</th>
-<th>Pseudo-label Accuracy</th>
-<th>Final Test AUC</th>
+<th>Statistic</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>0.9000</td>
-<td>18.3%</td>
-<td>0.8920</td>
-<td>0.6623</td>
+<td>Unlabeled pool size</td>
+<td>20,000</td>
 </tr>
 <tr class="even">
-<td>0.8500</td>
-<td>28.7%</td>
-<td>0.8710</td>
-<td>0.6645</td>
+<td>Confidence thresholds applied</td>
+<td>p &lt; 0.05 (non-churn) or p &gt; 0.95 (churn)</td>
 </tr>
 <tr class="odd">
-<td><strong>0.8000</strong></td>
-<td><strong>42.1%</strong></td>
-<td><strong>0.8530</strong></td>
-<td><strong>0.6687</strong></td>
+<td>Samples meeting threshold</td>
+<td><strong>2</strong> (0.01% coverage)</td>
 </tr>
 <tr class="even">
-<td>0.7500</td>
-<td>56.4%</td>
-<td>0.8310</td>
-<td>0.6672</td>
+<td>Teacher model test AUC</td>
+<td>0.6451</td>
 </tr>
 <tr class="odd">
-<td>0.7000</td>
-<td>68.9%</td>
-<td>0.8120</td>
-<td>0.6641</td>
+<td>Student model improvement</td>
+<td>None (insufficient pseudo-labels for retraining)</td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<p><strong>Selected threshold:</strong> 0.8000 (balancing coverage and pseudo-label quality)</p>
+<p><strong>Interpretation:</strong> The XGBoost teacher model assigned very few unlabeled samples to either the high-confidence churn or non-churn regions. The overwhelming majority of predictions clustered in the uncertain range (mean probability 0.287, std 0.110), consistent with the inherent ambiguity of churn prediction from static snapshot features. This highlights that confidence calibration and threshold relaxation are prerequisites for viable pseudo-labeling (see <a href="07-conclusion.html#sec-future-ssl" class="quarto-xref"><span>Section 8.2.1</span></a>).</p>
 </section>
 <section id="sec-appendix-e5" class="level3" data-number="A.6.5">
 <h3 data-number="A.6.5" class="anchored" data-anchor-id="sec-appendix-e5"><span class="header-section-number">A.6.5</span> Denoising Autoencoder Configuration</h3>
@@ -2009,9 +1977,9 @@ Table&nbsp;A.12: Pseudo-labeling performance across confidence thresholds
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'encoder_dims'</span>: [<span class="dv">128</span>, <span class="dv">64</span>, <span class="dv">32</span>],</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'decoder_dims'</span>: [<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>],</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'latent_dim'</span>: <span class="dv">32</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'noise_factor'</span>: <span class="fl">0.1500</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'dropout'</span>: <span class="fl">0.2000</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'activation'</span>: <span class="st">'leaky_relu'</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'noise_rate'</span>: <span class="fl">0.2000</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'dropout'</span>: <span class="fl">0.0</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'activation'</span>: <span class="st">'relu'</span>,</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.0010</span>,</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'batch_size'</span>: <span class="dv">256</span>,</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'epochs'</span>: <span class="dv">100</span>,</span>
@@ -2027,7 +1995,7 @@ Table&nbsp;A.12: Pseudo-labeling performance across confidence thresholds
 <div id="tbl-correlation-matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-correlation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.13: Pearson correlation of predicted probabilities on validation set
+Table&nbsp;A.13: Pearson correlation of predicted probabilities on the validation set across all five base models
 </figcaption>
 <div aria-describedby="tbl-correlation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -2037,79 +2005,64 @@ Table&nbsp;A.13: Pearson correlation of predicted probabilities on validation se
 <th>Logistic</th>
 <th>XGBoost</th>
 <th>LightGBM</th>
-<th>CatBoost</th>
 <th>RF</th>
-<th>Wide&amp;Deep</th>
+<th>WideDeep</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Logistic</td>
-<td>1.00</td>
-<td>0.4700</td>
-<td>0.4800</td>
-<td>0.4700</td>
-<td>0.4500</td>
-<td>0.5200</td>
+<td>1.0000</td>
+<td>0.4778</td>
+<td>0.4685</td>
+<td>0.4739</td>
+<td>0.5840</td>
 </tr>
 <tr class="even">
 <td>XGBoost</td>
-<td>0.4700</td>
-<td>1.00</td>
-<td>0.9300</td>
-<td>0.9100</td>
-<td>0.8700</td>
-<td>0.7800</td>
+<td>0.4778</td>
+<td>1.0000</td>
+<td>0.9313</td>
+<td>0.8786</td>
+<td>0.8341</td>
 </tr>
 <tr class="odd">
 <td>LightGBM</td>
-<td>0.4800</td>
-<td>0.9300</td>
-<td>1.00</td>
-<td>0.9200</td>
-<td>0.8800</td>
-<td>0.7900</td>
+<td>0.4685</td>
+<td>0.9313</td>
+<td>1.0000</td>
+<td>0.8691</td>
+<td>0.8241</td>
 </tr>
 <tr class="even">
-<td>CatBoost</td>
-<td>0.4700</td>
-<td>0.9100</td>
-<td>0.9200</td>
-<td>1.00</td>
-<td>0.8900</td>
-<td>0.7700</td>
+<td>RF</td>
+<td>0.4739</td>
+<td>0.8786</td>
+<td>0.8691</td>
+<td>1.0000</td>
+<td>0.8038</td>
 </tr>
 <tr class="odd">
-<td>RF</td>
-<td>0.4500</td>
-<td>0.8700</td>
-<td>0.8800</td>
-<td>0.8900</td>
-<td>1.00</td>
-<td>0.7400</td>
-</tr>
-<tr class="even">
-<td>Wide&amp;Deep</td>
-<td>0.5200</td>
-<td>0.7800</td>
-<td>0.7900</td>
-<td>0.7700</td>
-<td>0.7400</td>
-<td>1.00</td>
+<td>WideDeep</td>
+<td>0.5840</td>
+<td>0.8341</td>
+<td>0.8241</td>
+<td>0.8038</td>
+<td>1.0000</td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<p><strong>Insight:</strong> Logistic regression and neural network predictions show lower correlation with tree ensemble predictions, suggesting potential diversity benefits for stacking.</p>
+<p><strong>Insight:</strong> Tree-based models are highly correlated with each other (0.8691–0.9313). Logistic Regression is least correlated with all others (0.4685–0.5840), providing the most complementary signal. Wide &amp; Deep correlates moderately with the tree models (0.8038–0.8341) and more strongly with Logistic (0.5840) than the tree models do, indicating it occupies a distinct region of model space.</p>
 </section>
 <section id="sec-appendix-f2" class="level3" data-number="A.7.2">
 <h3 data-number="A.7.2" class="anchored" data-anchor-id="sec-appendix-f2"><span class="header-section-number">A.7.2</span> Ensemble Blending Weights</h3>
 <div id="tbl-ensemble-weights" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.14: Blending weights under different weighting schemes
+Table&nbsp;A.14: Blending weights under different weighting schemes across all five base models. AUC-weighted assigns weight proportional to validation AUC minus 0.5; NNLS-optimized solves a non-negative least squares problem on validation predictions.
 </figcaption>
 <div aria-describedby="tbl-ensemble-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -2124,39 +2077,33 @@ Table&nbsp;A.14: Blending weights under different weighting schemes
 <tbody>
 <tr class="odd">
 <td>Logistic</td>
-<td>0.0890</td>
-<td>0.0520</td>
-<td>0.1670</td>
+<td>0.0883</td>
+<td>0.0000</td>
+<td>0.2000</td>
 </tr>
 <tr class="even">
 <td>XGBoost</td>
-<td>0.2010</td>
-<td>0.2870</td>
-<td>0.1670</td>
+<td>0.1571</td>
+<td>0.2497</td>
+<td>0.2000</td>
 </tr>
 <tr class="odd">
 <td>LightGBM</td>
-<td>0.1890</td>
-<td>0.2340</td>
-<td>0.1670</td>
+<td>0.1502</td>
+<td>0.0462</td>
+<td>0.2000</td>
 </tr>
 <tr class="even">
-<td>CatBoost</td>
-<td>0.1780</td>
-<td>0.1980</td>
-<td>0.1670</td>
+<td>RandomForest</td>
+<td>0.1490</td>
+<td>0.0225</td>
+<td>0.2000</td>
 </tr>
 <tr class="odd">
-<td>RF</td>
-<td>0.1560</td>
-<td>0.1120</td>
-<td>0.1670</td>
-</tr>
-<tr class="even">
-<td>Wide&amp;Deep</td>
-<td>0.1870</td>
-<td>0.1170</td>
-<td>0.1670</td>
+<td>WideDeep</td>
+<td>0.1531</td>
+<td>0.6816</td>
+<td>0.2000</td>
 </tr>
 </tbody>
 </table>
@@ -2167,33 +2114,107 @@ Table&nbsp;A.14: Blending weights under different weighting schemes
 <section id="sec-appendix-f3" class="level3" data-number="A.7.3">
 <h3 data-number="A.7.3" class="anchored" data-anchor-id="sec-appendix-f3"><span class="header-section-number">A.7.3</span> Stacking Meta-Learner Coefficients</h3>
 <p>Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Meta<span class="op">-</span>learner coefficients (Ridge, alpha<span class="op">=</span><span class="fl">1.0</span>):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Logistic_OOF'</span>: <span class="fl">0.2340</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'XGBoost_OOF'</span>: <span class="fl">0.4120</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'LightGBM_OOF'</span>: <span class="fl">0.1560</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'CatBoost_OOF'</span>: <span class="fl">0.0890</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'RF_OOF'</span>: <span class="fl">0.0230</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'WideDeep_OOF'</span>: <span class="fl">0.0860</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'intercept'</span>: <span class="op">-</span><span class="fl">0.8920</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two OOF stacking variants were trained, each using a logistic regression meta-learner (L2 regularization, max_iter=2000) fitted on out-of-fold predictions to prevent leakage. Real coefficients are serialized in <code>artifacts/meta/07_stacking_coefs.json</code>.</p>
+<p><strong>Stacking_OOF (4 base models):</strong></p>
+<div id="tbl-stacking-oof4-coefs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stacking-oof4-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.15: Stacking_OOF meta-learner logistic regression coefficients.
+</figcaption>
+<div aria-describedby="tbl-stacking-oof4-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Base Model</th>
+<th>Meta-Learner Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic Regression</td>
+<td>0.231</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>1.967</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>1.068</td>
+</tr>
+<tr class="even">
+<td>Random Forest</td>
+<td>1.600</td>
+</tr>
+<tr class="odd">
+<td>Intercept</td>
+<td>−3.263</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Stacking_OOF_5 (5 base models, adds Wide &amp; Deep):</strong></p>
+<div id="tbl-stacking-oof5-coefs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stacking-oof5-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;A.16: Stacking_OOF_5 meta-learner logistic regression coefficients.
+</figcaption>
+<div aria-describedby="tbl-stacking-oof5-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Base Model</th>
+<th>Meta-Learner Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Logistic Regression</td>
+<td>−0.181</td>
+</tr>
+<tr class="even">
+<td>XGBoost</td>
+<td>1.548</td>
+</tr>
+<tr class="odd">
+<td>LightGBM</td>
+<td>1.070</td>
+</tr>
+<tr class="even">
+<td>Random Forest</td>
+<td>1.181</td>
+</tr>
+<tr class="odd">
+<td>Wide &amp; Deep</td>
+<td>3.473</td>
+</tr>
+<tr class="even">
+<td>Intercept</td>
+<td>−3.771</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>XGBoost dominates the 4-model variant (coefficient 1.967), consistent with its highest individual validation ROC-AUC. In the 5-model variant, Wide &amp; Deep receives the largest coefficient (3.473) because its OOF predictions are on a compressed probability scale from focal loss, so the meta-learner up-weights it substantially to recover its discriminative signal. Logistic Regression receives a small negative coefficient (−0.181) in the 5-model variant, indicating that the other four base models collectively subsume its information content once WideDeep is included.</p>
 </section>
 <section id="sec-appendix-f4" class="level3" data-number="A.7.4">
 <h3 data-number="A.7.4" class="anchored" data-anchor-id="sec-appendix-f4"><span class="header-section-number">A.7.4</span> Ensemble Performance Comparison</h3>
 <div id="tbl-ensemble-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.15: Ensemble method comparison with computational costs
+Table&nbsp;A.17: Ensemble method comparison. The five-model OOF stacking adds Wide &amp; Deep as a fifth base learner trained via proper K-fold OOF to prevent leakage.
 </figcaption>
 <div aria-describedby="tbl-ensemble-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 17%">
-<col style="width: 13%">
-<col style="width: 14%">
-<col style="width: 13%">
-<col style="width: 19%">
-<col style="width: 21%">
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 24%">
+<col style="width: 22%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2201,57 +2222,51 @@ Table&nbsp;A.15: Ensemble method comparison with computational costs
 <th>Val ROC-AUC</th>
 <th>Test ROC-AUC</th>
 <th>Test PR-AUC</th>
-<th>Training Time (s)</th>
-<th>Inference Time (ms)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Best Single (XGBoost)</td>
-<td>0.6654</td>
-<td>0.6687</td>
-<td>0.4298</td>
-<td>42.3</td>
-<td>2.1</td>
+<td>0.6571</td>
+<td>0.6637</td>
+<td>0.4454</td>
 </tr>
 <tr class="even">
 <td>Simple Average</td>
-<td>0.6698</td>
-<td>0.6712</td>
-<td>0.4345</td>
-<td>245.8</td>
-<td>12.4</td>
+<td>0.6592</td>
+<td>0.6695</td>
+<td>0.4489</td>
 </tr>
 <tr class="odd">
 <td>AUC-Weighted</td>
-<td>0.6712</td>
-<td>0.6723</td>
-<td>0.4367</td>
-<td>245.8</td>
-<td>12.5</td>
+<td>0.6596</td>
+<td>0.6701</td>
+<td>0.4507</td>
 </tr>
 <tr class="even">
-<td>NNLS-Optimized</td>
-<td>0.6724</td>
-<td>0.6734</td>
-<td>0.4378</td>
-<td>247.2</td>
-<td>12.5</td>
+<td><strong>NNLS-Optimized</strong></td>
+<td><strong>0.6619</strong></td>
+<td><strong>0.6704</strong></td>
+<td><strong>0.4517</strong></td>
 </tr>
 <tr class="odd">
-<td><strong>OOF Stacking</strong></td>
-<td><strong>0.6745</strong></td>
-<td><strong>0.6726</strong></td>
-<td><strong>0.4389</strong></td>
-<td><strong>278.4</strong></td>
-<td><strong>14.2</strong></td>
+<td>OOF Stacking (4 models)</td>
+<td>0.6586</td>
+<td>0.6679</td>
+<td>0.4490</td>
+</tr>
+<tr class="even">
+<td><strong>OOF Stacking + Wide &amp; Deep</strong></td>
+<td><strong>0.6609</strong></td>
+<td><strong>0.6702</strong></td>
+<td><strong>0.4512</strong></td>
 </tr>
 </tbody>
 </table>
 </div>
 </figure>
 </div>
-<p><strong>Observation:</strong> OOF stacking achieves the best validation AUC but slightly lower test AUC than NNLS blending, suggesting mild overfitting to validation folds.</p>
+<p><strong>Observation:</strong> NNLS-optimized blending achieves the highest test ROC-AUC (0.6704). Adding Wide &amp; Deep as a fifth base learner improves OOF stacking from 0.6679 to 0.6702, nearly matching NNLS blending. All heterogeneous ensembles substantially outperform any single model.</p>
 <hr>
 </section>
 </section>
@@ -2270,56 +2285,8 @@ Figure&nbsp;A.18: Mean absolute SHAP values showing global feature importance ra
 </figure>
 </div>
 </section>
-<section id="sec-appendix-g2" class="level3" data-number="A.8.2">
-<h3 data-number="A.8.2" class="anchored" data-anchor-id="sec-appendix-g2"><span class="header-section-number">A.8.2</span> SHAP Interaction Effects</h3>
-<div id="tbl-shap-interaction-table" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shap-interaction-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.16: Top SHAP interaction effects between feature pairs
-</figcaption>
-<div aria-describedby="tbl-shap-interaction-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Feature Pair</th>
-<th>Mean Interaction Effect</th>
-<th>Direction</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>CurrentEquipmentDays × MonthsInService</td>
-<td>0.0234</td>
-<td>Synergistic</td>
-</tr>
-<tr class="even">
-<td>MonthlyMinutes × PercChangeMinutes</td>
-<td>0.0189</td>
-<td>Synergistic</td>
-</tr>
-<tr class="odd">
-<td>OverageMinutes × MonthlyRevenue</td>
-<td>0.0156</td>
-<td>Synergistic</td>
-</tr>
-<tr class="even">
-<td>AgeHH1 × Homeownership</td>
-<td>0.0098</td>
-<td>Antagonistic</td>
-</tr>
-<tr class="odd">
-<td>DroppedBlockedCalls × CustomerCareCalls_flag</td>
-<td>0.0087</td>
-<td>Synergistic</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-</section>
-<section id="sec-appendix-g3" class="level3" data-number="A.8.3">
-<h3 data-number="A.8.3" class="anchored" data-anchor-id="sec-appendix-g3"><span class="header-section-number">A.8.3</span> Semi-Supervised Learning SHAP Analysis</h3>
+<section id="sec-appendix-g3" class="level3" data-number="A.8.2">
+<h3 data-number="A.8.2" class="anchored" data-anchor-id="sec-appendix-g3"><span class="header-section-number">A.8.2</span> Semi-Supervised Learning SHAP Analysis</h3>
 <div id="fig-ssl-summary" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ssl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -2360,10 +2327,11 @@ Figure&nbsp;A.21: Precision-Recall curves comparing all model families on the te
 </section>
 <section id="sec-appendix-h2" class="level3" data-number="A.9.2">
 <h3 data-number="A.9.2" class="anchored" data-anchor-id="sec-appendix-h2"><span class="header-section-number">A.9.2</span> Threshold Analysis</h3>
+<p>XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,634 non-churners). The optimal threshold τ = 0.4400 was selected by maximizing F1 subject to recall ≥ 0.70, then applied uniformly to all models.</p>
 <div id="tbl-xgb-threshold-full" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-xgb-threshold-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.17: Complete threshold sweep for XGBoost with confusion matrix components
+Table&nbsp;A.18: XGBoost threshold sweep on the validation set (N = 5,105). τ = 0.4400 (bold) maximizes F1 subject to recall ≥ 0.70 and is applied uniformly to all models for comparability. All rows sum to N = 5,105.
 </figcaption>
 <div aria-describedby="tbl-xgb-threshold-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -2394,113 +2362,80 @@ Table&nbsp;A.17: Complete threshold sweep for XGBoost with confusion matrix comp
 <tbody>
 <tr class="odd">
 <td>0.1000</td>
-<td>2156</td>
-<td>5234</td>
-<td>2012</td>
-<td>267</td>
-<td>0.2920</td>
-<td>0.8900</td>
-<td>0.4390</td>
-<td>0.2780</td>
+<td>1471</td>
+<td>3634</td>
+<td>0</td>
+<td>0</td>
+<td>0.2882</td>
+<td>1.0000</td>
+<td>0.4475</td>
+<td>0.0000</td>
 </tr>
 <tr class="even">
-<td>0.1500</td>
-<td>2089</td>
-<td>4567</td>
-<td>2679</td>
-<td>334</td>
-<td>0.3140</td>
-<td>0.8620</td>
-<td>0.4600</td>
-<td>0.3700</td>
-</tr>
-<tr class="odd">
 <td>0.2000</td>
-<td>1998</td>
-<td>3912</td>
-<td>3334</td>
-<td>425</td>
-<td>0.3380</td>
-<td>0.8250</td>
-<td>0.4790</td>
-<td>0.4600</td>
-</tr>
-<tr class="even">
-<td>0.2500</td>
-<td>1876</td>
-<td>3234</td>
-<td>4012</td>
-<td>547</td>
-<td>0.3670</td>
-<td>0.7740</td>
-<td>0.4980</td>
-<td>0.5540</td>
+<td>1468</td>
+<td>3551</td>
+<td>83</td>
+<td>3</td>
+<td>0.2925</td>
+<td>0.9980</td>
+<td>0.4525</td>
+<td>0.0228</td>
 </tr>
 <tr class="odd">
 <td>0.3000</td>
-<td>1723</td>
-<td>2589</td>
-<td>4657</td>
-<td>700</td>
-<td>0.4000</td>
-<td>0.7110</td>
-<td>0.5120</td>
-<td>0.6430</td>
+<td>1368</td>
+<td>3010</td>
+<td>624</td>
+<td>103</td>
+<td>0.3125</td>
+<td>0.9293</td>
+<td>0.4677</td>
+<td>0.1717</td>
 </tr>
 <tr class="even">
-<td><strong>0.3100</strong></td>
-<td><strong>1689</strong></td>
-<td><strong>2456</strong></td>
-<td><strong>4790</strong></td>
-<td><strong>734</strong></td>
-<td><strong>0.4080</strong></td>
-<td><strong>0.6970</strong></td>
-<td><strong>0.5140</strong></td>
-<td><strong>0.6610</strong></td>
-</tr>
-<tr class="odd">
 <td>0.3500</td>
-<td>1534</td>
-<td>2012</td>
-<td>5234</td>
-<td>889</td>
-<td>0.4330</td>
-<td>0.6330</td>
-<td>0.5140</td>
-<td>0.7220</td>
-</tr>
-<tr class="even">
-<td>0.4000</td>
-<td>1356</td>
-<td>1567</td>
-<td>5679</td>
-<td>1067</td>
-<td>0.4640</td>
-<td>0.5600</td>
-<td>0.5080</td>
-<td>0.7840</td>
+<td>1309</td>
+<td>2674</td>
+<td>960</td>
+<td>162</td>
+<td>0.3286</td>
+<td>0.8899</td>
+<td>0.4800</td>
+<td>0.2641</td>
 </tr>
 <tr class="odd">
-<td>0.4500</td>
-<td>1178</td>
-<td>1189</td>
-<td>6057</td>
-<td>1245</td>
-<td>0.4980</td>
-<td>0.4860</td>
-<td>0.4920</td>
-<td>0.8360</td>
+<td>0.4000</td>
+<td>1221</td>
+<td>2362</td>
+<td>1272</td>
+<td>250</td>
+<td>0.3408</td>
+<td>0.8300</td>
+<td>0.4832</td>
+<td>0.3501</td>
 </tr>
 <tr class="even">
+<td><strong>0.4400</strong></td>
+<td><strong>1141</strong></td>
+<td><strong>2087</strong></td>
+<td><strong>1547</strong></td>
+<td><strong>330</strong></td>
+<td><strong>0.3536</strong></td>
+<td><strong>0.7757</strong></td>
+<td><strong>0.4857</strong></td>
+<td><strong>0.4257</strong></td>
+</tr>
+<tr class="odd">
 <td>0.5000</td>
-<td>989</td>
-<td>867</td>
-<td>6379</td>
-<td>1434</td>
-<td>0.5330</td>
-<td>0.4080</td>
-<td>0.4620</td>
-<td>0.8800</td>
+<td>969</td>
+<td>1567</td>
+<td>2067</td>
+<td>502</td>
+<td>0.3821</td>
+<td>0.6587</td>
+<td>0.4837</td>
+<td>0.5688</td>
 </tr>
 </tbody>
 </table>
@@ -2513,60 +2448,84 @@ Table&nbsp;A.17: Complete threshold sweep for XGBoost with confusion matrix comp
 <div id="tbl-optimal-thresholds" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-optimal-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.18: Optimal thresholds per model under different criteria
+Table&nbsp;A.19: Model performance at the fixed operational threshold τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set for XGBoost, then applied uniformly. Stacking methods use a lower threshold (≈0.22) because the logistic meta-learner outputs probabilities on a compressed scale. Wide&amp;Deep (Focal) exhibits near-zero recall at τ = 0.44 due to probability compression from focal loss, requiring threshold recalibration before deployment.
 </figcaption>
 <div aria-describedby="tbl-optimal-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 23%">
+<col style="width: 20%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Model</th>
-<th>Optimal τ (F1)</th>
-<th>Optimal τ (Youden)</th>
-<th>Default τ=0.5000 F1</th>
+<th>Fixed τ</th>
+<th>Test F1</th>
+<th>Test Recall</th>
+<th>Test Precision</th>
+<th>Test ROC-AUC</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Logistic Regression</td>
-<td>0.2900</td>
-<td>0.3100</td>
-<td>0.3990</td>
+<td>0.4400</td>
+<td>0.4560</td>
+<td>0.8409</td>
+<td>0.3128</td>
+<td>0.5940</td>
 </tr>
 <tr class="even">
 <td>XGBoost</td>
-<td>0.3100</td>
-<td>0.3300</td>
-<td>0.4620</td>
+<td>0.4400</td>
+<td>0.4904</td>
+<td>0.7390</td>
+<td>0.3670</td>
+<td>0.6637</td>
 </tr>
 <tr class="odd">
 <td>LightGBM</td>
-<td>0.3000</td>
-<td>0.3200</td>
-<td>0.4580</td>
+<td>0.4400</td>
+<td>0.4969</td>
+<td>0.7308</td>
+<td>0.3764</td>
+<td>0.6700</td>
 </tr>
 <tr class="even">
-<td>CatBoost</td>
-<td>0.3100</td>
-<td>0.3300</td>
-<td>0.4560</td>
-</tr>
-<tr class="odd">
 <td>Random Forest</td>
-<td>0.3200</td>
-<td>0.3400</td>
-<td>0.4450</td>
-</tr>
-<tr class="even">
-<td>Wide&amp;Deep (Focal)</td>
-<td>0.2800</td>
-<td>0.3000</td>
-<td>0.4230</td>
+<td>0.4400</td>
+<td>0.4807</td>
+<td>0.8042</td>
+<td>0.3428</td>
+<td>0.6534</td>
 </tr>
 <tr class="odd">
-<td>OOF Stacking</td>
-<td>0.3000</td>
-<td>0.3200</td>
-<td>0.4670</td>
+<td>Wide&amp;Deep (Focal)</td>
+<td>0.4400</td>
+<td>0.0175</td>
+<td>0.0088</td>
+<td>0.7222</td>
+<td>0.6615</td>
+</tr>
+<tr class="even">
+<td>OOF Stacking (4 models)</td>
+<td>0.4400</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>0.6679</td>
+</tr>
+<tr class="odd">
+<td>OOF Stacking + Wide &amp; Deep</td>
+<td>0.2243</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>0.6702</td>
 </tr>
 </tbody>
 </table>
@@ -2579,7 +2538,7 @@ Table&nbsp;A.18: Optimal thresholds per model under different criteria
 <div id="tbl-calibration-table" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-calibration-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.19: Calibration metrics across all models
+Table&nbsp;A.20: Brier scores across model families on the test set
 </figcaption>
 <div aria-describedby="tbl-calibration-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -2587,67 +2546,32 @@ Table&nbsp;A.19: Calibration metrics across all models
 <tr class="header">
 <th>Model</th>
 <th>Brier Score</th>
-<th>ECE</th>
-<th>MCE</th>
-<th>Calibration Slope</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Logistic Regression</td>
-<td>0.2150</td>
-<td>0.0420</td>
-<td>0.0890</td>
-<td>0.9800</td>
+<td>0.2438</td>
 </tr>
 <tr class="even">
 <td>XGBoost</td>
-<td>0.1980</td>
-<td>0.0380</td>
-<td>0.0780</td>
-<td>1.02</td>
+<td>0.2233</td>
 </tr>
 <tr class="odd">
 <td>LightGBM</td>
-<td>0.2010</td>
-<td>0.0410</td>
-<td>0.0820</td>
-<td>1.01</td>
+<td>0.2200</td>
 </tr>
 <tr class="even">
-<td>CatBoost</td>
-<td>0.2030</td>
-<td>0.0390</td>
-<td>0.0810</td>
-<td>1.00</td>
-</tr>
-<tr class="odd">
 <td>Random Forest</td>
-<td>0.2090</td>
-<td>0.0450</td>
-<td>0.0920</td>
-<td>0.9500</td>
-</tr>
-<tr class="even">
-<td>Wide&amp;Deep (BCE)</td>
-<td>0.2010</td>
-<td>0.0430</td>
-<td>0.0870</td>
-<td>0.9700</td>
+<td>0.2290</td>
 </tr>
 <tr class="odd">
+<td>Wide&amp;Deep (BCE)</td>
+<td>0.2364</td>
+</tr>
+<tr class="even">
 <td>Wide&amp;Deep (Focal)</td>
 <td>0.1970</td>
-<td>0.0570</td>
-<td>0.1120</td>
-<td>0.8900</td>
-</tr>
-<tr class="even">
-<td>OOF Stacking</td>
-<td>0.1950</td>
-<td>0.0360</td>
-<td>0.0740</td>
-<td>1.01</td>
 </tr>
 </tbody>
 </table>
@@ -2663,11 +2587,11 @@ Table&nbsp;A.19: Calibration metrics across all models
 <div id="tbl-complete-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-complete-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.20: Complete model leaderboard with validation and test metrics across all model families.
+Table&nbsp;A.21: Complete model leaderboard with validation and test metrics across all model families.
 </figcaption>
 <div aria-describedby="tbl-complete-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<table class="cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 9%">
@@ -2854,64 +2778,51 @@ Table&nbsp;A.20: Complete model leaderboard with validation and test metrics acr
 <section id="sec-appendix-i1" class="level3" data-number="A.10.1">
 <h3 data-number="A.10.1" class="anchored" data-anchor-id="sec-appendix-i1"><span class="header-section-number">A.10.1</span> Software Environment</h3>
 <pre><code># Core ML Stack
-python==3.10.12
-numpy==1.24.3
-pandas==2.0.3
-scikit-learn==1.3.0
-scipy==1.11.1
+python==3.9.6
+numpy==2.0.2
+pandas==2.3.3
+scikit-learn==1.6.1
 
 # Deep Learning
-torch==2.0.1
-torchvision==0.15.2
+torch==2.8.0
 
 # Gradient Boosting
-xgboost==1.7.6
-lightgbm==4.0.0
-catboost==1.2
-
-# Experiment Tracking
-mlflow==2.5.0
-optuna==3.3.0
-
-# Interpretability
-shap==0.42.1
-lime==0.2.0.1
+xgboost==2.1.4
+lightgbm==4.6.0
 
 # Visualization
-matplotlib==3.7.2
-seaborn==0.12.2
-plotly==5.15.0</code></pre>
+matplotlib==3.9.4</code></pre>
 </section>
 <section id="sec-appendix-i2" class="level3" data-number="A.10.2">
 <h3 data-number="A.10.2" class="anchored" data-anchor-id="sec-appendix-i2"><span class="header-section-number">A.10.2</span> Random Seeds</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>SEED_CONFIG <span class="op">=</span> {</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'global_seed'</span>: <span class="dv">42</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'train_test_split'</span>: <span class="dv">42</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cv_shuffle'</span>: <span class="dv">42</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'numpy_seed'</span>: <span class="dv">42</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'torch_seed'</span>: <span class="dv">42</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'optuna_sampler'</span>: <span class="dv">42</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Seed initialization function</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_all_seeds(seed: <span class="bu">int</span> <span class="op">=</span> <span class="dv">42</span>):</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> torch</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    random.seed(seed)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    np.random.seed(seed)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(seed)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    torch.cuda.manual_seed_all(seed)</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    torch.backends.cudnn.deterministic <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    torch.backends.cudnn.benchmark <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>SEED_CONFIG <span class="op">=</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'global_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'train_test_split'</span>: <span class="dv">42</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cv_shuffle'</span>: <span class="dv">42</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'numpy_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'torch_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'optuna_sampler'</span>: <span class="dv">42</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Seed initialization function</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_all_seeds(seed: <span class="bu">int</span> <span class="op">=</span> <span class="dv">42</span>):</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> torch</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    random.seed(seed)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    np.random.seed(seed)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    torch.manual_seed(seed)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    torch.cuda.manual_seed_all(seed)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    torch.backends.cudnn.deterministic <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    torch.backends.cudnn.benchmark <span class="op">=</span> <span class="va">False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="sec-appendix-i3" class="level3" data-number="A.10.3">
 <h3 data-number="A.10.3" class="anchored" data-anchor-id="sec-appendix-i3"><span class="header-section-number">A.10.3</span> Data Split Statistics</h3>
 <div id="tbl-split-statistics" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-split-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.21: Data split statistics with class distribution
+Table&nbsp;A.22: Data split statistics with class distribution
 </figcaption>
 <div aria-describedby="tbl-split-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -2926,26 +2837,26 @@ Table&nbsp;A.21: Data split statistics with class distribution
 <tbody>
 <tr class="odd">
 <td>Training</td>
-<td>35,732</td>
-<td>28.6%</td>
-<td>70%</td>
+<td>40,837</td>
+<td>28.8%</td>
+<td>80%</td>
 </tr>
 <tr class="even">
 <td>Validation</td>
-<td>7,657</td>
-<td>28.4%</td>
-<td>15%</td>
+<td>5,105</td>
+<td>28.8%</td>
+<td>10%</td>
 </tr>
 <tr class="odd">
 <td>Test</td>
-<td>7,658</td>
-<td>28.7%</td>
-<td>15%</td>
+<td>5,105</td>
+<td>28.8%</td>
+<td>10%</td>
 </tr>
 <tr class="even">
 <td><strong>Total</strong></td>
 <td><strong>51,047</strong></td>
-<td><strong>28.6%</strong></td>
+<td><strong>28.8%</strong></td>
 <td><strong>100%</strong></td>
 </tr>
 <tr class="odd">
@@ -2966,7 +2877,7 @@ Table&nbsp;A.21: Data split statistics with class distribution
 <div id="tbl-artifact-list" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-artifact-list-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.22: Complete artifact manifest for reproducibility
+Table&nbsp;A.23: Complete artifact manifest for reproducibility
 </figcaption>
 <div aria-describedby="tbl-artifact-list-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -3039,156 +2950,12 @@ Table&nbsp;A.22: Complete artifact manifest for reproducibility
 <section id="sec-appendix-j" class="level2" data-number="A.11">
 <h2 data-number="A.11" class="anchored" data-anchor-id="sec-appendix-j"><span class="header-section-number">A.11</span> Error Case Studies</h2>
 <section id="sec-appendix-j1" class="level3" data-number="A.11.1">
-<h3 data-number="A.11.1" class="anchored" data-anchor-id="sec-appendix-j1"><span class="header-section-number">A.11.1</span> Representative False Negative Cases</h3>
-<p>“Silent churners” - customers who churned but were predicted as non-churners (high confidence):</p>
-<div id="tbl-fn-cases" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fn-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.23: Representative false negative cases with feature profiles
-</figcaption>
-<div aria-describedby="tbl-fn-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 20%">
-<col style="width: 18%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 9%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Case ID</th>
-<th>Predicted P(Churn)</th>
-<th>MonthsInService</th>
-<th>CustomerCareCalls</th>
-<th>PercChangeMinutes</th>
-<th>Pattern</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>FN_001</td>
-<td>0.1200</td>
-<td>36</td>
-<td>0</td>
-<td>-2.3%</td>
-<td>Long tenure, no complaints, subtle usage decline</td>
-</tr>
-<tr class="even">
-<td>FN_002</td>
-<td>0.1800</td>
-<td>24</td>
-<td>1</td>
-<td>+5.1%</td>
-<td>Stable tenure, minimal support contact, increasing usage</td>
-</tr>
-<tr class="odd">
-<td>FN_003</td>
-<td>0.1500</td>
-<td>42</td>
-<td>0</td>
-<td>-8.7%</td>
-<td>Very long tenure, no red flags except usage drop</td>
-</tr>
-<tr class="even">
-<td>FN_004</td>
-<td>0.2100</td>
-<td>18</td>
-<td>0</td>
-<td>-1.2%</td>
-<td>Moderate tenure, quiet customer profile</td>
-</tr>
-<tr class="odd">
-<td>FN_005</td>
-<td>0.1400</td>
-<td>30</td>
-<td>0</td>
-<td>+2.8%</td>
-<td>Established customer with positive momentum</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p><strong>Common patterns:</strong> Long tenure customers with no support interactions who churn without warning signals. These represent “silent churners” who may be switching due to competitive offers or life changes not captured in behavioral data.</p>
+<h3 data-number="A.11.1" class="anchored" data-anchor-id="sec-appendix-j1"><span class="header-section-number">A.11.1</span> False Negative Patterns</h3>
+<p>“Silent churners” are customers who churned but were assigned low churn probability by the model. Global SHAP analysis (<a href="06-discussion.html#sec-global-interpretability" class="quarto-xref"><span>Section 7.1</span></a>) indicates that these cases typically lack the dominant risk signals the model relies on: they tend to have long service tenure (low positive SHAP from MonthsInService), stable or increasing usage (low or negative SHAP from PercChangeMinutes), and no support contact history (zero contribution from CustomerCareCalls). Their churn is likely driven by unobserved factors such as competitor promotions or household-level decisions not captured in the behavioral snapshot — the “silent churner” phenomenon discussed in <a href="06-discussion.html#sec-limitations" class="quarto-xref"><span>Section 7.5</span></a>.</p>
 </section>
 <section id="sec-appendix-j2" class="level3" data-number="A.11.2">
-<h3 data-number="A.11.2" class="anchored" data-anchor-id="sec-appendix-j2"><span class="header-section-number">A.11.2</span> Representative False Positive Cases</h3>
-<p>“False alarms” - customers predicted to churn but remained loyal:</p>
-<div id="tbl-fp-cases" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fp-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;A.24: Representative false positive cases with feature profiles
-</figcaption>
-<div aria-describedby="tbl-fp-cases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 20%">
-<col style="width: 18%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 9%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Case ID</th>
-<th>Predicted P(Churn)</th>
-<th>MonthsInService</th>
-<th>CustomerCareCalls</th>
-<th>PercChangeMinutes</th>
-<th>Pattern</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>FP_001</td>
-<td>0.7800</td>
-<td>3</td>
-<td>2</td>
-<td>-15.3%</td>
-<td>New customer with complaints, but resolved</td>
-</tr>
-<tr class="even">
-<td>FP_002</td>
-<td>0.7200</td>
-<td>6</td>
-<td>3</td>
-<td>-22.1%</td>
-<td>Early tenure, high support contact, usage adjustment period</td>
-</tr>
-<tr class="odd">
-<td>FP_003</td>
-<td>0.8100</td>
-<td>4</td>
-<td>1</td>
-<td>-31.2%</td>
-<td>New customer, sharp usage decline (seasonal?)</td>
-</tr>
-<tr class="even">
-<td>FP_004</td>
-<td>0.6900</td>
-<td>8</td>
-<td>2</td>
-<td>-18.7%</td>
-<td>Young account with volatility</td>
-</tr>
-<tr class="odd">
-<td>FP_005</td>
-<td>0.7400</td>
-<td>5</td>
-<td>2</td>
-<td>-25.4%</td>
-<td>New customer showing distress signals that stabilized</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p><strong>Common patterns:</strong> New customers (&lt; 12 months) showing high-risk signals (usage decline, support calls) but ultimately retained. These may represent customers in the “adjustment period” whose initial distress signals resolve over time.</p>
+<h3 data-number="A.11.2" class="anchored" data-anchor-id="sec-appendix-j2"><span class="header-section-number">A.11.2</span> False Positive Patterns</h3>
+<p>“False alarms” are customers predicted as high-risk churn who were ultimately retained. The SHAP dependence analysis (<a href="06-discussion.html#sec-dependence-plots" class="quarto-xref"><span>Section 7.1.1</span></a>) suggests these cases are characterized by short service tenure (high positive SHAP from MonthsInService for new customers) combined with sharp short-term usage drops (high positive SHAP from PercChangeMinutes). New customers showing early distress signals — usage adjustments, initial support contacts — trigger the model’s learned patterns for churn, but many stabilize once past the onboarding adjustment period. This points to a limitation of the static snapshot model: it cannot distinguish between transient early-tenure volatility and genuine pre-churn behavioral decline.</p>
 
 
 </section>

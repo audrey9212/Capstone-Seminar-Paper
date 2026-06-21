@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>8&nbsp; Conclusion and Future Work – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -34,15 +37,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="../report/06-discussion.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-99913b7803b80b0c1d2b970a25816663.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-87aed0b8589e23e45aa8556edf37a91b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -96,9 +98,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="../index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="../">Predicting Telecom Customer Churn with Explainable Machine Learning</a> 
     </div>
@@ -243,11 +243,11 @@ and outlines future directions for semi-supervised learning, temporal modeling, 
 -->
 <section id="sec-conclusion-summary" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="sec-conclusion-summary"><span class="header-section-number">8.1</span> Conclusion</h2>
-<p>This thesis presented a comprehensive exploration of telecom customer churn prediction, balancing <strong>predictive performance</strong> with <strong>interpretability</strong> and practical actionability. A range of modeling approaches was investigated under consistent conditions, class imbalance challenges were tackled, and insights were extracted to guide retention strategy. Here I summarize the findings in relation to the three research questions posed in the Introduction (Chapter 1).</p>
+<p>This thesis presented a comprehensive exploration of telecom customer churn prediction, balancing <strong>predictive performance</strong> with <strong>interpretability</strong> and practical actionability. A range of modeling approaches was investigated under consistent conditions, class imbalance challenges were tackled, and insights were extracted to guide retention strategy. The findings are summarized below in relation to the three research questions posed in the Introduction (Chapter 1).</p>
 <section id="sec-rq1-answer" class="level3" data-number="8.1.1">
 <h3 data-number="8.1.1" class="anchored" data-anchor-id="sec-rq1-answer"><span class="header-section-number">8.1.1</span> RQ1: Model Effectiveness</h3>
-<p><strong>Results indicate</strong> that gradient-boosted decision trees achieved the strongest overall performance among all model families tested. The champion single model was <strong>XGBoost</strong>, achieving a test ROC-AUC of <strong>0.6637</strong> and a test PR-AUC of <strong>0.4454</strong>. The best heterogeneous ensemble (Blend_WeightedAUC) achieved a slightly higher test ROC-AUC of <strong>0.6688</strong> and test PR-AUC of <strong>0.4488</strong>, but the marginal gain (+0.0050 ROC-AUC) suggests that XGBoost is the most practical choice for deployment. Both substantially outperformed the logistic regression baseline (test ROC-AUC = 0.5940, test PR-AUC = 0.3560).</p>
-<p>Heterogeneous ensemble methods (blending and OOF stacking) provided competitive but not decisively superior results. The best blending approach (Blend_WeightedAUC) reached a test ROC-AUC of <strong>0.6688</strong> and test PR-AUC of <strong>0.4488</strong>, while OOF stacking achieved test ROC-AUC of <strong>0.6679</strong> and test PR-AUC of <strong>0.4490</strong>. Ensemble methods slightly exceeded XGBoost on ROC-AUC, but the improvement was modest. This suggests that the gains from model combination derive primarily from variance reduction and diversity between linear and nonlinear base learners, rather than capturing fundamentally new predictive signals.</p>
+<p><strong>Results indicate</strong> that gradient-boosted decision trees achieved the strongest overall performance among all model families tested. Among single models, selection was based on validation ROC-AUC per the protocol in <a href="04-methodology.html#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>: XGBoost ranked first on validation (val ROC-AUC = 0.6571) and is therefore the <strong>champion model by selection criterion</strong>, achieving a test ROC-AUC of <strong>0.6637</strong> and a test PR-AUC of <strong>0.4454</strong>. Notably, LightGBM achieved marginally higher test metrics (test ROC-AUC = <strong>0.6700</strong>, test PR-AUC = <strong>0.4476</strong>), demonstrating that the two GBM approaches are effectively matched; the difference in validation-set rank reflects sample variability rather than a fundamental performance gap. Both substantially outperformed the logistic regression baseline (test ROC-AUC = 0.5940, test PR-AUC = 0.3560). The best heterogeneous ensemble (NNLS-optimized blending) achieved a higher test ROC-AUC of <strong>0.6704</strong> and test PR-AUC of <strong>0.4517</strong>, but the marginal gain over the best single models is modest.</p>
+<p>Heterogeneous ensemble methods (blending and OOF stacking) provided competitive but not decisively superior results. The best blending approach (NNLS-optimized) reached a test ROC-AUC of <strong>0.6704</strong> and test PR-AUC of <strong>0.4517</strong>. A five-model OOF stacking variant incorporating Wide &amp; Deep as a fifth base learner (Stacking_OOF_5) achieved test ROC-AUC of <strong>0.6702</strong> and test PR-AUC of <strong>0.4512</strong>, nearly matching the best blend and substantially improving over the four-model OOF stacking (test ROC-AUC = 0.6679). Ensemble methods slightly exceeded XGBoost on ROC-AUC, but the improvement was modest. This suggests that the gains from model combination derive primarily from variance reduction and diversity between linear, nonlinear, and neural base learners, rather than capturing fundamentally new predictive signals.</p>
 <p>The <strong>Wide &amp; Deep neural network</strong>, a model architecture not commonly used in traditional churn studies, proved feasible on tabular telecom data. The best neural network variant (Wide &amp; Deep with focal loss) achieved test ROC-AUC of <strong>0.6615</strong> and test PR-AUC of <strong>0.4356</strong>, demonstrating that deep learning approaches can capture churn patterns effectively, though they did not surpass gradient boosting methods in this dataset. The neural networks clustered in a narrow performance band (test ROC-AUC approximately 0.6440–0.6620), suggesting a performance ceiling for this architecture class on this feature set.</p>
 <p>These findings address RQ1 by demonstrating that <strong>gradient-boosted trees represent the most effective single-model approach</strong> for this churn prediction task. Ensemble methods provide modest additional benefits, with the trade-off between performance gain and implementation complexity favoring simpler single-model deployment in many production scenarios.</p>
 </section>
@@ -278,55 +278,75 @@ and outlines future directions for semi-supervised learning, temporal modeling, 
 </section>
 <section id="sec-engineering-tradeoffs" class="level3" data-number="8.1.4">
 <h3 data-number="8.1.4" class="anchored" data-anchor-id="sec-engineering-tradeoffs"><span class="header-section-number">8.1.4</span> Engineering Trade-offs</h3>
-<p>In evaluating the above points, it’s worth noting an <strong>engineering trade-off</strong> that emerged. While ensemble methods achieved comparable performance to single models, they introduce significant operational complexity without proportionate performance gains. The marginal improvements (approximately 0.0010–0.0020 in PR-AUC) must be weighed against deployment and maintenance costs.</p>
+<p>In evaluating the above points, it is worth noting an <strong>engineering trade-off</strong> that emerged. While ensemble methods achieved comparable performance to single models, they introduce significant operational complexity without proportionate performance gains. The marginal improvements (approximately 0.0050–0.0070 in ROC-AUC) must be weighed against deployment and maintenance costs.</p>
 <div id="tbl-deployment-tradeoffs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-deployment-tradeoffs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8.1: Comparison of deployment considerations between ensemble methods and single GBM models.
+Table&nbsp;8.1: Comparison of deployment considerations across ensemble methods and the two leading single GBM models.
 </figcaption>
 <div aria-describedby="tbl-deployment-tradeoffs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 46%">
+<col style="width: 15%">
+<col style="width: 14%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Consideration</th>
 <th>Ensemble (Blending/Stacking)</th>
-<th>XGBoost Only</th>
+<th>LightGBM</th>
+<th>XGBoost</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Test ROC-AUC</td>
-<td>0.6679–0.6688</td>
+<td>0.6673–0.6704</td>
+<td>0.6700</td>
 <td>0.6637</td>
 </tr>
 <tr class="even">
 <td>Test PR-AUC</td>
-<td>0.4488–0.4490</td>
+<td>0.4489–0.4517</td>
+<td>0.4476</td>
 <td>0.4454</td>
 </tr>
 <tr class="odd">
+<td>Val Selection Rank</td>
+<td>—</td>
+<td>2nd (val = 0.6502)</td>
+<td>1st (val = 0.6571)</td>
+</tr>
+<tr class="even">
 <td>Inference Latency</td>
 <td>Higher (multiple models)</td>
 <td>Low</td>
-</tr>
-<tr class="even">
-<td>Deployment Complexity</td>
-<td>High</td>
 <td>Low</td>
 </tr>
 <tr class="odd">
+<td>Deployment Complexity</td>
+<td>High</td>
+<td>Low</td>
+<td>Low</td>
+</tr>
+<tr class="even">
 <td>Maintenance Burden</td>
 <td>Multiple model artifacts</td>
 <td>Single artifact</td>
+<td>Single artifact</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Interpretability</td>
 <td>Requires aggregation</td>
 <td>Direct SHAP analysis</td>
+<td>Direct SHAP analysis</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Threshold Calibration</td>
 <td>More complex</td>
+<td>Straightforward</td>
 <td>Straightforward</td>
 </tr>
 </tbody>
@@ -334,8 +354,8 @@ Table&nbsp;8.1: Comparison of deployment considerations between ensemble methods
 </div>
 </figure>
 </div>
-<p>For a <strong>real-time deployment</strong> where latency and system simplicity are paramount, a single GBM model (XGBoost) represents the pragmatic choice, offering fast inference, straightforward integration, and essentially equivalent predictive performance. The ensemble approach might be justified in batch-scoring scenarios where the slight PR-AUC lift translates to meaningful business value at scale, but the complexity trade-off generally favors single-model deployment.</p>
-<p>This highlights that the “best” model on paper isn’t always the best in practice; <strong>model selection must consider deployment constraints, maintainability, and interpretability requirements</strong> as well as raw performance. In this case, XGBoost is the recommended production choice: it delivers strong test performance while maintaining operational simplicity.</p>
+<p>For a <strong>real-time deployment</strong> where latency and system simplicity are paramount, either LightGBM or XGBoost is a sound choice. LightGBM achieved the highest test-set performance among all single models (test ROC-AUC = 0.6700, test PR-AUC = 0.4476) and is the recommended production choice on the basis of held-out evaluation. XGBoost ranked first on the validation set under the pre-specified selection criterion (val ROC-AUC = 0.6571), and its test-set difference from LightGBM (0.0063 ROC-AUC) is small enough that either model is viable depending on infrastructure preferences. The ensemble approach might be justified in batch-scoring scenarios where the slight PR-AUC lift translates to meaningful business value at scale, but the complexity trade-off generally favors single-model deployment.</p>
+<p>This highlights that <strong>model selection must consider deployment constraints, maintainability, and interpretability requirements</strong> alongside raw performance, and should distinguish between validation-based selection (favors XGBoost) and held-out test evaluation (favors LightGBM). The practical recommendation is to deploy LightGBM for production while treating XGBoost as a validated fallback — both models deliver strong, interpretable churn predictions with low operational overhead.</p>
 <p>Ultimately, this thesis showed that advanced models can be harnessed for churn prediction without making the results opaque. A balance was achieved where <strong>performance, interpretability, and practical utility coexist</strong>, which is a promising outcome for deploying the model in a real telecom business environment.</p>
 </section>
 </section>
@@ -465,7 +485,7 @@ Table&nbsp;8.2: Key components of an MLOps pipeline for churn prediction deploym
 <li><strong>Calibration monitoring</strong> in production to detect when model probabilities become unreliable</li>
 </ol>
 <hr>
-<p>In conclusion, the journey of building this churn prediction system has shown both the substantial value such models can deliver and the complexity of making them truly effective in practice. The key findings, indicating that gradient-boosted trees (with XGBoost achieving test ROC-AUC = 0.6637) outperform other model families, that the best ensemble offers only a modest lift (test ROC-AUC = 0.6688), that class imbalance handling requires both algorithmic strategies and threshold tuning, and that SHAP-based interpretability enables actionable business insights, provide a solid foundation for production deployment.</p>
+<p>In conclusion, the journey of building this churn prediction system has shown both the substantial value such models can deliver and the complexity of making them truly effective in practice. The key findings, indicating that gradient-boosted trees (with XGBoost achieving test ROC-AUC = 0.6637) outperform other model families, that the best ensemble (NNLS-optimized blending with five base learners) offers only a modest lift to test ROC-AUC = 0.6704, that adding Wide &amp; Deep as a fifth stacking base learner improves OOF stacking from 0.6679 to 0.6702, that class imbalance handling requires both algorithmic strategies and threshold tuning, and that SHAP-based interpretability enables actionable business insights, provide a solid foundation for production deployment.</p>
 <p>By addressing the above future directions, from advanced modeling techniques like semi-supervised learning and sequence modeling to the practicalities of real-time deployment and drift monitoring, the model’s performance and longevity can be further enhanced. Ultimately, the goal is to evolve the churn prediction solution into a <strong>long-term, self-improving asset</strong> for the telecom provider, one that not only predicts which customers might leave, but continuously learns from new data and helps the business prevent churn in an ever-changing environment.</p>
 
 
