@@ -113,15 +113,17 @@ plt.tight_layout()
 
 ### Feature Interaction Insights
 
-Visual inspection of the SHAP dependence plots suggests several meaningful pairwise interaction effects:
+Formal SHAP interaction values were computed using `TreeExplainer.shap_interaction_values()` on 3,000 test samples, yielding a 3,000 × 34 × 34 tensor of pairwise interaction effects (@fig-shap-interaction). The top pairwise interactions are:
 
-1. **CurrentEquipmentDays × HandsetRefurbished_Yes** (@fig-shap-dependence-equipment): Customers with refurbished handsets cluster at lower equipment-days values yet display similar elevated SHAP contributions, indicating that device condition amplifies the equipment-age risk signal beyond what either variable captures alone.
+1. **CurrentEquipmentDays × MonthsInService** (mean |interaction| = 0.056): The strongest interaction in the model. Customers with both old equipment and short tenure show elevated churn risk beyond what either feature alone predicts, consistent with a "new customer with outdated device" risk profile.
 
-2. **MonthlyMinutes × PercChangeMinutes** (@fig-shap-dependence-minutes): Among low-usage customers, those with declining usage trends (negative PercChangeMinutes) show the highest SHAP values, suggesting a compounding disengagement effect beyond the main effect of low usage alone.
+2. **MonthlyMinutes × PercChangeMinutes** (mean |interaction| = 0.048): Among low-usage customers, a declining usage trend amplifies churn risk further, creating a compounding disengagement effect visible in the SHAP dependence plot (@fig-shap-dependence-minutes).
 
-3. **OverageMinutes × MonthlyRevenue**: High overage charges relative to base revenue may signal billing dissatisfaction; this interaction is consistent with domain intuition but was not formally computed via SHAP interaction values.
+3. **OverageMinutes × PercChangeRevenues** (mean |interaction| = 0.014): Customers experiencing both high overage charges and declining revenue trends face a combined billing-dissatisfaction signal that exceeds the sum of the individual effects.
 
 These interaction patterns align with domain intuition and suggest that the model is capturing meaningful behavioral combinations rather than spurious correlations.
+
+![SHAP interaction value heatmap for the top 12 features. Cell values show mean absolute pairwise interaction effects; the diagonal (main effects) is set to zero. Computed via `TreeExplainer.shap_interaction_values()` on 3,000 test samples.](../artifacts/figures/08_shap_interaction_heatmap.png){#fig-shap-interaction fig-alt="SHAP interaction heatmap showing top pairwise feature interactions." width=80%}
 
 Overall, the global interpretability results point to a coherent churn story: customers are most at risk when they show aging equipment tenure, low or declining engagement, shorter tenure, and service reliability issues. This set of drivers naturally translates into operational playbooks (e.g., upgrade offers for long equipment tenure, proactive outreach for sharp usage drops, and targeted service remediation for customers experiencing repeated call failures).
 
