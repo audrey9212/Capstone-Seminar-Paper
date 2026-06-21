@@ -113,7 +113,7 @@ plt.tight_layout()
 
 ### Feature Interaction Insights
 
-Formal SHAP interaction values were computed using `TreeExplainer.shap_interaction_values()` on 3,000 test samples, yielding a 3,000 × 34 × 34 tensor of pairwise interaction effects (@fig-shap-interaction). The top pairwise interactions are:
+Formal SHAP interaction values were computed using *TreeExplainer.shap_interaction_values()* on 3,000 test samples, yielding a 3,000 × 34 × 34 tensor of pairwise interaction effects (@fig-shap-interaction). The top pairwise interactions are:
 
 1. **CurrentEquipmentDays × MonthsInService** (mean |interaction| = 0.056): The strongest interaction in the model. Customers with both old equipment and short tenure show elevated churn risk beyond what either feature alone predicts, consistent with a "new customer with outdated device" risk profile.
 
@@ -123,7 +123,7 @@ Formal SHAP interaction values were computed using `TreeExplainer.shap_interacti
 
 These interaction patterns align with domain intuition and suggest that the model is capturing meaningful behavioral combinations rather than spurious correlations.
 
-![SHAP interaction value heatmap for the top 12 features. Cell values show mean absolute pairwise interaction effects; the diagonal (main effects) is set to zero. Computed via `TreeExplainer.shap_interaction_values()` on 3,000 test samples.](../artifacts/figures/08_shap_interaction_heatmap.png){#fig-shap-interaction fig-alt="SHAP interaction heatmap showing top pairwise feature interactions." width=80%}
+![SHAP interaction value heatmap for the top 12 features. Cell values show mean absolute pairwise interaction effects; the diagonal (main effects) is set to zero. Computed via SHAP *TreeExplainer* on 3,000 test samples.](../artifacts/figures/08_shap_interaction_heatmap.png){#fig-shap-interaction fig-alt="SHAP interaction heatmap showing top pairwise feature interactions." width=80%}
 
 Overall, the global interpretability results point to a coherent churn story: customers are most at risk when they show aging equipment tenure, low or declining engagement, shorter tenure, and service reliability issues. This set of drivers naturally translates into operational playbooks (e.g., upgrade offers for long equipment tenure, proactive outreach for sharp usage drops, and targeted service remediation for customers experiencing repeated call failures).
 
