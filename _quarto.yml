@@ -29,6 +29,7 @@ bibliography: report/references.bib
 format:
   html:
     output-dir: report/_output
+    lightbox: true
   pdf:
     output-dir: report/_output
     toc: false

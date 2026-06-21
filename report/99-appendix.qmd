@@ -280,7 +280,7 @@ Bayesian hyperparameter optimization was conducted using Optuna with 100 trials 
 ![Optimization history showing trial objective values over 100 iterations.](../artifacts/figures/optuna/04_xgb_optuna_optimization_history.png){#fig-optuna-history width=80% fig-pos="H"}
 
 
-![Parallel coordinate visualization of hyperparameter configurations across trials.](../artifacts/figures/optuna/04_xgb_optuna_parallel_coordinate.png){#fig-optuna-parallel width=100% fig-pos="H"}
+![Parallel coordinate visualization of hyperparameter configurations across trials.](../artifacts/figures/optuna/04_xgb_optuna_parallel_coordinate.png){#fig-optuna-parallel width=75% fig-pos="H"}
 
 
 ![Relative importance of each hyperparameter in determining model performance.](../artifacts/figures/optuna/04_xgb_optuna_param_importances.png){#fig-optuna-importance width=80% fig-pos="H"}
@@ -387,7 +387,7 @@ All neural network experiments tracked via MLflow with systematic architecture v
 
 ### Latent Space Visualization {#sec-appendix-e2}
 
-![t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label.](../artifacts/figures/06_latent_tsne.png){#fig-latent-tsne width=80% fig-pos="H"}
+![t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label.](../artifacts/figures/06_latent_tsne.png){#fig-latent-tsne width=62% fig-pos="H"}
 
 
 ### Autoencoder Ablation Study {#sec-appendix-e3}
@@ -524,7 +524,7 @@ XGBoost dominates the 4-model variant (coefficient 1.967), consistent with its h
 
 ### Model Comparison Curves {#sec-appendix-h1}
 
-![ROC curves comparing all model families on the test set.](../artifacts/figures/08_model_comparison_roc.png){#fig-model-comparison-roc width=100% fig-pos="H"}
+![ROC curves comparing all model families on the test set.](../artifacts/figures/08_model_comparison_roc.png){#fig-model-comparison-roc width=80% fig-pos="H"}
 
 
 ![Precision-Recall curves comparing all model families on the test set.](../artifacts/figures/08_model_comparison_pr.png){#fig-model-comparison-pr width=100% fig-pos="H"}
