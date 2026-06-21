@@ -175,10 +175,10 @@ def apply_zero_as_missing(df: pd.DataFrame, config: pd.DataFrame) -> pd.DataFram
 # =============================================================================
 def create_or_load_split_indices(
     df: pd.DataFrame,
-    temp_size: float = 0.30,
+    temp_size: float = 0.20,
     val_frac_of_temp: float = 0.50
 ) -> tuple:
-    """Generate or load fixed train/val/test split indices (70/15/15)."""
+    """Generate or load fixed train/val/test split indices (80/10/10)."""
     split_file = U.processed_path("split_indices.json")
 
     if split_file.exists():
@@ -208,7 +208,7 @@ def create_or_load_split_indices(
             "val": val_idx.tolist(),
             "test": test_idx.tolist(),
             "random_seed": RANDOM_SEED,
-            "split": "70/15/15",
+            "split": "80/10/10",
         }
         split_file.parent.mkdir(parents=True, exist_ok=True)
         with open(split_file, "w") as f:
