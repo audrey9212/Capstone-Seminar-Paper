@@ -335,15 +335,15 @@ All neural network experiments tracked via MLflow with systematic architecture v
 
 | Experiment | Architecture | Loss | Test ROC-AUC | Test PR-AUC | Brier Score |
 |------------|--------------|------|--------------|-------------|-------------|
-| exp_001 | MLP-3L-256 | BCE | 0.6423 | 0.4012 | 0.2120 |
-| exp_002 | MLP-3L-256 | Focal | 0.6512 | 0.4189 | 0.2050 |
-| exp_003 | MLP-4L-512 | BCE | 0.6398 | 0.3987 | 0.2180 |
-| exp_004 | Wide&Deep | BCE | 0.6534 | 0.4234 | 0.2010 |
-| **exp_005** | **Wide&Deep** | **Focal** | **0.6615** | **0.4356** | **0.1970** |
-| exp_006 | ResNet-style | BCE | 0.6478 | 0.4156 | 0.2080 |
-| exp_007 | ResNet-style | Focal | 0.6589 | 0.4298 | 0.1990 |
+| **wide_deep_focal** | **Wide & Deep** | **Focal (γ=2)** | **0.6615** | **0.4356** | **0.1970** |
+| embedding_focal_loss | Embedding MLP | Focal (γ=2) | 0.6612 | 0.4345 | 0.1976 |
+| dense_baseline | Dense MLP | Weighted BCE | 0.6553 | 0.4219 | 0.2343 |
+| wide_and_deep | Wide & Deep | Weighted BCE | 0.6496 | 0.4208 | 0.2364 |
+| embedding_baseline | Embedding MLP | Weighted BCE | 0.6489 | 0.4192 | 0.2329 |
+| wide_and_deep_deeper | Wide & Deep (Deeper) | Weighted BCE | 0.6475 | 0.4110 | 0.2328 |
+| embedding_strong_weight | Embedding MLP | Weighted BCE (×1.5) | 0.6442 | 0.4081 | 0.2718 |
 
-: Neural Network Experiment Leaderboard (sorted by Test ROC-AUC) {#tbl-nn-experiment-leaderboard}
+: Neural network experiment leaderboard sorted by Test ROC-AUC (descending). All experiments use early stopping (patience = 15) with the same train/validation/test split. {#tbl-nn-experiment-leaderboard}
 
 ### Alternative Architecture Training Curves {#sec-appendix-d2}
 
@@ -367,14 +367,14 @@ All neural network experiments tracked via MLflow with systematic architecture v
 
 ### Architecture Specifications {#sec-appendix-d3}
 
-| Architecture | Layers | Hidden Units | Dropout | Activation | Parameters |
-|--------------|--------|--------------|---------|------------|------------|
-| MLP-3L-256 | 3 | [256, 128, 64] | 0.3000 | ReLU | ~98K |
-| MLP-4L-512 | 4 | [512, 256, 128, 64] | 0.4000 | ReLU | ~312K |
-| Wide&Deep | 3+1 | [256, 128, 64] + Linear | 0.3000 | ReLU/Linear | ~105K |
-| ResNet-style | 4 | [256, 256, 128, 64] | 0.3000 | ReLU + Skip | ~142K |
+| Architecture | Deep Layers | Hidden Units | Dropout | Activation | Parameters |
+|--------------|-------------|--------------|---------|------------|------------|
+| Dense MLP | 2 | [128, 64] | 0.30 | ReLU | ~10K |
+| Embedding MLP | 2 + embed | [128, 64] + embed(8) | 0.30 | ReLU | ~20K |
+| Wide & Deep | 2 + wide | [128, 64] + Linear | 0.30 | ReLU/Linear | ~20K |
+| Wide & Deep (Deeper) | 3 + wide | [256, 128, 64] + Linear | 0.30 | ReLU/Linear | ~64K |
 
-: Neural network architecture specifications {#tbl-nn-architecture-specs}
+: Neural network architecture specifications. Parameter counts are from actual training artifacts (`n_params` field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs. {#tbl-nn-architecture-specs}
 
 ---
 
@@ -460,7 +460,7 @@ DAE_CONFIG = {
 
 Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:
 
-The OOF stacking meta-learner (logistic regression with L2 regularization) was trained on out-of-fold predictions from four base models: Logistic Regression, XGBoost, LightGBM, and Random Forest. XGBoost and LightGBM received the largest weights, consistent with their superior individual ranking performance.
+Two OOF stacking variants were trained. The four-model variant (Stacking_OOF) used out-of-fold predictions from Logistic Regression, XGBoost, LightGBM, and Random Forest as meta-features for a logistic regression meta-learner with L2 regularization. The five-model variant (Stacking_OOF_5) added Wide & Deep (Focal) as a fifth base learner, whose OOF predictions were generated via 5-fold cross-validation to prevent leakage. XGBoost and LightGBM received the largest meta-learner coefficients in both variants, consistent with their superior individual ranking performance; Wide & Deep contributed complementary signal that lifted stacking performance from test ROC-AUC 0.6679 to 0.6702. Exact meta-learner coefficients were not serialized separately but can be reproduced by re-running `scripts/07_stacking.py`.
 
 ### Ensemble Performance Comparison {#sec-appendix-f4}
 
@@ -517,20 +517,19 @@ The OOF stacking meta-learner (logistic regression with L2 regularization) was t
 
 ### Threshold Analysis {#sec-appendix-h2}
 
+XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,634 non-churners). The optimal threshold τ = 0.4400 was selected by maximizing F1 subject to recall ≥ 0.70, then applied uniformly to all models.
+
 | τ | TP | FP | TN | FN | Precision | Recall | F1 | Specificity |
 |------|------|------|------|------|-----------|--------|-------|-------------|
-| 0.1000 | 2156 | 5234 | 2012 | 267 | 0.2920 | 0.8900 | 0.4390 | 0.2780 |
-| 0.1500 | 2089 | 4567 | 2679 | 334 | 0.3140 | 0.8620 | 0.4600 | 0.3700 |
-| 0.2000 | 1998 | 3912 | 3334 | 425 | 0.3380 | 0.8250 | 0.4790 | 0.4600 |
-| 0.2500 | 1876 | 3234 | 4012 | 547 | 0.3670 | 0.7740 | 0.4980 | 0.5540 |
-| 0.3000 | 1723 | 2589 | 4657 | 700 | 0.4000 | 0.7110 | 0.5120 | 0.6430 |
-| **0.3100** | **1689** | **2456** | **4790** | **734** | **0.4080** | **0.6970** | **0.5140** | **0.6610** |
-| 0.3500 | 1534 | 2012 | 5234 | 889 | 0.4330 | 0.6330 | 0.5140 | 0.7220 |
-| 0.4000 | 1356 | 1567 | 5679 | 1067 | 0.4640 | 0.5600 | 0.5080 | 0.7840 |
-| 0.4500 | 1178 | 1189 | 6057 | 1245 | 0.4980 | 0.4860 | 0.4920 | 0.8360 |
-| 0.5000 | 989 | 867 | 6379 | 1434 | 0.5330 | 0.4080 | 0.4620 | 0.8800 |
+| 0.1000 | 1471 | 3634 | 0 | 0 | 0.2882 | 1.0000 | 0.4475 | 0.0000 |
+| 0.2000 | 1468 | 3551 | 83 | 3 | 0.2925 | 0.9980 | 0.4525 | 0.0228 |
+| 0.3000 | 1368 | 3010 | 624 | 103 | 0.3125 | 0.9293 | 0.4677 | 0.1717 |
+| 0.3500 | 1309 | 2674 | 960 | 162 | 0.3286 | 0.8899 | 0.4800 | 0.2641 |
+| 0.4000 | 1221 | 2362 | 1272 | 250 | 0.3408 | 0.8300 | 0.4832 | 0.3501 |
+| **0.4400** | **1141** | **2087** | **1547** | **330** | **0.3536** | **0.7757** | **0.4857** | **0.4257** |
+| 0.5000 | 969 | 1567 | 2067 | 502 | 0.3821 | 0.6587 | 0.4837 | 0.5688 |
 
-: Complete threshold sweep for XGBoost with confusion matrix components {#tbl-xgb-threshold-full}
+: XGBoost threshold sweep on the validation set (N = 5,105). τ = 0.4400 (bold) maximizes F1 subject to recall ≥ 0.70 and is applied uniformly to all models for comparability. All rows sum to N = 5,105. {#tbl-xgb-threshold-full}
 
 ### Model-Specific Optimal Thresholds {#sec-appendix-h3}
 
@@ -662,10 +661,10 @@ def set_all_seeds(seed: int = 42):
 
 | Split | N Samples | Churn Rate | % of Total |
 |-------|-----------|------------|------------|
-| Training | 35,732 | 28.6% | 70% |
-| Validation | 7,657 | 28.4% | 15% |
-| Test | 7,658 | 28.7% | 15% |
-| **Total** | **51,047** | **28.6%** | **100%** |
+| Training | 40,837 | 28.8% | 80% |
+| Validation | 5,105 | 28.8% | 10% |
+| Test | 5,105 | 28.8% | 10% |
+| **Total** | **51,047** | **28.8%** | **100%** |
 | Holdout (unlabeled) | 20,000 | – | – |
 
 : Data split statistics with class distribution {#tbl-split-statistics}
