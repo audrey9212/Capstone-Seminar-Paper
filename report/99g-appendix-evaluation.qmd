@@ -41,10 +41,10 @@ XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,63
 | LightGBM | 0.4400 | 0.4969 | 0.7308 | 0.3764 | 0.6700 |
 | Random Forest | 0.4400 | 0.4807 | 0.8042 | 0.3428 | 0.6534 |
 | Wide&Deep (Focal) | 0.4400 | 0.0175 | 0.0088 | 0.7222 | 0.6615 |
-| OOF Stacking (4 models) | 0.4400 | — | — | — | 0.6679 |
+| OOF Stacking (4 models) | 0.2200 | — | — | — | 0.6679 |
 | OOF Stacking + Wide & Deep | 0.2243 | — | — | — | 0.6702 |
 
-: Model performance at the fixed operational threshold τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set for XGBoost, then applied uniformly. Stacking methods use a lower threshold (≈0.22) because the logistic meta-learner outputs probabilities on a compressed scale. Wide&Deep (Focal) exhibits near-zero recall at τ = 0.44 due to probability compression from focal loss, requiring threshold recalibration before deployment. {#tbl-optimal-thresholds}
+: Model performance at the operational threshold. Individual models and blending variants use the fixed τ = 0.4400 selected by maximizing F1 subject to recall ≥ 0.70 on the validation set for XGBoost. OOF stacking variants use their own optimal thresholds (≈0.22) because the logistic meta-learner outputs probabilities on a compressed scale. Wide&Deep (Focal) exhibits near-zero recall at τ = 0.44 due to probability compression from focal loss, requiring threshold recalibration before deployment. {#tbl-optimal-thresholds}
 
 ### Calibration Metrics {#sec-appendix-h4}
 
