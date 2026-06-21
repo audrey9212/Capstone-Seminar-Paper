@@ -121,9 +121,9 @@
     "Blend_NNLS": {
       "weights": {
         "Logistic": 0.0,
-        "XGBoost": 0.24967480802028447,
-        "LightGBM": 0.04620456939085723,
-        "RandomForest": 0.022493077492827942,
+        "XGBoost": 0.2496748080202842,
+        "LightGBM": 0.04620456939085728,
+        "RandomForest": 0.02249307749282827,
         "WideDeep": 0.6816275450960303
       },
       "val": {
@@ -167,20 +167,20 @@
     },
     "Stacking_OOF": {
       "val": {
-        "roc_auc": 0.6585819701908892,
-        "pr_auc": 0.4366967215355059,
+        "roc_auc": 0.6585817831216395,
+        "pr_auc": 0.4366964428025653,
         "f1_fixed": 0.28780487804878047,
         "recall_fixed": 0.20054384772263767,
-        "best_threshold": 0.22402418978075697,
+        "best_threshold": 0.22402412506800856,
         "f1_best": 0.48723145520875566,
         "recall_best": 0.8171312032630863
       },
       "test": {
-        "roc_auc": 0.6679178481648694,
-        "pr_auc": 0.44895336942616837,
+        "roc_auc": 0.6679180352341191,
+        "pr_auc": 0.44895344897677714,
         "f1_fixed": 0.29754453538757825,
         "recall_fixed": 0.21006118286879674,
-        "best_threshold": 0.22571248923721238,
+        "best_threshold": 0.2257124212361784,
         "f1_best": 0.49481972648155825,
         "recall_best": 0.8116927260367097
       }
@@ -191,7 +191,7 @@
         "pr_auc": 0.44112756595530833,
         "f1_fixed": 0.29797492767598843,
         "recall_fixed": 0.21006118286879674,
-        "best_threshold": 0.2242530248406454,
+        "best_threshold": 0.2242530248406457,
         "f1_best": 0.48585961342828077,
         "recall_best": 0.8116927260367097
       },
@@ -200,7 +200,7 @@
         "pr_auc": 0.45118193875723384,
         "f1_fixed": 0.31199620673304884,
         "recall_fixed": 0.22365737593473828,
-        "best_threshold": 0.21894340716382393,
+        "best_threshold": 0.21894340716382488,
         "f1_best": 0.49755899104963386,
         "recall_best": 0.831407205982325
       }
@@ -213,6 +213,7 @@
     "diversity_corr_val": "artifacts/tables/07_diversity_corr_val.csv"
   },
   "meta": {
-    "blend_weights": "artifacts/meta/07_blend_weights.json"
+    "blend_weights": "artifacts/meta/07_blend_weights.json",
+    "stacking_coefs": "artifacts/meta/07_stacking_coefs.json"
   }
 }

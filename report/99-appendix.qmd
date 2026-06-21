@@ -460,7 +460,34 @@ DAE_CONFIG = {
 
 Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:
 
-Two OOF stacking variants were trained. The four-model variant (Stacking_OOF) used out-of-fold predictions from Logistic Regression, XGBoost, LightGBM, and Random Forest as meta-features for a logistic regression meta-learner with L2 regularization. The five-model variant (Stacking_OOF_5) added Wide & Deep (Focal) as a fifth base learner, whose OOF predictions were generated via 5-fold cross-validation to prevent leakage. XGBoost and LightGBM received the largest meta-learner coefficients in both variants, consistent with their superior individual ranking performance; Wide & Deep contributed complementary signal that lifted stacking performance from test ROC-AUC 0.6679 to 0.6702. Exact meta-learner coefficients were not serialized separately but can be reproduced by re-running `scripts/07_stacking.py`.
+Two OOF stacking variants were trained, each using a logistic regression meta-learner (L2 regularization, max_iter=2000) fitted on out-of-fold predictions to prevent leakage. Real coefficients are serialized in `artifacts/meta/07_stacking_coefs.json`.
+
+**Stacking_OOF (4 base models):**
+
+| Base Model | Meta-Learner Coefficient |
+|------------|--------------------------|
+| Logistic Regression | 0.231 |
+| XGBoost | 1.967 |
+| LightGBM | 1.068 |
+| Random Forest | 1.600 |
+| Intercept | −3.263 |
+
+: Stacking_OOF meta-learner logistic regression coefficients. {#tbl-stacking-oof4-coefs}
+
+**Stacking_OOF_5 (5 base models, adds Wide & Deep):**
+
+| Base Model | Meta-Learner Coefficient |
+|------------|--------------------------|
+| Logistic Regression | −0.181 |
+| XGBoost | 1.548 |
+| LightGBM | 1.070 |
+| Random Forest | 1.181 |
+| Wide & Deep | 3.473 |
+| Intercept | −3.771 |
+
+: Stacking_OOF_5 meta-learner logistic regression coefficients. {#tbl-stacking-oof5-coefs}
+
+XGBoost dominates the 4-model variant (coefficient 1.967), consistent with its highest individual validation ROC-AUC. In the 5-model variant, Wide & Deep receives the largest coefficient (3.473) because its OOF predictions are on a compressed probability scale from focal loss, so the meta-learner up-weights it substantially to recover its discriminative signal. Logistic Regression receives a small negative coefficient (−0.181) in the 5-model variant, indicating that the other four base models collectively subsume its information content once WideDeep is included.
 
 ### Ensemble Performance Comparison {#sec-appendix-f4}
 
@@ -485,18 +512,6 @@ Two OOF stacking variants were trained. The four-model variant (Stacking_OOF) us
 
 ![Mean absolute SHAP values showing global feature importance ranking.](../artifacts/figures/08_shap_importance.png){#fig-shap-importance-appendix width=80% fig-pos="H"}
 
-
-### SHAP Interaction Effects {#sec-appendix-g2}
-
-| Feature Pair | Mean Interaction Effect | Direction |
-|--------------|------------------------|-----------|
-| CurrentEquipmentDays × MonthsInService | 0.0234 | Synergistic |
-| MonthlyMinutes × PercChangeMinutes | 0.0189 | Synergistic |
-| OverageMinutes × MonthlyRevenue | 0.0156 | Synergistic |
-| AgeHH1 × Homeownership | 0.0098 | Antagonistic |
-| DroppedBlockedCalls × CustomerCareCalls_flag | 0.0087 | Synergistic |
-
-: Top SHAP interaction effects between feature pairs {#tbl-shap-interaction-table}
 
 ### Semi-Supervised Learning SHAP Analysis {#sec-appendix-g3}
 
@@ -691,34 +706,10 @@ def set_all_seeds(seed: int = 42):
 
 ## Error Case Studies {#sec-appendix-j}
 
-### Representative False Negative Cases {#sec-appendix-j1}
+### False Negative Patterns {#sec-appendix-j1}
 
-"Silent churners" - customers who churned but were predicted as non-churners (high confidence):
+"Silent churners" are customers who churned but were assigned low churn probability by the model. Global SHAP analysis (@sec-global-interpretability) indicates that these cases typically lack the dominant risk signals the model relies on: they tend to have long service tenure (low positive SHAP from MonthsInService), stable or increasing usage (low or negative SHAP from PercChangeMinutes), and no support contact history (zero contribution from CustomerCareCalls). Their churn is likely driven by unobserved factors such as competitor promotions or household-level decisions not captured in the behavioral snapshot — the "silent churner" phenomenon discussed in @sec-limitations.
 
-| Case ID | Predicted P(Churn) | MonthsInService | CustomerCareCalls | PercChangeMinutes | Pattern |
-|---------|-------------------|-----------------|-------------------|-------------------|---------|
-| FN_001 | 0.1200 | 36 | 0 | -2.3% | Long tenure, no complaints, subtle usage decline |
-| FN_002 | 0.1800 | 24 | 1 | +5.1% | Stable tenure, minimal support contact, increasing usage |
-| FN_003 | 0.1500 | 42 | 0 | -8.7% | Very long tenure, no red flags except usage drop |
-| FN_004 | 0.2100 | 18 | 0 | -1.2% | Moderate tenure, quiet customer profile |
-| FN_005 | 0.1400 | 30 | 0 | +2.8% | Established customer with positive momentum |
+### False Positive Patterns {#sec-appendix-j2}
 
-: Representative false negative cases with feature profiles {#tbl-fn-cases}
-
-**Common patterns:** Long tenure customers with no support interactions who churn without warning signals. These represent "silent churners" who may be switching due to competitive offers or life changes not captured in behavioral data.
-
-### Representative False Positive Cases {#sec-appendix-j2}
-
-"False alarms" - customers predicted to churn but remained loyal:
-
-| Case ID | Predicted P(Churn) | MonthsInService | CustomerCareCalls | PercChangeMinutes | Pattern |
-|---------|-------------------|-----------------|-------------------|-------------------|---------|
-| FP_001 | 0.7800 | 3 | 2 | -15.3% | New customer with complaints, but resolved |
-| FP_002 | 0.7200 | 6 | 3 | -22.1% | Early tenure, high support contact, usage adjustment period |
-| FP_003 | 0.8100 | 4 | 1 | -31.2% | New customer, sharp usage decline (seasonal?) |
-| FP_004 | 0.6900 | 8 | 2 | -18.7% | Young account with volatility |
-| FP_005 | 0.7400 | 5 | 2 | -25.4% | New customer showing distress signals that stabilized |
-
-: Representative false positive cases with feature profiles {#tbl-fp-cases}
-
-**Common patterns:** New customers (< 12 months) showing high-risk signals (usage decline, support calls) but ultimately retained. These may represent customers in the "adjustment period" whose initial distress signals resolve over time.
+"False alarms" are customers predicted as high-risk churn who were ultimately retained. The SHAP dependence analysis (@sec-dependence-plots) suggests these cases are characterized by short service tenure (high positive SHAP from MonthsInService for new customers) combined with sharp short-term usage drops (high positive SHAP from PercChangeMinutes). New customers showing early distress signals — usage adjustments, initial support contacts — trigger the model's learned patterns for churn, but many stabilize once past the onboarding adjustment period. This points to a limitation of the static snapshot model: it cannot distinguish between transient early-tenure volatility and genuine pre-churn behavioral decline.

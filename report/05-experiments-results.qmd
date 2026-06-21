@@ -49,7 +49,7 @@ else:
     print("Model leaderboard table not found. Expected: artifacts/tables/08_model_leaderboard.csv")
 ```
 
-@fig-model-comparison visually corroborates these findings. The ROC curves for the leading models (LightGBM and XGBoost) lie consistently above the other model families across most false-positive rates, and the PR curves show a clear separation from the prevalence baseline (approximately 0.2880), with the top models maintaining higher precision at comparable recall. In addition to single-model benchmarks, heterogeneous ensemble experiments (@sec-ensemble-results) produced performance comparable to the best GBMs, with the best ensembles reaching approximately 0.6690 test ROC-AUC and 0.4490 test PR-AUC, representing a modest lift relative to the champion XGBoost model.
+@fig-model-comparison visually corroborates these findings. The ROC curves for the leading models (LightGBM and XGBoost) lie consistently above the other model families across most false-positive rates, and the PR curves show a clear separation from the prevalence baseline (approximately 0.2880), with the top models maintaining higher precision at comparable recall. In addition to single-model benchmarks, heterogeneous ensemble experiments (@sec-ensemble-results) produced performance comparable to the best GBMs, with the best ensembles reaching approximately 0.6704 test ROC-AUC and 0.4517 test PR-AUC (NNLS-optimized blending with five base learners), representing a modest lift relative to the champion GBM models.
 
 ```{python}
 #| label: fig-model-comparison

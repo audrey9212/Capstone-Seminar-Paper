@@ -492,6 +492,14 @@ def run_experiments(
         "val": EM.evaluate_probs(y_val, p_val, fixed_threshold=fixed_threshold).__dict__,
         "test": EM.evaluate_probs(y_test, p_test, fixed_threshold=fixed_threshold).__dict__,
     }
+    # Extract meta-learner coefficients (logistic regression on OOF predictions)
+    _stacking_coefs: Dict[str, Dict] = {}
+    _oof4_names = list(base_estimators.keys())
+    _stacking_coefs["Stacking_OOF"] = {
+        "base_models": _oof4_names,
+        "coef": dict(zip(_oof4_names, stacking.final_estimator_.coef_[0].tolist())),
+        "intercept": float(stacking.final_estimator_.intercept_[0]),
+    }
 
     # 6) Stacking OOF with Wide & Deep as 5th base learner (proper OOF for NN)
     if deep_data is not None:
@@ -540,6 +548,13 @@ def run_experiments(
             "val":  EM.evaluate_probs(y_val,  p_val,  fixed_threshold=fixed_threshold).__dict__,
             "test": EM.evaluate_probs(y_test, p_test, fixed_threshold=fixed_threshold).__dict__,
         }
+        # Extract 5-model meta-learner coefficients
+        _oof5_names = sklearn_names + ["WideDeep"]
+        _stacking_coefs["Stacking_OOF_5"] = {
+            "base_models": _oof5_names,
+            "coef": dict(zip(_oof5_names, meta_lr.coef_[0].tolist())),
+            "intercept": float(meta_lr.intercept_[0]),
+        }
 
         # Persist WideDeep OOF val/test preds for downstream use
         results["_wd_oof"]  = wd_oof
@@ -551,6 +566,7 @@ def run_experiments(
     results["_base_test_preds_df"] = test_preds_df
     results["_base_metrics"] = base_metrics
     results["_base_model_paths"] = {k: v["path"] for k, v in base_models.items()}
+    results["_stacking_coefs"] = _stacking_coefs
 
     return results
 
@@ -570,6 +586,7 @@ def save_outputs(results: Dict[str, Dict], fixed_threshold: float, features: Lis
     wd_oof  = results.pop("_wd_oof",  None)
     wd_val  = results.pop("_wd_val",  None)
     wd_test = results.pop("_wd_test", None)
+    stacking_coefs = results.pop("_stacking_coefs", None)
     if wd_oof is not None:
         preds_dir = U.DIRS.artifacts / "preds"
         preds_dir.mkdir(exist_ok=True, parents=True)
@@ -605,6 +622,10 @@ def save_outputs(results: Dict[str, Dict], fixed_threshold: float, features: Lis
     if weights_out:
         U.save_json(weights_out, U.DIRS.meta / "07_blend_weights.json")
 
+    # Stacking meta-learner coefficients
+    if stacking_coefs:
+        U.save_json(stacking_coefs, U.DIRS.meta / "07_stacking_coefs.json")
+
     # Diversity (correlation)  appendix-friendly
     corr = EM.diversity_correlation(val_preds_df)
     U.save_df(corr, U.DIRS.tables / "07_diversity_corr_val.csv")
@@ -625,6 +646,7 @@ def save_outputs(results: Dict[str, Dict], fixed_threshold: float, features: Lis
         },
         "meta": {
             "blend_weights": "artifacts/meta/07_blend_weights.json" if weights_out else None,
+            "stacking_coefs": "artifacts/meta/07_stacking_coefs.json" if stacking_coefs else None,
         },
     }
     U.save_json(manifest, U.DIRS.meta / "manifest_07_stacking.json")

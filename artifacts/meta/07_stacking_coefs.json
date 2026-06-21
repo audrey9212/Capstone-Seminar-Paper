@@ -1,0 +1,34 @@
+{
+  "Stacking_OOF": {
+    "base_models": [
+      "Logistic",
+      "XGBoost",
+      "LightGBM",
+      "RandomForest"
+    ],
+    "coef": {
+      "Logistic": 0.23072035435496535,
+      "XGBoost": 1.9670011969252357,
+      "LightGBM": 1.0680068323911096,
+      "RandomForest": 1.5999021525382366
+    },
+    "intercept": -3.2626770441493265
+  },
+  "Stacking_OOF_5": {
+    "base_models": [
+      "Logistic",
+      "XGBoost",
+      "LightGBM",
+      "RandomForest",
+      "WideDeep"
+    ],
+    "coef": {
+      "Logistic": -0.18083655550822367,
+      "XGBoost": 1.5478723781429562,
+      "LightGBM": 1.069930680934042,
+      "RandomForest": 1.1814770379488466,
+      "WideDeep": 3.4728170629469353
+    },
+    "intercept": -3.77137142337073
+  }
+}

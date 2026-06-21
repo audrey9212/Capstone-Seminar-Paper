@@ -12,7 +12,7 @@ This thesis presented a comprehensive exploration of telecom customer churn pred
 
 ### RQ1: Model Effectiveness {#sec-rq1-answer}
 
-**Results indicate** that gradient-boosted decision trees achieved the strongest overall performance among all model families tested. The champion single model was **XGBoost**, achieving a test ROC-AUC of **0.6637** and a test PR-AUC of **0.4454**. The best heterogeneous ensemble (NNLS-optimized blending) achieved a higher test ROC-AUC of **0.6704** and test PR-AUC of **0.4517**, but the marginal gain (+0.0067 ROC-AUC) suggests that XGBoost is the most practical choice for deployment. Both substantially outperformed the logistic regression baseline (test ROC-AUC = 0.5940, test PR-AUC = 0.3560).
+**Results indicate** that gradient-boosted decision trees achieved the strongest overall performance among all model families tested. Among single models, selection was based on validation ROC-AUC per the protocol in @sec-eval-protocol: XGBoost ranked first on validation (val ROC-AUC = 0.6571) and is therefore the **champion model by selection criterion**, achieving a test ROC-AUC of **0.6637** and a test PR-AUC of **0.4454**. Notably, LightGBM achieved marginally higher test metrics (test ROC-AUC = **0.6700**, test PR-AUC = **0.4476**), demonstrating that the two GBM approaches are effectively matched; the difference in validation-set rank reflects sample variability rather than a fundamental performance gap. Both substantially outperformed the logistic regression baseline (test ROC-AUC = 0.5940, test PR-AUC = 0.3560). The best heterogeneous ensemble (NNLS-optimized blending) achieved a higher test ROC-AUC of **0.6704** and test PR-AUC of **0.4517**, but the marginal gain over the best single models is modest.
 
 Heterogeneous ensemble methods (blending and OOF stacking) provided competitive but not decisively superior results. The best blending approach (NNLS-optimized) reached a test ROC-AUC of **0.6704** and test PR-AUC of **0.4517**. A five-model OOF stacking variant incorporating Wide & Deep as a fifth base learner (Stacking_OOF_5) achieved test ROC-AUC of **0.6702** and test PR-AUC of **0.4512**, nearly matching the best blend and substantially improving over the four-model OOF stacking (test ROC-AUC = 0.6679). Ensemble methods slightly exceeded XGBoost on ROC-AUC, but the improvement was modest. This suggests that the gains from model combination derive primarily from variance reduction and diversity between linear, nonlinear, and neural base learners, rather than capturing fundamentally new predictive signals.
 
@@ -53,21 +53,22 @@ Importantly, these interpretations were derived from the same model that produce
 
 In evaluating the above points, it is worth noting an **engineering trade-off** that emerged. While ensemble methods achieved comparable performance to single models, they introduce significant operational complexity without proportionate performance gains. The marginal improvements (approximately 0.0050–0.0070 in ROC-AUC) must be weighed against deployment and maintenance costs.
 
-| Consideration | Ensemble (Blending/Stacking) | XGBoost Only |
-|---------------|------------------------------|--------------|
-| Test ROC-AUC | 0.6679–0.6704 | 0.6637 |
-| Test PR-AUC | 0.4490–0.4517 | 0.4454 |
-| Inference Latency | Higher (multiple models) | Low |
-| Deployment Complexity | High | Low |
-| Maintenance Burden | Multiple model artifacts | Single artifact |
-| Interpretability | Requires aggregation | Direct SHAP analysis |
-| Threshold Calibration | More complex | Straightforward |
+| Consideration | Ensemble (Blending/Stacking) | LightGBM | XGBoost |
+|---------------|------------------------------|----------|---------|
+| Test ROC-AUC | 0.6673–0.6704 | 0.6700 | 0.6637 |
+| Test PR-AUC | 0.4489–0.4517 | 0.4476 | 0.4454 |
+| Val Selection Rank | — | 2nd (val = 0.6502) | 1st (val = 0.6571) |
+| Inference Latency | Higher (multiple models) | Low | Low |
+| Deployment Complexity | High | Low | Low |
+| Maintenance Burden | Multiple model artifacts | Single artifact | Single artifact |
+| Interpretability | Requires aggregation | Direct SHAP analysis | Direct SHAP analysis |
+| Threshold Calibration | More complex | Straightforward | Straightforward |
 
-: Comparison of deployment considerations between ensemble methods and single GBM models. {#tbl-deployment-tradeoffs}
+: Comparison of deployment considerations across ensemble methods and the two leading single GBM models. {#tbl-deployment-tradeoffs}
 
-For a **real-time deployment** where latency and system simplicity are paramount, a single GBM model (XGBoost) represents the pragmatic choice, offering fast inference, straightforward integration, and essentially equivalent predictive performance. The ensemble approach might be justified in batch-scoring scenarios where the slight PR-AUC lift translates to meaningful business value at scale, but the complexity trade-off generally favors single-model deployment.
+For a **real-time deployment** where latency and system simplicity are paramount, either LightGBM or XGBoost is a sound choice. LightGBM achieved the highest test-set performance among all single models (test ROC-AUC = 0.6700, test PR-AUC = 0.4476) and is the recommended production choice on the basis of held-out evaluation. XGBoost ranked first on the validation set under the pre-specified selection criterion (val ROC-AUC = 0.6571), and its test-set difference from LightGBM (0.0063 ROC-AUC) is small enough that either model is viable depending on infrastructure preferences. The ensemble approach might be justified in batch-scoring scenarios where the slight PR-AUC lift translates to meaningful business value at scale, but the complexity trade-off generally favors single-model deployment.
 
-This highlights that the "best" model on paper is not always the best in practice; **model selection must consider deployment constraints, maintainability, and interpretability requirements** as well as raw performance. In this case, XGBoost is the recommended production choice: it delivers strong test performance while maintaining operational simplicity.
+This highlights that **model selection must consider deployment constraints, maintainability, and interpretability requirements** alongside raw performance, and should distinguish between validation-based selection (favors XGBoost) and held-out test evaluation (favors LightGBM). The practical recommendation is to deploy LightGBM for production while treating XGBoost as a validated fallback — both models deliver strong, interpretable churn predictions with low operational overhead.
 
 Ultimately, this thesis showed that advanced models can be harnessed for churn prediction without making the results opaque. A balance was achieved where **performance, interpretability, and practical utility coexist**, which is a promising outcome for deploying the model in a real telecom business environment.
 
