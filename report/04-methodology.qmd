@@ -65,19 +65,19 @@ plt.tight_layout()
 
 All modeling experiments in this thesis follow a unified evaluation protocol to ensure fair comparison across model families. The core design choices are described below.
 
-**Data splitting strategy.** The labeled dataset was divided into three non-overlapping subsets: a training set (70%), a validation set (15%), and a test set (15%). Stratified sampling was applied to maintain consistent churn prevalence (approximately 28.8%) across splits. The training set is used for model fitting and hyperparameter search; the validation set guides early stopping, threshold selection, and model selection decisions; the test set is reserved for final, unbiased performance reporting. No model selection or tuning decisions were made based on test-set results.
+**Data splitting strategy:** The labeled dataset was divided into three non-overlapping subsets: a training set (70%), a validation set (15%), and a test set (15%). Stratified sampling was applied to maintain consistent churn prevalence (approximately 28.8%) across splits. The training set is used for model fitting and hyperparameter search; the validation set guides early stopping, threshold selection, and model selection decisions; the test set is reserved for final, unbiased performance reporting. No model selection or tuning decisions were made based on test-set results.
 
-**Primary evaluation metrics.** Model ranking and selection were based primarily on two threshold-independent metrics:
+**Primary evaluation metrics:** Model ranking and selection were based primarily on two threshold-independent metrics:
 
 1. **ROC-AUC (Area Under the Receiver Operating Characteristic Curve)**: Measures the probability that a randomly chosen positive (churner) is ranked higher than a randomly chosen negative (non-churner). This metric is standard for binary classification and is insensitive to class imbalance when used for ranking purposes.
 
 2. **PR-AUC (Area Under the Precision–Recall Curve)**: Also known as Average Precision, this metric is more sensitive to performance on the minority class (churners) and is particularly relevant when class imbalance is present.
 
-**Fixed operating threshold for decision-level metrics.** To enable consistent comparison of decision-level performance (precision, recall, F1), a single operating threshold ($\tau = 0.4400$) was selected on the validation set during the main tree-based model selection and then applied to all models uniformly. This fixed-threshold policy avoids per-model "best threshold" cherry-picking and reflects realistic deployment scenarios where a single, stable decision rule is applied across all customers.
+**Fixed operating threshold for decision-level metrics:** To enable consistent comparison of decision-level performance (precision, recall, F1), a single operating threshold ($\tau = 0.4400$) was selected on the validation set during the main tree-based model selection and then applied to all models uniformly. This fixed-threshold policy avoids per-model "best threshold" cherry-picking and reflects realistic deployment scenarios where a single, stable decision rule is applied across all customers.
 
-**Cross-validation for hyperparameter search.** Where applicable (logistic regression, XGBoost with Optuna), hyperparameters were tuned using stratified 5-fold cross-validation on the training set, with ROC-AUC as the optimization objective. The best hyperparameters were then used to refit a final model on the full training set before evaluation on validation and test sets.
+**Cross-validation for hyperparameter search:** Where applicable (logistic regression, XGBoost with Optuna), hyperparameters were tuned using stratified 5-fold cross-validation on the training set, with ROC-AUC as the optimization objective. The best hyperparameters were then used to refit a final model on the full training set before evaluation on validation and test sets.
 
-**Reproducibility controls.** All experiments used fixed random seeds (42) for data splitting, model initialization, and stochastic optimization. Model artifacts, including fitted parameters, training curves, and prediction outputs, were saved to enable exact reproduction of results.
+**Reproducibility controls:** All experiments used fixed random seeds (42) for data splitting, model initialization, and stochastic optimization. Model artifacts, including fitted parameters, training curves, and prediction outputs, were saved to enable exact reproduction of results.
 
 
 ## Baseline Model: Regularized Logistic Regression {#sec-logit}
@@ -295,7 +295,7 @@ Regularization was applied through dropout (applied after each hidden layer) and
 
 Model selection among neural architectures (Embedding MLP vs. Wide & Deep) and loss functions (weighted BCE vs. focal loss) was performed by comparing validation ROC-AUC. The best-performing configuration was then evaluated on the held-out test set for final reporting.
 
-**Artifacts and reproducibility.** All models output churn risk scores that were evaluated using the unified metrics and thresholding procedure in @sec-eval-protocol. Artifacts, including training curves, saved model weights, and prediction files, were recorded to enable reproducibility and to support downstream interpretation and ensemble construction in later sections.
+**Artifacts and reproducibility:** All models output churn risk scores that were evaluated using the unified metrics and thresholding procedure in @sec-eval-protocol. Artifacts, including training curves, saved model weights, and prediction files, were recorded to enable reproducibility and to support downstream interpretation and ensemble construction in later sections.
 
 
 ## Unsupervised and Semi-supervised Extension {#sec-uae}
@@ -312,7 +312,7 @@ A denoising autoencoder was trained on the numeric feature subset (all continuou
 
 The reconstruction loss (mean squared error between input and output) is minimized using Adam optimizer with early stopping based on validation reconstruction loss.
 
-**Label-Free Training.** The DAE is trained without using churn labels, and can therefore incorporate both labeled and unlabeled records in a leakage-safe manner (labels are never accessed). Model selection is performed using a held-out validation split and early stopping based on validation reconstruction loss, selecting the epoch that best balances fit and generalization of the learned representation. Once trained, the encoder is treated as a deterministic feature extractor that produces a latent vector for each customer.
+**Label-Free Training:** The DAE is trained without using churn labels, and can therefore incorporate both labeled and unlabeled records in a leakage-safe manner (labels are never accessed). Model selection is performed using a held-out validation split and early stopping based on validation reconstruction loss, selecting the epoch that best balances fit and generalization of the learned representation. Once trained, the encoder is treated as a deterministic feature extractor that produces a latent vector for each customer.
 
 ### Downstream Usage: Latent Feature Augmentation
 
@@ -361,9 +361,9 @@ Four blending strategies were evaluated:
 
 ### Out-of-Fold (OOF) Stacking
 
-**Leakage Control via OOF.** The key methodological requirement for stacking is leakage control, as the meta-learner must be trained on base predictions that are out-of-sample with respect to the base learners. A $K$-fold Out-of-Fold (OOF) protocol was therefore applied on the training split. For each fold $k$, each base estimator is fit on the $K - 1$ training folds and used to predict probabilities on the held-out fold. Concatenating held-out predictions across folds yields an OOF prediction matrix $Z_{OOF}$ where every row corresponds to a training instance and every column to a base learner, with the guarantee that each entry was generated by a model that did not train on that instance.
+**Leakage Control via OOF:** The key methodological requirement for stacking is leakage control, as the meta-learner must be trained on base predictions that are out-of-sample with respect to the base learners. A $K$-fold Out-of-Fold (OOF) protocol was therefore applied on the training split. For each fold $k$, each base estimator is fit on the $K - 1$ training folds and used to predict probabilities on the held-out fold. Concatenating held-out predictions across folds yields an OOF prediction matrix $Z_{OOF}$ where every row corresponds to a training instance and every column to a base learner, with the guarantee that each entry was generated by a model that did not train on that instance.
 
-**Meta-Learner Training.** A Ridge logistic regression meta-learner is trained on $Z_{OOF}$ to learn optimal combination weights. The meta-learner's coefficients indicate the relative contribution of each base learner to the final ensemble prediction.
+**Meta-Learner Training:** A Ridge logistic regression meta-learner is trained on $Z_{OOF}$ to learn optimal combination weights. The meta-learner's coefficients indicate the relative contribution of each base learner to the final ensemble prediction.
 
 ```{python}
 #| label: fig-stacking
