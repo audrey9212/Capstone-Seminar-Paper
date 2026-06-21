@@ -65,7 +65,7 @@ plt.tight_layout()
 
 All modeling experiments in this thesis follow a unified evaluation protocol to ensure fair comparison across model families. The core design choices are described below.
 
-**Data splitting strategy:** The labeled dataset was divided into three non-overlapping subsets: a training set (70%), a validation set (15%), and a test set (15%). Stratified sampling was applied to maintain consistent churn prevalence (approximately 28.8%) across splits. The training set is used for model fitting and hyperparameter search; the validation set guides early stopping, threshold selection, and model selection decisions; the test set is reserved for final, unbiased performance reporting. No model selection or tuning decisions were made based on test-set results.
+**Data splitting strategy:** The labeled dataset was divided into three non-overlapping subsets: a training set (80%), a validation set (10%), and a test set (10%). Stratified sampling was applied to maintain consistent churn prevalence (approximately 28.8%) across splits. The training set is used for model fitting and hyperparameter search; the validation set guides early stopping, threshold selection, and model selection decisions; the test set is reserved for final, unbiased performance reporting. No model selection or tuning decisions were made based on test-set results.
 
 **Primary evaluation metrics:** Model ranking and selection were based primarily on two threshold-independent metrics:
 

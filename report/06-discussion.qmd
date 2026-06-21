@@ -119,13 +119,13 @@ Formal SHAP interaction values were computed using *TreeExplainer.shap_interacti
 
 2. **MonthlyMinutes × PercChangeMinutes** (mean |interaction| = 0.048): Among low-usage customers, a declining usage trend amplifies churn risk further, creating a compounding disengagement effect visible in the SHAP dependence plot (@fig-shap-dependence-minutes).
 
-3. **OverageMinutes × PercChangeRevenues** (mean |interaction| = 0.014): Customers experiencing both high overage charges and declining revenue trends face a combined billing-dissatisfaction signal that exceeds the sum of the individual effects.
+3. **CurrentEquipmentDays × HandsetRefurbished_Yes** (mean |interaction| = 0.019): Customers with aging equipment who also carry a refurbished handset show compounding hardware dissatisfaction — the combination of long equipment age and a non-new device elevates churn risk beyond what either factor predicts in isolation.
 
 These interaction patterns align with domain intuition and suggest that the model is capturing meaningful behavioral combinations rather than spurious correlations.
 
 ![SHAP interaction value heatmap for the top 12 features. Cell values show mean absolute pairwise interaction effects; the diagonal (main effects) is set to zero. Computed via SHAP *TreeExplainer* on 3,000 test samples.](../artifacts/figures/08_shap_interaction_heatmap.png){#fig-shap-interaction fig-alt="SHAP interaction heatmap showing top pairwise feature interactions." width=80%}
 
-Overall, the global interpretability results point to a coherent churn story: customers are most at risk when they show aging equipment tenure, low or declining engagement, shorter tenure, and service reliability issues. This set of drivers naturally translates into operational playbooks (e.g., upgrade offers for long equipment tenure, proactive outreach for sharp usage drops, and targeted service remediation for customers experiencing repeated call failures).
+Overall, the global interpretability results point to a coherent churn story: customers are most at risk when they show aging equipment tenure, low or declining engagement, shorter tenure, and service reliability issues. This set of drivers naturally translates into operational playbooks (e.g., upgrade offers for long equipment tenure — prioritizing customers still on refurbished devices — proactive outreach for sharp usage drops, and targeted service remediation for customers experiencing repeated call failures).
 
 
 ## Error Analysis {#sec-error-analysis}
