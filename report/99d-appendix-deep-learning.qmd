@@ -1,0 +1,56 @@
+---
+format:
+  pdf:
+    fig-pos: "H"
+---
+
+# Deep Learning {.unnumbered}
+
+## Deep Learning Training Dynamics {#sec-appendix-d}
+
+### Neural Network Experiment Leaderboard {#sec-appendix-d1}
+
+All neural network experiments tracked via MLflow with systematic architecture variations.
+
+| Experiment | Architecture | Loss | Test ROC-AUC | Test PR-AUC | Brier Score |
+|------------|--------------|------|--------------|-------------|-------------|
+| **wide_deep_focal** | **Wide & Deep** | **Focal (γ=2)** | **0.6615** | **0.4356** | **0.1970** |
+| embedding_focal_loss | Embedding MLP | Focal (γ=2) | 0.6612 | 0.4345 | 0.1976 |
+| dense_baseline | Dense MLP | Weighted BCE | 0.6553 | 0.4219 | 0.2343 |
+| wide_and_deep | Wide & Deep | Weighted BCE | 0.6496 | 0.4208 | 0.2364 |
+| embedding_baseline | Embedding MLP | Weighted BCE | 0.6489 | 0.4192 | 0.2329 |
+| wide_and_deep_deeper | Wide & Deep (Deeper) | Weighted BCE | 0.6475 | 0.4110 | 0.2328 |
+| embedding_strong_weight | Embedding MLP | Weighted BCE (×1.5) | 0.6442 | 0.4081 | 0.2718 |
+
+: Neural network experiment leaderboard sorted by Test ROC-AUC (descending). All experiments use early stopping (patience = 15) with the same train/validation/test split. {#tbl-nn-experiment-leaderboard}
+
+### Alternative Architecture Training Curves {#sec-appendix-d2}
+
+![Training dynamics for the MLP dense baseline architecture.](../artifacts/figures/05_nn_dense_baseline_curves.png){#fig-nn-dense-baseline width=100% fig-pos="H"}
+
+
+![Training dynamics for the embedding-based MLP architecture.](../artifacts/figures/05_nn_embedding_baseline_curves.png){#fig-nn-embedding-baseline width=100% fig-pos="H"}
+
+
+![Training dynamics for the Wide & Deep architecture with BCE loss.](../artifacts/figures/05_nn_wide_and_deep_curves.png){#fig-nn-wide-deep width=100% fig-pos="H"}
+
+
+![Training dynamics for the deeper Wide & Deep architecture variant.](../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png){#fig-nn-wide-deep-deeper width=100% fig-pos="H"}
+
+
+![Training dynamics for embedding MLP with focal loss.](../artifacts/figures/05_nn_embedding_focal_loss_curves.png){#fig-nn-embedding-focal width=100% fig-pos="H"}
+
+
+![Training dynamics for embedding MLP with strong class weight.](../artifacts/figures/05_nn_embedding_strong_weight_curves.png){#fig-nn-embedding-weight width=100% fig-pos="H"}
+
+
+### Architecture Specifications {#sec-appendix-d3}
+
+| Architecture | Deep Layers | Hidden Units | Dropout | Activation | Parameters |
+|--------------|-------------|--------------|---------|------------|------------|
+| Dense MLP | 2 | [128, 64] | 0.30 | ReLU | ~10K |
+| Embedding MLP | 2 + embed | [128, 64] + embed(8) | 0.30 | ReLU | ~20K |
+| Wide & Deep | 2 + wide | [128, 64] + Linear | 0.30 | ReLU/Linear | ~20K |
+| Wide & Deep (Deeper) | 3 + wide | [256, 128, 64] + Linear | 0.30 | ReLU/Linear | ~64K |
+
+: Neural network architecture specifications. Parameter counts are from actual training artifacts (n_params field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs. {#tbl-nn-architecture-specs}

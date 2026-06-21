@@ -1,0 +1,115 @@
+---
+format:
+  pdf:
+    fig-pos: "H"
+---
+
+# Data Documentation {.unnumbered}
+
+## Data Documentation {#sec-appendix-a}
+
+### Complete Feature Registry {#sec-appendix-a1}
+
+The feature registry serves as the single source of truth for all feature-level decisions throughout the modeling pipeline. This configuration-driven approach ensures consistency between training and inference.
+
+| Feature | Origin | Semantic Group | Type | Transform | Keep (GLM/Tree/NN) | Decision |
+|---------|--------|----------------|------|-----------|-------------------|----------|
+| CustomerID | Original | id_target | Identifier | – | N/N/N | Drop |
+| Churn | Original | id_target | Binary target | 0/1 encoding | – | Target |
+| MonthlyRevenue | Original | billing_economics | Continuous | log, winsor | N/Y/N | Replace |
+| MonthlyMinutes | Original | usage_activity | Continuous | log, winsor | Y/Y/Y | Keep |
+| TotalRecurringCharge | Original | billing_economics | Continuous | – | N/N/N | Drop |
+| DirectorAssistedCalls | Original | usage_activity | Continuous | – | N/N/N | Drop |
+| OverageMinutes | Original | billing_economics | Continuous | log, winsor | Y/Y/Y | Keep |
+| RoamingCalls | Original | usage_activity | Continuous | – | N/N/N | Drop |
+| PercChangeMinutes | Original | billing_economics | Momentum | winsor | Y/Y/Y | Keep |
+| PercChangeRevenues | Original | billing_economics | Momentum | winsor | Y/Y/Y | Keep |
+| DroppedCalls | Original | quality_experience | Count | – | N/N/N | Replace |
+| BlockedCalls | Original | quality_experience | Count | – | N/N/N | Replace |
+| UnansweredCalls | Original | quality_experience | Count | – | N/N/N | Drop |
+| CustomerCareCalls | Original | support_retention | Count | – | N/N/N | Replace |
+| ThreewayCalls | Original | usage_activity | Count | – | N/N/N | Drop |
+| ReceivedCalls | Original | usage_activity | Count | – | N/N/N | Drop |
+| OutboundCalls | Original | usage_activity | Count | – | Y/Y/Y | Keep |
+| InboundCalls | Original | usage_activity | Count | – | N/N/N | Drop |
+| PeakCallsInOut | Original | usage_activity | Count | – | N/N/N | Drop |
+| OffPeakCallsInOut | Original | usage_activity | Count | – | N/N/N | Drop |
+| DroppedBlockedCalls | Original | quality_experience | Count | log, winsor | Y/Y/Y | Keep |
+| CallForwardingCalls | Original | quality_experience | Count | – | N/N/N | Drop |
+| CallWaitingCalls | Original | quality_experience | Count | – | N/N/N | Drop |
+| MonthsInService | Original | account_tenure | Integer | – | Y/Y/Y | Keep |
+| UniqueSubs | Original | account_tenure | Count | – | N/N/N | Drop |
+| ActiveSubs | Original | account_tenure | Count | – | Y/Y/Y | Keep |
+| ServiceArea | Original | geo_segmentation | Nominal (747) | – | N/N/N | Drop |
+| Handsets | Original | account_tenure | Count | – | N/N/N | Drop |
+| HandsetModels | Original | account_tenure | Count | – | N/N/N | Drop |
+| CurrentEquipmentDays | Original | account_tenure | Integer | – | Y/Y/Y | Keep |
+| AgeHH1 | Original | demographics | Continuous | – | Y/Y/Y | Keep |
+| AgeHH2 | Original | demographics | Continuous | – | N/N/N | Drop |
+| ChildrenInHH | Original | demographics | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| HandsetRefurbished | Original | equipment | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| HandsetWebCapable | Original | equipment | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| TruckOwner | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| RVOwner | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| Homeownership | Original | demographics | Binary | – | Y/Y/Y | Keep |
+| BuysViaMailOrder | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| RespondsToMailOffers | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| OptOutMailings | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| NonUSTravel | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| OwnsComputer | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| HasCreditCard | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| RetentionCalls | Original | support_retention | Count | – | N/N/N | **EXCLUDE** |
+| RetentionOffersAccepted | Original | support_retention | Count | – | N/N/N | **EXCLUDE** |
+| NewCellphoneUser | Original | account_tenure | Binary | Yes/No→1/0 | Y/Y/Y | Keep |
+| NotNewCellphoneUser | Original | account_tenure | Binary | Yes/No→1/0 | N/N/N | Drop |
+| ReferralsMadeBySubscriber | Original | engagement | Count | – | Y/Y/Y | Keep |
+| IncomeGroup | Original | demographics | Ordinal | – | Y/Y/Y | Keep |
+| OwnsMotorcycle | Original | demographics | Binary | Yes/No→1/0 | N/N/N | Drop |
+| AdjustmentsToCreditRating | Original | billing_economics | Integer | – | Y/Y/Y | Keep |
+| HandsetPrice | Original | equipment | Ordinal | target encode | Y/Y/Y | Keep |
+| MadeCallToRetentionTeam | Original | support_retention | Binary | Yes/No→1/0 | N/N/N | **EXCLUDE** |
+| CreditRating | Original | demographics | Ordinal | target encode | Y/Y/Y | Keep |
+| PrizmCode | Original | geo_segmentation | Nominal | target encode | Y/Y/Y | Keep |
+| Occupation | Original | demographics | Nominal | target encode | Y/Y/Y | Keep |
+| MaritalStatus | Original | demographics | Nominal | one-hot | Y/Y/Y | Keep |
+
+: Complete Feature Registry with preprocessing decisions {#tbl-full-feature-registry}
+
+**Legend:**
+
+- **Keep (GLM/Tree/NN)**: Y = included, N = excluded for that model family
+- **EXCLUDE**: Features excluded due to data leakage risk (post-decision variables)
+- **Transform**: log = log1p transformation, winsor = winsorization at 1st/99th percentile
+
+### Semantic Feature Grouping {#sec-appendix-a2}
+
+Features were organized into semantic groups to facilitate domain-driven feature engineering and interpretability analysis.
+
+| Semantic Group | Features | Description |
+|----------------|----------|-------------|
+| **id_target** | CustomerID, Churn | Identifier and target variable |
+| **billing_economics** | MonthlyRevenue, TotalRecurringCharge, OverageMinutes, PercChangeMinutes, PercChangeRevenues, AdjustmentsToCreditRating | Financial and billing-related metrics |
+| **usage_activity** | MonthlyMinutes, DirectorAssistedCalls, RoamingCalls, ThreewayCalls, ReceivedCalls, OutboundCalls, InboundCalls, PeakCallsInOut, OffPeakCallsInOut | Call volume and usage patterns |
+| **quality_experience** | DroppedCalls, BlockedCalls, UnansweredCalls, DroppedBlockedCalls, CallForwardingCalls, CallWaitingCalls | Service quality indicators |
+| **support_retention** | CustomerCareCalls, RetentionCalls, RetentionOffersAccepted, MadeCallToRetentionTeam | Customer support interactions |
+| **account_tenure** | MonthsInService, UniqueSubs, ActiveSubs, Handsets, HandsetModels, CurrentEquipmentDays, NewCellphoneUser, NotNewCellphoneUser | Account age and device history |
+| **demographics** | AgeHH1, AgeHH2, ChildrenInHH, TruckOwner, RVOwner, Homeownership, BuysViaMailOrder, RespondsToMailOffers, OptOutMailings, NonUSTravel, OwnsComputer, HasCreditCard, IncomeGroup, OwnsMotorcycle, MaritalStatus, Occupation, CreditRating | Customer demographic attributes |
+| **equipment** | HandsetRefurbished, HandsetWebCapable, HandsetPrice | Device characteristics |
+| **geo_segmentation** | ServiceArea, PrizmCode | Geographic and market segmentation |
+
+: Semantic grouping of features for domain-driven analysis {#tbl-semantic-grouping}
+
+### Leakage Risk Assessment {#sec-appendix-a3}
+
+A systematic leakage scan was conducted to identify features that could leak future information. Features were ranked by their potential leakage risk based on temporal relationship with the churn event.
+
+| Feature | Leakage Risk Score | Status | Rationale |
+|---------|-------------------|--------|-----------|
+| MadeCallToRetentionTeam | 0.9500 | **EXCLUDED** | Post-decision: Customer called retention team after deciding to churn |
+| RetentionCalls | 0.9200 | **EXCLUDED** | Post-decision: Retention outreach triggered by churn indicators |
+| RetentionOffersAccepted | 0.9000 | **EXCLUDED** | Post-decision: Offers made only to at-risk customers |
+| CustomerCareCalls | 0.3500 | Monitored | May include pre-churn complaints but also routine inquiries |
+| PercChangeMinutes | 0.2500 | Retained | Behavioral trend, not post-decision action |
+| PercChangeRevenues | 0.2500 | Retained | Behavioral trend, not post-decision action |
+
+: Leakage risk assessment for retention-related features {#tbl-leakage-risk}

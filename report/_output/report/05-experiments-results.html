@@ -213,8 +213,50 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../report/99-appendix.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Appendix</span></span></a>
+  <a href="../report/99a-appendix-reproducibility.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproducibility and Environment</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99b-appendix-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Documentation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99c-appendix-baseline-tree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baseline and Tree Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99d-appendix-deep-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deep Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99e-appendix-unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Unsupervised and Semi-Supervised</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99f-appendix-ensemble-shap.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ensemble Methods and SHAP Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99g-appendix-evaluation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Final Model Evaluation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../report/99h-appendix-error-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Error Case Studies</span></a>
   </div>
 </li>
       </ul>
@@ -296,7 +338,7 @@ Figures are linked to precomputed artifacts under artifacts/figures/ (generated 
 <p>Across the supervised model families, gradient-boosted decision trees delivered the strongest overall performance. Using the validation-set ROC-AUC criterion defined in <a href="04-methodology.html#sec-eval-protocol" class="quarto-xref"><span>Section 5.2</span></a>, XGBoost was selected as the champion model (validation ROC-AUC = 0.66, validation PR-AUC = 0.44). On the test set, the champion XGBoost model achieved ROC-AUC = 0.66 and PR-AUC = 0.45. At the fixed operating threshold of 0.44, it reached precision = 0.37, recall = 0.74, and F1 = 0.49 (the corresponding confusion matrix is reported in <a href="#sec-operating-point" class="quarto-xref"><span>Section 6.7</span></a>). Notably, LightGBM achieved the highest test ROC-AUC among the single supervised models (test ROC-AUC = 0.67, test PR-AUC = 0.45), indicating that the two leading GBM approaches were closely matched on this dataset.</p>
 <p>The remaining baselines formed clear lower tiers. Random Forest achieved ROC-AUC = 0.65 and PR-AUC = 0.43, while the logistic regression baseline yielded ROC-AUC = 0.59 and PR-AUC = 0.36. The deep learning models clustered in a narrow band: their test ROC-AUC values ranged from approximately 0.64 to 0.66, and test PR-AUC ranged from approximately 0.41 to 0.44. The best neural model by ranking metrics was a Wide &amp; Deep variant with focal loss (test ROC-AUC = 0.66, test PR-AUC = 0.44). Under the fixed threshold of 0.44, several focal-loss neural variants produced very few positive predictions, resulting in near-zero recall and F1 despite competitive AUC/PR-AUC; therefore, ranking metrics provide the fairest comparison at this aggregate level, while threshold-based outcomes are interpreted separately in <a href="#sec-operating-point" class="quarto-xref"><span>Section 6.7</span></a>.</p>
 <div class="cell" data-message="false" data-execution_count="1">
-<div id="tbl-model-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="1">
+<div id="tbl-model-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.1: Model leaderboard showing validation and test performance across all model families.
@@ -459,9 +501,9 @@ Figure&nbsp;6.1: ROC and Precision–Recall curves comparing all model families 
 </section>
 <section id="sec-logit-baseline" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="sec-logit-baseline"><span class="header-section-number">6.2</span> Baseline Performance (Logistic Regression)</h2>
-<p>To provide a simple and interpretable reference point, a regularized logistic regression model was first evaluated as the supervised baseline. On the held-out test set, the baseline achieved a ROC-AUC of 0.59 and a PR-AUC (average precision) of 0.36, indicating modest but meaningful discrimination despite the class imbalance (<a href="#tbl-logit-metrics" class="quarto-xref">Table&nbsp;<span>6.2</span></a>). For context, the test-set churn prevalence is 0.29, so the baseline PR-AUC is clearly above the prevalence level expected from random ranking; this relationship is also visible in the precision–recall curve where the model stays above the horizontal prevalence line across a wide recall range (<a href="99-appendix.html#sec-appendix-b3" class="quarto-xref"><span>Section A.3.3</span></a>).</p>
+<p>To provide a simple and interpretable reference point, a regularized logistic regression model was first evaluated as the supervised baseline. On the held-out test set, the baseline achieved a ROC-AUC of 0.59 and a PR-AUC (average precision) of 0.36, indicating modest but meaningful discrimination despite the class imbalance (<a href="#tbl-logit-metrics" class="quarto-xref">Table&nbsp;<span>6.2</span></a>). For context, the test-set churn prevalence is 0.29, so the baseline PR-AUC is clearly above the prevalence level expected from random ranking; this relationship is also visible in the precision–recall curve where the model stays above the horizontal prevalence line across a wide recall range (<a href="99c-appendix-baseline-tree.html#sec-appendix-b3" class="quarto-xref"><span>Section 1.3</span></a>).</p>
 <div class="cell" data-message="false" data-execution_count="3">
-<div id="tbl-logit-metrics" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="3">
+<div id="tbl-logit-metrics" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-logit-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.2: Logistic regression baseline performance metrics on validation and test sets.
@@ -549,7 +591,7 @@ Table&nbsp;6.2: Logistic regression baseline performance metrics on validation a
 </figure>
 </div>
 </div>
-<p>The baseline exhibited stable performance across data splits. On the validation set, the model reached ROC-AUC = 0.59 and PR-AUC = 0.35, closely matching test-set results and providing a consistent lower-bound benchmark for subsequent model families. In addition to ranking metrics, decision-level performance is reported at the operating threshold used for downstream comparisons (threshold = 0.44). At this threshold, the test-set confusion matrix contained 917 true negatives, 2,717 false positives, 234 false negatives, and 1,237 true positives, corresponding to recall = 0.84, precision = 0.31, and F1 = 0.46. Detailed ROC curves, PR curves, and confusion matrices for the logistic regression baseline are provided in <a href="99-appendix.html#sec-appendix-b3" class="quarto-xref"><span>Section A.3.3</span></a>.</p>
+<p>The baseline exhibited stable performance across data splits. On the validation set, the model reached ROC-AUC = 0.59 and PR-AUC = 0.35, closely matching test-set results and providing a consistent lower-bound benchmark for subsequent model families. In addition to ranking metrics, decision-level performance is reported at the operating threshold used for downstream comparisons (threshold = 0.44). At this threshold, the test-set confusion matrix contained 917 true negatives, 2,717 false positives, 234 false negatives, and 1,237 true positives, corresponding to recall = 0.84, precision = 0.31, and F1 = 0.46. Detailed ROC curves, PR curves, and confusion matrices for the logistic regression baseline are provided in <a href="99c-appendix-baseline-tree.html#sec-appendix-b3" class="quarto-xref"><span>Section 1.3</span></a>.</p>
 <p>Finally, probability accuracy was summarized via the Brier score, which was 0.24 on the test set; the corresponding reliability diagram provides a visual check of calibration quality (<a href="#fig-logit-calibration" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>). Overall, this baseline establishes a conservative performance floor against which the gains from nonlinear models (tree/GBM, neural networks) and ensembling can be quantified.</p>
 <div id="cell-fig-logit-calibration" class="cell" data-message="false" data-execution_count="4">
 <div class="cell-output cell-output-display">
@@ -570,7 +612,7 @@ Figure&nbsp;6.2: Calibration (reliability) diagram for logistic regression with 
 <h2 data-number="6.3" class="anchored" data-anchor-id="sec-tree-gbm-results"><span class="header-section-number">6.3</span> Tree and GBM Results</h2>
 <p>As a first step beyond the linear baseline, two tree-based benchmarks were evaluated: a single decision tree and a random forest. <a href="#tbl-tree-leaderboard" class="quarto-xref">Table&nbsp;<span>6.3</span></a> reports ROC-AUC and PR-AUC on both validation and test sets, and <a href="#fig-tree-rocpr-test" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> visualizes the corresponding ROC and PR curves on the test set.</p>
 <div class="cell" data-message="false" data-execution_count="5">
-<div id="tbl-tree-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="5">
+<div id="tbl-tree-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tree-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.3: Performance summary of tree-based models on validation and test sets.
@@ -804,14 +846,14 @@ Figure&nbsp;6.4: Tuned XGBoost ROC/PR curves with the selected operating thresho
 </section>
 <section id="hyperparameter-optimization-diagnostics" class="level3" data-number="6.3.2">
 <h3 data-number="6.3.2" class="anchored" data-anchor-id="hyperparameter-optimization-diagnostics"><span class="header-section-number">6.3.2</span> Hyperparameter Optimization Diagnostics</h3>
-<p>The Optuna diagnostics were inspected to verify that the hyperparameter search behaved sensibly and to summarize which settings drove performance. The optimization history shows rapid improvement in the early trials followed by a clear plateau, consistent with quickly locating a strong region of the hyperparameter space and then encountering diminishing returns. The parallel-coordinate visualization indicates that the better trials concentrate within a relatively narrow band of configurations, rather than appearing as isolated outliers, which reduces the likelihood that the selected model is the result of chance. The hyperparameter-importance summary further suggests that performance is most sensitive to the learning rate, while tree depth and regularization terms play a secondary role. This pattern aligns with the small empirical gap between the untuned and tuned XGBoost models: tuning improves ROC-AUC slightly, but the overall precision–recall ranking remains of similar magnitude. Full Optuna diagnostic plots, including the optimization history, parallel-coordinate visualization, and hyperparameter importance rankings, are provided in <a href="99-appendix.html#sec-appendix-c3" class="quarto-xref"><span>Section A.4.5</span></a>.</p>
+<p>The Optuna diagnostics were inspected to verify that the hyperparameter search behaved sensibly and to summarize which settings drove performance. The optimization history shows rapid improvement in the early trials followed by a clear plateau, consistent with quickly locating a strong region of the hyperparameter space and then encountering diminishing returns. The parallel-coordinate visualization indicates that the better trials concentrate within a relatively narrow band of configurations, rather than appearing as isolated outliers, which reduces the likelihood that the selected model is the result of chance. The hyperparameter-importance summary further suggests that performance is most sensitive to the learning rate, while tree depth and regularization terms play a secondary role. This pattern aligns with the small empirical gap between the untuned and tuned XGBoost models: tuning improves ROC-AUC slightly, but the overall precision–recall ranking remains of similar magnitude. Full Optuna diagnostic plots, including the optimization history, parallel-coordinate visualization, and hyperparameter importance rankings, are provided in <a href="99c-appendix-baseline-tree.html#sec-appendix-c3" class="quarto-xref"><span>Section 2.5</span></a>.</p>
 </section>
 </section>
 <section id="sec-nn-results" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="sec-nn-results"><span class="header-section-number">6.4</span> Deep Learning Results (PyTorch)</h2>
-<p>This section reports neural network experiments implemented in PyTorch, focusing on (i) architecture comparisons and (ii) loss-function/imbalance handling ablations. Results are summarized in <a href="#tbl-nn-leaderboard" class="quarto-xref">Table&nbsp;<span>6.4</span></a>, with the best model’s test curves shown in <a href="#fig-nn-best-rocpr" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> and its training dynamics summarized in <a href="#fig-nn-curves-best" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>. Additional training curves for alternative architectures (MLP baseline, embedding MLP, and deeper Wide &amp; Deep variants) are provided in <a href="99-appendix.html#sec-appendix-d2" class="quarto-xref"><span>Section A.5.2</span></a> and <a href="99-appendix.html#sec-appendix-d3" class="quarto-xref"><span>Section A.5.3</span></a>.</p>
+<p>This section reports neural network experiments implemented in PyTorch, focusing on (i) architecture comparisons and (ii) loss-function/imbalance handling ablations. Results are summarized in <a href="#tbl-nn-leaderboard" class="quarto-xref">Table&nbsp;<span>6.4</span></a>, with the best model’s test curves shown in <a href="#fig-nn-best-rocpr" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> and its training dynamics summarized in <a href="#fig-nn-curves-best" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>. Additional training curves for alternative architectures (MLP baseline, embedding MLP, and deeper Wide &amp; Deep variants) are provided in <a href="99d-appendix-deep-learning.html#sec-appendix-d2" class="quarto-xref"><span>Section 1.2</span></a> and <a href="99d-appendix-deep-learning.html#sec-appendix-d3" class="quarto-xref"><span>Section 1.3</span></a>.</p>
 <div class="cell" data-message="false" data-execution_count="8">
-<div id="tbl-nn-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="8">
+<div id="tbl-nn-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="8" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.4: PyTorch neural network results (test metrics at validation-selected thresholds).
@@ -973,7 +1015,7 @@ Figure&nbsp;6.6: Training versus validation loss and AUC curves for the best neu
 </div>
 </div>
 </div>
-<p>Training curves (<a href="#fig-nn-curves-best" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>) show that the best focal model continues to reduce training loss while validation loss plateaus, and validation AUC stabilizes in the mid-0.64 range after roughly the mid-training period; early stopping selects epoch 62 for wide_deep_focal. Across variants, deeper/wider configurations tend to widen the train–validation gap without improving validation AUC, consistent with the small benefit observed from the deeper Wide &amp; Deep model. Additional learning curves for alternative architectures and imbalance settings are provided in <a href="99-appendix.html#sec-appendix-d2" class="quarto-xref"><span>Section A.5.2</span></a> (best model training dynamics) and <a href="99-appendix.html#sec-appendix-d3" class="quarto-xref"><span>Section A.5.3</span></a> (alternative architecture comparisons).</p>
+<p>Training curves (<a href="#fig-nn-curves-best" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>) show that the best focal model continues to reduce training loss while validation loss plateaus, and validation AUC stabilizes in the mid-0.64 range after roughly the mid-training period; early stopping selects epoch 62 for wide_deep_focal. Across variants, deeper/wider configurations tend to widen the train–validation gap without improving validation AUC, consistent with the small benefit observed from the deeper Wide &amp; Deep model. Additional learning curves for alternative architectures and imbalance settings are provided in <a href="99d-appendix-deep-learning.html#sec-appendix-d2" class="quarto-xref"><span>Section 1.2</span></a> (best model training dynamics) and <a href="99d-appendix-deep-learning.html#sec-appendix-d3" class="quarto-xref"><span>Section 1.3</span></a> (alternative architecture comparisons).</p>
 </section>
 </section>
 <section id="sec-autoencoder-results" class="level2" data-number="6.5">
@@ -1019,7 +1061,7 @@ Figure&nbsp;6.8: Teacher probability distribution on the unlabeled holdout and p
 <h3 data-number="6.5.3" class="anchored" data-anchor-id="downstream-impact-ablation-summary"><span class="header-section-number">6.5.3</span> Downstream Impact (Ablation Summary)</h3>
 <p><a href="#tbl-ae-ablation" class="quarto-xref">Table&nbsp;<span>6.5</span></a> reports the predictive utility of the learned latent features via a controlled ablation. Using the same evaluation protocol, the baseline (X only) achieved ROC-AUC = 0.65 and PR-AUC = 0.43. Using latent-only (Z only) reduced performance to ROC-AUC = 0.63 and PR-AUC = 0.39, implying the compressed representation retains substantial but not complete churn-relevant information. Finally, augmenting features (X+Z) essentially matched the baseline ranking metrics (ROC-AUC = 0.65, PR-AUC = 0.43), yielding only a marginal PR-AUC increase. Under tuned thresholds (selected on validation), baseline and augmented variants also delivered very similar operating-point metrics (F1 around 0.48 with recall around 0.73), consistent with the conclusion that latent features provide, at best, a small incremental signal in this configuration.</p>
 <div class="cell" data-message="false" data-execution_count="13">
-<div id="tbl-ae-ablation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="13">
+<div id="tbl-ae-ablation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="13" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ae-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.5: Downstream impact of DAE latent features (baseline vs.&nbsp;latent-only vs.&nbsp;augmented).
@@ -1077,14 +1119,14 @@ Table&nbsp;6.5: Downstream impact of DAE latent features (baseline vs.&nbsp;late
 </figure>
 </div>
 </div>
-<p>Additional diagnostics, including latent t-SNE visualization (<a href="99-appendix.html#fig-latent-tsne" class="quarto-xref">Figure&nbsp;<span>A.16</span></a> in <a href="99-appendix.html#sec-appendix-e2" class="quarto-xref"><span>Section A.6.2</span></a>) and reconstruction-error distribution plots (<a href="99-appendix.html#fig-recon-error" class="quarto-xref">Figure&nbsp;<span>A.15</span></a> in <a href="99-appendix.html#sec-appendix-e1" class="quarto-xref"><span>Section A.6.1</span></a>), are provided to support the qualitative assessment of representation structure and error overlap between churn/non-churn groups.</p>
+<p>Additional diagnostics, including latent t-SNE visualization (<a href="99e-appendix-unsupervised.html#fig-latent-tsne" class="quarto-xref">Figure&nbsp;<span>2</span></a> in <a href="99e-appendix-unsupervised.html#sec-appendix-e2" class="quarto-xref"><span>Section 1.2</span></a>) and reconstruction-error distribution plots (<a href="99e-appendix-unsupervised.html#fig-recon-error" class="quarto-xref">Figure&nbsp;<span>1</span></a> in <a href="99e-appendix-unsupervised.html#sec-appendix-e1" class="quarto-xref"><span>Section 1.1</span></a>), are provided to support the qualitative assessment of representation structure and error overlap between churn/non-churn groups.</p>
 </section>
 </section>
 <section id="sec-ensemble-results" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="sec-ensemble-results"><span class="header-section-number">6.6</span> Ensemble Results (Blending vs.&nbsp;OOF Stacking)</h2>
 <p>To test whether combining heterogeneous learners could yield incremental gains beyond the best single model, several ensemble strategies were evaluated. Blending methods use five base predictors (Logistic Regression, XGBoost, LightGBM, Random Forest, and Wide &amp; Deep), while the four-model OOF stacking uses the four tree/linear models; a five-model OOF stacking variant additionally incorporates Wide &amp; Deep predictions trained via proper K-fold out-of-fold to avoid meta-level leakage. <a href="#tbl-ensemble-leaderboard" class="quarto-xref">Table&nbsp;<span>6.6</span></a> summarizes validation and test ranking performance.</p>
 <div class="cell" data-message="false" data-execution_count="14">
-<div id="tbl-ensemble-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="14">
+<div id="tbl-ensemble-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="14" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.6: Ensemble performance comparison on validation and test sets (ROC-AUC and PR-AUC).
@@ -1161,12 +1203,12 @@ Table&nbsp;6.6: Ensemble performance comparison on validation and test sets (ROC
 <section id="blending-results" class="level3" data-number="6.6.1">
 <h3 data-number="6.6.1" class="anchored" data-anchor-id="blending-results"><span class="header-section-number">6.6.1</span> Blending Results</h3>
 <p>Overall, blending delivered strong results. The NNLS-constrained blend achieved the highest test ROC-AUC (0.67; test PR-AUC 0.45), followed closely by AUC-weighted blending (test ROC-AUC 0.67; PR-AUC 0.45). A simple unweighted average (Blend_SimpleAvg) performed nearly identically (test ROC-AUC 0.67; PR-AUC 0.45), suggesting that most of the ensemble benefit comes from variance reduction rather than finely tuned weights.</p>
-<p>Compared with the best single tree/GBM model from <a href="#sec-tree-gbm-results" class="quarto-xref"><span>Section 6.3</span></a>, these ensembles largely preserve discrimination while providing a small but consistent PR-AUC lift, which is most relevant under class imbalance. For operating-point comparability across all model families, the fixed threshold = 0.44 is maintained for the main cross-section comparisons; tuned thresholds and blending weights for each ensemble are detailed in <a href="99-appendix.html#sec-appendix-f4" class="quarto-xref"><span>Section A.7.4</span></a> (<a href="99-appendix.html#tbl-ensemble-comparison" class="quarto-xref">Table&nbsp;<span>A.17</span></a>).</p>
+<p>Compared with the best single tree/GBM model from <a href="#sec-tree-gbm-results" class="quarto-xref"><span>Section 6.3</span></a>, these ensembles largely preserve discrimination while providing a small but consistent PR-AUC lift, which is most relevant under class imbalance. For operating-point comparability across all model families, the fixed threshold = 0.44 is maintained for the main cross-section comparisons; tuned thresholds and blending weights for each ensemble are detailed in <a href="99f-appendix-ensemble-shap.html#sec-appendix-f4" class="quarto-xref"><span>Section 1.4</span></a> (<a href="99f-appendix-ensemble-shap.html#tbl-ensemble-comparison" class="quarto-xref">Table&nbsp;<span>5</span></a>).</p>
 </section>
 <section id="oof-stacking-results" class="level3" data-number="6.6.2">
 <h3 data-number="6.6.2" class="anchored" data-anchor-id="oof-stacking-results"><span class="header-section-number">6.6.2</span> OOF Stacking Results</h3>
 <p>Two OOF stacking variants were evaluated. The four-model stacking (Stacking_OOF, using Logistic Regression, XGBoost, LightGBM, and Random Forest) achieved test ROC-AUC 0.6679 and test PR-AUC 0.4490. Extending to five base learners by incorporating Wide &amp; Deep neural network predictions generated via proper K-fold out-of-fold training (Stacking_OOF_5) improved performance to test ROC-AUC 0.6702 and test PR-AUC 0.4512, nearly matching NNLS blending (test ROC-AUC 0.6704, PR-AUC 0.4517). This improvement demonstrates that the neural network contributes complementary signal as a meta-feature even after the tree models are included.</p>
-<p>Notably, stacking optimal thresholds are substantially lower (approximately 0.22–0.23) than the probability-based blending variants (approximately 0.40–0.44 for SimpleAvg, WeightedAUC, and NNLS). Blend_RankAvg is excluded from this comparison because its scores are rank-transformed (scale 1–5,105) rather than calibrated probabilities, so its optimal threshold is not comparable to the others. This scale difference is consistent with the meta-learner producing probabilities on a different range even when ranking quality is similar. This makes stacking attractive for ranking tasks, but it requires explicit threshold recalibration for deployment as a decision rule (see <a href="99-appendix.html#sec-appendix-h3" class="quarto-xref"><span>Section A.9.3</span></a> (<a href="99-appendix.html#tbl-optimal-thresholds" class="quarto-xref">Table&nbsp;<span>A.19</span></a>) for threshold sensitivity analysis). The near-tie between five-model stacking and NNLS blending suggests that the relationship between base model scores is approximately linear, so a learned meta-combination provides limited additional upside over robust averaging.</p>
+<p>Notably, stacking optimal thresholds are substantially lower (approximately 0.22–0.23) than the probability-based blending variants (approximately 0.40–0.44 for SimpleAvg, WeightedAUC, and NNLS). Blend_RankAvg is excluded from this comparison because its scores are rank-transformed (scale 1–5,105) rather than calibrated probabilities, so its optimal threshold is not comparable to the others. This scale difference is consistent with the meta-learner producing probabilities on a different range even when ranking quality is similar. This makes stacking attractive for ranking tasks, but it requires explicit threshold recalibration for deployment as a decision rule (see <a href="99g-appendix-evaluation.html#sec-appendix-h3" class="quarto-xref"><span>Section 1.3</span></a> (<a href="99g-appendix-evaluation.html#tbl-optimal-thresholds" class="quarto-xref">Table&nbsp;<span>2</span></a>) for threshold sensitivity analysis). The near-tie between five-model stacking and NNLS blending suggests that the relationship between base model scores is approximately linear, so a learned meta-combination provides limited additional upside over robust averaging.</p>
 <p>The stacking meta-learner combines base model predictions <span class="math inline">\(z(x)\)</span> using logistic regression:</p>
 <p><span class="math display">\[
 z(x) = \big[\hat{p}_{1}(x), \hat{p}_{2}(x), \ldots, \hat{p}_{M}(x)\big]
@@ -1197,10 +1239,10 @@ Figure&nbsp;6.9: Correlation matrix of base model predictions on the validation 
 </section>
 <section id="sec-operating-point" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="sec-operating-point"><span class="header-section-number">6.7</span> Operating Point Analysis (Threshold Policy in Practice)</h2>
-<p>To turn probabilistic churn scores into an actionable retention list, this study adopts a single, fixed operating threshold across all candidate models. Concretely, <span class="math inline">\(\tau = 0.44\)</span> (chosen on the validation set during the main tree-based model selection) serves as the production policy: any customer with predicted churn probability <span class="math inline">\(\hat{p}(\text{churn}) \geq \tau\)</span> is flagged for intervention. This fixed-threshold policy is intentionally conservative from a reporting standpoint: it avoids per-model “best threshold” cherry-picking and reflects how real teams often deploy one stable rule tied to capacity and budget. Full threshold sweeps showing precision–recall trade-offs across <span class="math inline">\(\tau\)</span> are provided in <a href="99-appendix.html#sec-appendix-h2" class="quarto-xref"><span>Section A.9.2</span></a> (<a href="99-appendix.html#tbl-xgb-threshold-full" class="quarto-xref">Table&nbsp;<span>A.18</span></a>).</p>
+<p>To turn probabilistic churn scores into an actionable retention list, this study adopts a single, fixed operating threshold across all candidate models. Concretely, <span class="math inline">\(\tau = 0.44\)</span> (chosen on the validation set during the main tree-based model selection) serves as the production policy: any customer with predicted churn probability <span class="math inline">\(\hat{p}(\text{churn}) \geq \tau\)</span> is flagged for intervention. This fixed-threshold policy is intentionally conservative from a reporting standpoint: it avoids per-model “best threshold” cherry-picking and reflects how real teams often deploy one stable rule tied to capacity and budget. Full threshold sweeps showing precision–recall trade-offs across <span class="math inline">\(\tau\)</span> are provided in <a href="99g-appendix-evaluation.html#sec-appendix-h2" class="quarto-xref"><span>Section 1.2</span></a> (<a href="99g-appendix-evaluation.html#tbl-xgb-threshold-full" class="quarto-xref">Table&nbsp;<span>1</span></a>).</p>
 <p>Under <span class="math inline">\(\tau = 0.44\)</span>, the best balance of precision and recall is achieved by LightGBM with Precision = 0.38, Recall = 0.73, and F1 = 0.50 (<a href="#tbl-operating-point" class="quarto-xref">Table&nbsp;<span>6.7</span></a>). XGBoost is extremely close (0.37/0.74/0.49), indicating that the two GBMs behave similarly under the same decision rule. The dense NN baseline is more aggressive at this threshold, reaching higher recall (0.81) but lower precision (0.35), while Logistic Regression pushes recall even higher (0.84) at the cost of precision (0.31). These patterns match the expected operational trade-off: higher recall reduces missed churners but increases the number of false positives competing for retention resources.</p>
 <div class="cell" data-message="false" data-execution_count="16">
-<div id="tbl-operating-point" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-message="false" data-execution_count="16">
+<div id="tbl-operating-point" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="16" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-operating-point-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;6.7: Operating point comparison across models at fixed threshold τ = 0.4400.
@@ -1333,7 +1375,7 @@ Figure&nbsp;6.10: Confusion matrix for XGBoost at the operating threshold τ = 0
 </div>
 </div>
 </div>
-<p>Finally, models whose probability scales differ substantially (e.g., the DAE teacher and some focal-loss networks) can become overly conservative under a shared <span class="math inline">\(\tau\)</span> (high precision but very low recall), suggesting that calibration or model-specific thresholds are important alternatives. Detailed model-specific optimal thresholds are provided in <a href="99-appendix.html#sec-appendix-h3" class="quarto-xref"><span>Section A.9.3</span></a> (<a href="99-appendix.html#tbl-optimal-thresholds" class="quarto-xref">Table&nbsp;<span>A.19</span></a>), and calibration metrics are provided in <a href="99-appendix.html#sec-appendix-h4" class="quarto-xref"><span>Section A.9.4</span></a>.</p>
+<p>Finally, models whose probability scales differ substantially (e.g., the DAE teacher and some focal-loss networks) can become overly conservative under a shared <span class="math inline">\(\tau\)</span> (high precision but very low recall), suggesting that calibration or model-specific thresholds are important alternatives. Detailed model-specific optimal thresholds are provided in <a href="99g-appendix-evaluation.html#sec-appendix-h3" class="quarto-xref"><span>Section 1.3</span></a> (<a href="99g-appendix-evaluation.html#tbl-optimal-thresholds" class="quarto-xref">Table&nbsp;<span>2</span></a>), and calibration metrics are provided in <a href="99g-appendix-evaluation.html#sec-appendix-h4" class="quarto-xref"><span>Section 1.4</span></a>.</p>
 </section>
 </section>
 <section id="sec-results-summary" class="level2" data-number="6.8">

@@ -21,7 +21,14 @@ book:
     - report/98-references.qmd
 
   appendices:
-    - report/99-appendix.qmd
+    - report/99a-appendix-reproducibility.qmd
+    - report/99b-appendix-data.qmd
+    - report/99c-appendix-baseline-tree.qmd
+    - report/99d-appendix-deep-learning.qmd
+    - report/99e-appendix-unsupervised.qmd
+    - report/99f-appendix-ensemble-shap.qmd
+    - report/99g-appendix-evaluation.qmd
+    - report/99h-appendix-error-analysis.qmd
 
 # Zotero (Better BibTeX) export
 bibliography: report/references.bib
