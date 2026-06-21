@@ -84,7 +84,7 @@ EDA in this study was designed to (i) quantify the dataset's major modeling cons
 
 
 ### Class Balance and Baseline Difficulty
-Churn is a minority class but not extremely rare: 14,711 churners (28.82%) versus 36,336 non-churners (71.18%). A naïve classifier that always predicts "non-churn" would achieve 0.7118 accuracy, demonstrating that accuracy alone is not a sufficient measure for this task.
+Churn is a minority class but not extremely rare: 14,711 churners (28.82%) versus 36,336 non-churners (71.18%). A naïve classifier that always predicts "non-churn" would achieve 0.71 accuracy, demonstrating that accuracy alone is not a sufficient measure for this task.
 
 
 ![Churn class distribution in the Cell2Cell training set.](../artifacts/figures/F2a_churn_distribution_donut.png){#fig-churn-distribution fig-alt="Donut chart showing churn vs non-churn share." width=55%}

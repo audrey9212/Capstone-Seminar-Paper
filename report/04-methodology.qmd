@@ -73,7 +73,7 @@ All modeling experiments in this thesis follow a unified evaluation protocol to 
 
 2. **PR-AUC (Area Under the Precision–Recall Curve)**: Also known as Average Precision, this metric is more sensitive to performance on the minority class (churners) and is particularly relevant when class imbalance is present.
 
-**Fixed operating threshold for decision-level metrics:** To enable consistent comparison of decision-level performance (precision, recall, F1), a single operating threshold ($\tau = 0.4400$) was selected on the validation set during the main tree-based model selection and then applied to all models uniformly. This fixed-threshold policy avoids per-model "best threshold" cherry-picking and reflects realistic deployment scenarios where a single, stable decision rule is applied across all customers.
+**Fixed operating threshold for decision-level metrics:** To enable consistent comparison of decision-level performance (precision, recall, F1), a single operating threshold ($\tau = 0.44$) was selected on the validation set during the main tree-based model selection and then applied to all models uniformly. This fixed-threshold policy avoids per-model "best threshold" cherry-picking and reflects realistic deployment scenarios where a single, stable decision rule is applied across all customers.
 
 **Cross-validation for hyperparameter search:** Where applicable (logistic regression, XGBoost with Optuna), hyperparameters were tuned using stratified 5-fold cross-validation on the training set, with ROC-AUC as the optimization objective. The best hyperparameters were then used to refit a final model on the full training set before evaluation on validation and test sets.
 
@@ -457,4 +457,4 @@ plt.tight_layout()
 
 ### Inference Pipeline
 
-At inference time, all base models are applied to the test set to produce a prediction matrix $Z_{\text{test}}$. The meta-learner then combines these predictions to produce final ensemble probabilities. The operating threshold ($\tau = 0.4400$) is applied to these ensemble probabilities to generate binary churn predictions for evaluation.
+At inference time, all base models are applied to the test set to produce a prediction matrix $Z_{\text{test}}$. The meta-learner then combines these predictions to produce final ensemble probabilities. The operating threshold ($\tau = 0.44$) is applied to these ensemble probabilities to generate binary churn predictions for evaluation.

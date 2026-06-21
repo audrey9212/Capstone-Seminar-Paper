@@ -115,11 +115,11 @@ plt.tight_layout()
 
 Formal SHAP interaction values were computed using *TreeExplainer.shap_interaction_values()* on 3,000 test samples, yielding a 3,000 × 34 × 34 tensor of pairwise interaction effects (@fig-shap-interaction). The top pairwise interactions are:
 
-1. **CurrentEquipmentDays × MonthsInService** (mean |interaction| = 0.056): The strongest interaction in the model. Customers with both old equipment and short tenure show elevated churn risk beyond what either feature alone predicts, consistent with a "new customer with outdated device" risk profile.
+1. **CurrentEquipmentDays × MonthsInService** (mean |interaction| = 0.06): The strongest interaction in the model. Customers with both old equipment and short tenure show elevated churn risk beyond what either feature alone predicts, consistent with a "new customer with outdated device" risk profile.
 
-2. **MonthlyMinutes × PercChangeMinutes** (mean |interaction| = 0.048): Among low-usage customers, a declining usage trend amplifies churn risk further, creating a compounding disengagement effect visible in the SHAP dependence plot (@fig-shap-dependence-minutes).
+2. **MonthlyMinutes × PercChangeMinutes** (mean |interaction| = 0.05): Among low-usage customers, a declining usage trend amplifies churn risk further, creating a compounding disengagement effect visible in the SHAP dependence plot (@fig-shap-dependence-minutes).
 
-3. **CurrentEquipmentDays × HandsetRefurbished_Yes** (mean |interaction| = 0.019): Customers with aging equipment who also carry a refurbished handset show compounding hardware dissatisfaction — the combination of long equipment age and a non-new device elevates churn risk beyond what either factor predicts in isolation.
+3. **CurrentEquipmentDays × HandsetRefurbished_Yes** (mean |interaction| = 0.02): Customers with aging equipment who also carry a refurbished handset show compounding hardware dissatisfaction — the combination of long equipment age and a non-new device elevates churn risk beyond what either factor predicts in isolation.
 
 These interaction patterns align with domain intuition and suggest that the model is capturing meaningful behavioral combinations rather than spurious correlations.
 
@@ -130,7 +130,7 @@ Overall, the global interpretability results point to a coherent churn story: cu
 
 ## Error Analysis {#sec-error-analysis}
 
-While overall performance was strong, revisiting the confusion matrix (@fig-confmat-xgb) provides deeper insight into the types of residual errors. The chosen operating point (threshold = 0.4400) favored recall (sensitivity to churners) by using a slightly lower decision threshold, which resulted in a higher number of true positives (churners correctly identified) at the expense of some false positives.
+While overall performance was strong, revisiting the confusion matrix (@fig-confmat-xgb) provides deeper insight into the types of residual errors. The chosen operating point (threshold = 0.44) favored recall (sensitivity to churners) by using a slightly lower decision threshold, which resulted in a higher number of true positives (churners correctly identified) at the expense of some false positives.
 
 At this threshold, the model achieves:
 
@@ -160,9 +160,9 @@ That said, false positives must be managed by calibrating the intervention level
 
 Because autoencoders are inherently unsupervised, sanity checks were added to verify that the model learned meaningful structure rather than noise. First, the latent vectors were visualized using t-SNE and colored by churn labels only for diagnostic purposes (labels were not used in training). Second, reconstruction error distributions were compared by label, revealing a small but consistent difference: churners had slightly higher reconstruction error (0.1639) than non-churners (0.1608), suggesting that churners may exhibit behavioral patterns that are harder to reconstruct with a compact representation.
 
-Despite these qualitative signals, the DAE did not improve predictive metrics when appended to the supervised feature set. As reported in @sec-autoencoder-results, using the baseline features alone (X only) achieved ROC-AUC = 0.6465 and PR-AUC = 0.4254, while augmenting with latent features (X+Z) yielded ROC-AUC = 0.6451 and PR-AUC = 0.4271, demonstrating essentially no meaningful improvement. Using latent features alone (Z only) substantially degraded performance (ROC-AUC = 0.6252, PR-AUC = 0.3872), confirming that the compressed representation retains substantial but not complete churn-relevant information.
+Despite these qualitative signals, the DAE did not improve predictive metrics when appended to the supervised feature set. As reported in @sec-autoencoder-results, using the baseline features alone (X only) achieved ROC-AUC = 0.65 and PR-AUC = 0.43, while augmenting with latent features (X+Z) yielded ROC-AUC = 0.65 and PR-AUC = 0.43, demonstrating essentially no meaningful improvement. Using latent features alone (Z only) substantially degraded performance (ROC-AUC = 0.63, PR-AUC = 0.39), confirming that the compressed representation retains substantial but not complete churn-relevant information.
 
-A plausible explanation is that the baseline engineered feature set already captures most of the signal that is linearly or semi-linearly recoverable for churn prediction, so the bottleneck representation primarily compresses rather than contributes new predictive information. The autoencoder's reconstruction objective optimizes for capturing variance in the feature space, but the variance-explaining directions may not align with the churn-discriminative directions. In addition, the pseudo-labeling extension produced only 2 confident pseudo-labels at the strict 0.0500/0.9500 threshold, which is far too few to materially change the decision boundary.
+A plausible explanation is that the baseline engineered feature set already captures most of the signal that is linearly or semi-linearly recoverable for churn prediction, so the bottleneck representation primarily compresses rather than contributes new predictive information. The autoencoder's reconstruction objective optimizes for capturing variance in the feature space, but the variance-explaining directions may not align with the churn-discriminative directions. In addition, the pseudo-labeling extension produced only 2 confident pseudo-labels at the strict 0.05/0.95 threshold, which is far too few to materially change the decision boundary.
 
 ::: {.callout-note}
 ## Practical Takeaway for an ML Engineering Audience
@@ -235,7 +235,7 @@ In summary, the model might be under-informed about certain churn drivers, which
 
 ### Performance Ceiling
 
-Finally, it is worth noting that the **performance ceiling** observed (AUC in the high 0.6700 range, with LightGBM achieving 0.6700 and XGBoost achieving 0.6637) indicates that even the best model leaves a substantial portion of churn variance unexplained. This is not a flaw of a particular algorithm but rather a reflection of churn's inherent complexity and the limitations mentioned above. Thus, there is room for improvement by enhancing data and methodology.
+Finally, it is worth noting that the **performance ceiling** observed (AUC in the high 0.67 range, with LightGBM achieving 0.67 and XGBoost achieving 0.66) indicates that even the best model leaves a substantial portion of churn variance unexplained. This is not a flaw of a particular algorithm but rather a reflection of churn's inherent complexity and the limitations mentioned above. Thus, there is room for improvement by enhancing data and methodology.
 
 ### External Validity and Generalizability
 
@@ -243,6 +243,6 @@ All experiments were conducted on a single publicly available dataset (Cell2Cell
 
 ### Statistical Significance of Performance Differences
 
-All experiments were conducted under a single random seed (seed = 42) with a single train/validation/test split. The reported performance gap between the best ensemble (NNLS blending, test ROC-AUC = 0.6704) and the best single model (XGBoost, test ROC-AUC = 0.6637) is 0.0067 ROC-AUC points. This difference was not validated with statistical significance testing (e.g., a DeLong test on the test ROC curves). Given the test set size of 5,105 samples and the narrow margin, the difference may not be statistically significant. Practitioners should treat the single-seed results as exploratory rankings rather than definitive conclusions about model superiority.
+All experiments were conducted under a single random seed (seed = 42) with a single train/validation/test split. The reported performance gap between the best ensemble (NNLS blending, test ROC-AUC = 0.67) and the best single model (XGBoost, test ROC-AUC = 0.66) is 0.01 ROC-AUC points. This difference was not validated with statistical significance testing (e.g., a DeLong test on the test ROC curves). Given the test set size of 5,105 samples and the narrow margin, the difference may not be statistically significant. Practitioners should treat the single-seed results as exploratory rankings rather than definitive conclusions about model superiority.
 
 Despite these limitations, the insights gained are valuable as a foundation. The next chapter discusses how future work can address some of these limitations, incorporating new data sources, methods, and deployment practices to further improve churn prediction and its business utility.
