@@ -156,7 +156,7 @@ The first neural architecture is an **Embedding MLP** that learns dense represen
 Each categorical feature is mapped to a learnable embedding vector. The embedding dimension for each feature is set heuristically (e.g., $\min(50, \text{cardinality} // 2)$) to balance expressiveness and regularization. All embeddings are concatenated into a single vector per sample.
 
 #### MLP trunk.
-The concatenated representation (embeddings + continuous + binary) is passed through a feedforward network with ReLU activations and dropout regularization between layers. A typical configuration uses three hidden layers with decreasing width (e.g., 256 → 128 → 64), though the exact architecture can be varied experimentally.
+The concatenated representation (embeddings + continuous + binary) is passed through a feedforward network with ReLU activations and dropout regularization between layers. A typical configuration uses two hidden layers with decreasing width (e.g., 128 → 64), though the exact architecture can be varied experimentally.
 
 #### Output head.
 A final linear layer with a single output unit produces a logit, which is passed through a sigmoid activation to yield a churn probability. For training, the loss is computed directly on the logit (using `BCEWithLogitsLoss` or focal loss variants), which is numerically more stable than applying sigmoid before loss computation.

@@ -13,7 +13,7 @@ Several of the top features map directly to retention levers. CurrentEquipmentDa
 
 ![SHAP summary plot (beeswarm) showing top features driving churn predictions in the champion XGBoost model. Feature values are colored by magnitude (high = red, low = blue).](../artifacts/figures/08_shap_summary.png){#fig-shap-summary fig-alt="SHAP beeswarm plot showing feature importance and impact direction." width=60%}
 
-### Non-Linear Feature Effects
+### Non-Linear Feature Effects {#sec-dependence-plots}
 
 Beyond ranking features, SHAP dependence plots reveal non-linear effects that would be difficult to summarize with a single coefficient. For CurrentEquipmentDays (@fig-shap-dependence-equipment), churn risk rises as equipment tenure increases, but the pattern is not perfectly linear; the SHAP contributions show clustered regimes where risk increases more sharply after certain ranges, consistent with threshold-like upgrade cycles rather than a smooth monotonic slope. The interaction coloring by HandsetRefurbished_Yes suggests that customers with refurbished handsets (pink points) tend to cluster at lower equipment days but show similar SHAP patterns, while those with non-refurbished devices (blue points) span the full range of equipment tenure.
 
