@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Final Model Evaluation {.unnumbered}
+# Final Model Evaluation
 
 ## Final Model Comparison and Evaluation {#sec-appendix-h}
 

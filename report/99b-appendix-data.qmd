@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Data Documentation {.unnumbered}
+# Data Documentation
 
 ## Data Documentation {#sec-appendix-a}
 

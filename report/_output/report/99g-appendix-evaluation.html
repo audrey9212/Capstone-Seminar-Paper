@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Final Model Evaluation – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<title>Appendix G — Final Model Evaluation – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,7 +88,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99g-appendix-evaluation.html">Final Model Evaluation</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99g-appendix-evaluation.html"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -185,49 +185,49 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99a-appendix-reproducibility.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reproducibility and Environment</span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Reproducibility and Environment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99b-appendix-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Documentation</span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data Documentation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99c-appendix-baseline-tree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Baseline and Tree Models</span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Baseline and Tree Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99d-appendix-deep-learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deep Learning</span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99e-appendix-unsupervised.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Unsupervised and Semi-Supervised</span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99f-appendix-ensemble-shap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Ensemble Methods and SHAP Analysis</span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99g-appendix-evaluation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Final Model Evaluation</span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99h-appendix-error-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Error Case Studies</span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Error Case Studies</span></span></a>
   </div>
 </li>
       </ul>
@@ -242,13 +242,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-appendix-h" id="toc-sec-appendix-h" class="nav-link active" data-scroll-target="#sec-appendix-h">Final Model Comparison and Evaluation</a>
+  <li><a href="#sec-appendix-h" id="toc-sec-appendix-h" class="nav-link active" data-scroll-target="#sec-appendix-h"><span class="header-section-number">G.1</span> Final Model Comparison and Evaluation</a>
   <ul class="collapse">
-  <li><a href="#sec-appendix-h1" id="toc-sec-appendix-h1" class="nav-link" data-scroll-target="#sec-appendix-h1">Model Comparison Curves</a></li>
-  <li><a href="#sec-appendix-h2" id="toc-sec-appendix-h2" class="nav-link" data-scroll-target="#sec-appendix-h2">Threshold Analysis</a></li>
-  <li><a href="#sec-appendix-h3" id="toc-sec-appendix-h3" class="nav-link" data-scroll-target="#sec-appendix-h3">Model-Specific Optimal Thresholds</a></li>
-  <li><a href="#sec-appendix-h4" id="toc-sec-appendix-h4" class="nav-link" data-scroll-target="#sec-appendix-h4">Calibration Metrics</a></li>
-  <li><a href="#sec-appendix-h5" id="toc-sec-appendix-h5" class="nav-link" data-scroll-target="#sec-appendix-h5">Complete Model Leaderboard</a></li>
+  <li><a href="#sec-appendix-h1" id="toc-sec-appendix-h1" class="nav-link" data-scroll-target="#sec-appendix-h1"><span class="header-section-number">G.1.1</span> Model Comparison Curves</a></li>
+  <li><a href="#sec-appendix-h2" id="toc-sec-appendix-h2" class="nav-link" data-scroll-target="#sec-appendix-h2"><span class="header-section-number">G.1.2</span> Threshold Analysis</a></li>
+  <li><a href="#sec-appendix-h3" id="toc-sec-appendix-h3" class="nav-link" data-scroll-target="#sec-appendix-h3"><span class="header-section-number">G.1.3</span> Model-Specific Optimal Thresholds</a></li>
+  <li><a href="#sec-appendix-h4" id="toc-sec-appendix-h4" class="nav-link" data-scroll-target="#sec-appendix-h4"><span class="header-section-number">G.1.4</span> Calibration Metrics</a></li>
+  <li><a href="#sec-appendix-h5" id="toc-sec-appendix-h5" class="nav-link" data-scroll-target="#sec-appendix-h5"><span class="header-section-number">G.1.5</span> Complete Model Leaderboard</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -256,9 +256,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99g-appendix-evaluation.html">Final Model Evaluation</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99g-appendix-evaluation.html"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Final Model Evaluation</h1>
+<h1 class="title">Appendix G — Final Model Evaluation</h1>
 </div>
 
 
@@ -275,38 +275,38 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="sec-appendix-h" class="level2">
-<h2 class="anchored" data-anchor-id="sec-appendix-h">Final Model Comparison and Evaluation</h2>
-<section id="sec-appendix-h1" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-h1">Model Comparison Curves</h3>
+<section id="sec-appendix-h" class="level2" data-number="G.1">
+<h2 data-number="G.1" class="anchored" data-anchor-id="sec-appendix-h"><span class="header-section-number">G.1</span> Final Model Comparison and Evaluation</h2>
+<section id="sec-appendix-h1" class="level3" data-number="G.1.1">
+<h3 data-number="G.1.1" class="anchored" data-anchor-id="sec-appendix-h1"><span class="header-section-number">G.1.1</span> Model Comparison Curves</h3>
 <div id="fig-model-comparison-roc" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-model-comparison-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/08_model_comparison_roc.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: ROC curves comparing all model families on the test set."><img src="../artifacts/figures/08_model_comparison_roc.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/08_model_comparison_roc.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;G.1: ROC curves comparing all model families on the test set."><img src="../artifacts/figures/08_model_comparison_roc.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-comparison-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: ROC curves comparing all model families on the test set.
+Figure&nbsp;G.1: ROC curves comparing all model families on the test set.
 </figcaption>
 </figure>
 </div>
 <div id="fig-model-comparison-pr" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-model-comparison-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/08_model_comparison_pr.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Precision-Recall curves comparing all model families on the test set."><img src="../artifacts/figures/08_model_comparison_pr.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/08_model_comparison_pr.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;G.2: Precision-Recall curves comparing all model families on the test set."><img src="../artifacts/figures/08_model_comparison_pr.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-model-comparison-pr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Precision-Recall curves comparing all model families on the test set.
+Figure&nbsp;G.2: Precision-Recall curves comparing all model families on the test set.
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="sec-appendix-h2" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-h2">Threshold Analysis</h3>
+<section id="sec-appendix-h2" class="level3" data-number="G.1.2">
+<h3 data-number="G.1.2" class="anchored" data-anchor-id="sec-appendix-h2"><span class="header-section-number">G.1.2</span> Threshold Analysis</h3>
 <p>XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,634 non-churners). The optimal threshold τ = 0.4400 was selected by maximizing F1 subject to recall ≥ 0.70, then applied uniformly to all models.</p>
 <div id="tbl-xgb-threshold-full" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-xgb-threshold-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: XGBoost threshold sweep on the validation set (N = 5,105). τ = 0.4400 (bold) maximizes F1 subject to recall ≥ 0.70 and is applied uniformly to all models for comparability. All rows sum to N = 5,105.
+Table&nbsp;G.1: XGBoost threshold sweep on the validation set (N = 5,105). τ = 0.4400 (bold) maximizes F1 subject to recall ≥ 0.70 and is applied uniformly to all models for comparability. All rows sum to N = 5,105.
 </figcaption>
 <div aria-describedby="tbl-xgb-threshold-full-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -418,12 +418,12 @@ Table&nbsp;1: XGBoost threshold sweep on the validation set (N = 5,105). τ = 0.
 </figure>
 </div>
 </section>
-<section id="sec-appendix-h3" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-h3">Model-Specific Optimal Thresholds</h3>
+<section id="sec-appendix-h3" class="level3" data-number="G.1.3">
+<h3 data-number="G.1.3" class="anchored" data-anchor-id="sec-appendix-h3"><span class="header-section-number">G.1.3</span> Model-Specific Optimal Thresholds</h3>
 <div id="tbl-optimal-thresholds" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-optimal-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Model performance at the fixed operational threshold τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set for XGBoost, then applied uniformly. Stacking methods use a lower threshold (≈0.22) because the logistic meta-learner outputs probabilities on a compressed scale. Wide&amp;Deep (Focal) exhibits near-zero recall at τ = 0.44 due to probability compression from focal loss, requiring threshold recalibration before deployment.
+Table&nbsp;G.2: Model performance at the fixed operational threshold τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set for XGBoost, then applied uniformly. Stacking methods use a lower threshold (≈0.22) because the logistic meta-learner outputs probabilities on a compressed scale. Wide&amp;Deep (Focal) exhibits near-zero recall at τ = 0.44 due to probability compression from focal loss, requiring threshold recalibration before deployment.
 </figcaption>
 <div aria-describedby="tbl-optimal-thresholds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -508,12 +508,12 @@ Table&nbsp;2: Model performance at the fixed operational threshold τ = 0.4400, 
 </figure>
 </div>
 </section>
-<section id="sec-appendix-h4" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-h4">Calibration Metrics</h3>
+<section id="sec-appendix-h4" class="level3" data-number="G.1.4">
+<h3 data-number="G.1.4" class="anchored" data-anchor-id="sec-appendix-h4"><span class="header-section-number">G.1.4</span> Calibration Metrics</h3>
 <div id="tbl-calibration-table" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-calibration-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Brier scores across model families on the test set
+Table&nbsp;G.3: Brier scores across model families on the test set
 </figcaption>
 <div aria-describedby="tbl-calibration-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -555,14 +555,14 @@ Table&nbsp;3: Brier scores across model families on the test set
 </div>
 <p><strong>Note:</strong> Focal loss models achieve lower Brier scores but higher ECE/MCE due to probability compression effect. Isotonic calibration recommended for deployment.</p>
 </section>
-<section id="sec-appendix-h5" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-h5">Complete Model Leaderboard</h3>
+<section id="sec-appendix-h5" class="level3" data-number="G.1.5">
+<h3 data-number="G.1.5" class="anchored" data-anchor-id="sec-appendix-h5"><span class="header-section-number">G.1.5</span> Complete Model Leaderboard</h3>
 <p>The following table provides the complete model leaderboard with all evaluation metrics, serving as the definitive reference for model comparison.</p>
 <div class="cell" data-message="false" data-execution_count="1">
 <div id="tbl-complete-leaderboard" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="1" data-message="false">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-complete-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Complete model leaderboard with validation and test metrics across all model families.
+Table&nbsp;G.4: Complete model leaderboard with validation and test metrics across all model families.
 </figcaption>
 <div aria-describedby="tbl-complete-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display cell-output-markdown">
@@ -1206,12 +1206,12 @@ Table&nbsp;4: Complete model leaderboard with validation and test metrics across
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../report/99f-appendix-ensemble-shap.html" class="pagination-link" aria-label="Ensemble Methods and SHAP Analysis">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Ensemble Methods and SHAP Analysis</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../report/99h-appendix-error-analysis.html" class="pagination-link" aria-label="Error Case Studies">
-        <span class="nav-page-text">Error Case Studies</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Error Case Studies</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

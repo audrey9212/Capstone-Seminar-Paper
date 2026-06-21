@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Unsupervised and Semi-Supervised {.unnumbered}
+# Unsupervised and Semi-Supervised
 
 ## Unsupervised and Semi-Supervised Diagnostics {#sec-appendix-e}
 

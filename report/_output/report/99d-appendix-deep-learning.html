@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Deep Learning – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<title>Appendix D — Deep Learning – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,7 +88,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99d-appendix-deep-learning.html">Deep Learning</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99d-appendix-deep-learning.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -185,49 +185,49 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99a-appendix-reproducibility.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reproducibility and Environment</span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Reproducibility and Environment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99b-appendix-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Documentation</span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data Documentation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99c-appendix-baseline-tree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Baseline and Tree Models</span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Baseline and Tree Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99d-appendix-deep-learning.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Deep Learning</span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99e-appendix-unsupervised.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Unsupervised and Semi-Supervised</span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99f-appendix-ensemble-shap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Ensemble Methods and SHAP Analysis</span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99g-appendix-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Final Model Evaluation</span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99h-appendix-error-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Error Case Studies</span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Error Case Studies</span></span></a>
   </div>
 </li>
       </ul>
@@ -242,11 +242,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-appendix-d" id="toc-sec-appendix-d" class="nav-link active" data-scroll-target="#sec-appendix-d">Deep Learning Training Dynamics</a>
+  <li><a href="#sec-appendix-d" id="toc-sec-appendix-d" class="nav-link active" data-scroll-target="#sec-appendix-d"><span class="header-section-number">D.1</span> Deep Learning Training Dynamics</a>
   <ul class="collapse">
-  <li><a href="#sec-appendix-d1" id="toc-sec-appendix-d1" class="nav-link" data-scroll-target="#sec-appendix-d1">Neural Network Experiment Leaderboard</a></li>
-  <li><a href="#sec-appendix-d2" id="toc-sec-appendix-d2" class="nav-link" data-scroll-target="#sec-appendix-d2">Alternative Architecture Training Curves</a></li>
-  <li><a href="#sec-appendix-d3" id="toc-sec-appendix-d3" class="nav-link" data-scroll-target="#sec-appendix-d3">Architecture Specifications</a></li>
+  <li><a href="#sec-appendix-d1" id="toc-sec-appendix-d1" class="nav-link" data-scroll-target="#sec-appendix-d1"><span class="header-section-number">D.1.1</span> Neural Network Experiment Leaderboard</a></li>
+  <li><a href="#sec-appendix-d2" id="toc-sec-appendix-d2" class="nav-link" data-scroll-target="#sec-appendix-d2"><span class="header-section-number">D.1.2</span> Alternative Architecture Training Curves</a></li>
+  <li><a href="#sec-appendix-d3" id="toc-sec-appendix-d3" class="nav-link" data-scroll-target="#sec-appendix-d3"><span class="header-section-number">D.1.3</span> Architecture Specifications</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -254,9 +254,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99d-appendix-deep-learning.html">Deep Learning</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99d-appendix-deep-learning.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Deep Learning</h1>
+<h1 class="title">Appendix D — Deep Learning</h1>
 </div>
 
 
@@ -273,15 +273,15 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="sec-appendix-d" class="level2">
-<h2 class="anchored" data-anchor-id="sec-appendix-d">Deep Learning Training Dynamics</h2>
-<section id="sec-appendix-d1" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-d1">Neural Network Experiment Leaderboard</h3>
+<section id="sec-appendix-d" class="level2" data-number="D.1">
+<h2 data-number="D.1" class="anchored" data-anchor-id="sec-appendix-d"><span class="header-section-number">D.1</span> Deep Learning Training Dynamics</h2>
+<section id="sec-appendix-d1" class="level3" data-number="D.1.1">
+<h3 data-number="D.1.1" class="anchored" data-anchor-id="sec-appendix-d1"><span class="header-section-number">D.1.1</span> Neural Network Experiment Leaderboard</h3>
 <p>All neural network experiments tracked via MLflow with systematic architecture variations.</p>
 <div id="tbl-nn-experiment-leaderboard" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-experiment-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Neural network experiment leaderboard sorted by Test ROC-AUC (descending). All experiments use early stopping (patience = 15) with the same train/validation/test split.
+Table&nbsp;D.1: Neural network experiment leaderboard sorted by Test ROC-AUC (descending). All experiments use early stopping (patience = 15) with the same train/validation/test split.
 </figcaption>
 <div aria-describedby="tbl-nn-experiment-leaderboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -366,75 +366,75 @@ Table&nbsp;1: Neural network experiment leaderboard sorted by Test ROC-AUC (desc
 </figure>
 </div>
 </section>
-<section id="sec-appendix-d2" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-d2">Alternative Architecture Training Curves</h3>
+<section id="sec-appendix-d2" class="level3" data-number="D.1.2">
+<h3 data-number="D.1.2" class="anchored" data-anchor-id="sec-appendix-d2"><span class="header-section-number">D.1.2</span> Alternative Architecture Training Curves</h3>
 <div id="fig-nn-dense-baseline" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-dense-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/05_nn_dense_baseline_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Training dynamics for the MLP dense baseline architecture."><img src="../artifacts/figures/05_nn_dense_baseline_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/05_nn_dense_baseline_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;D.1: Training dynamics for the MLP dense baseline architecture."><img src="../artifacts/figures/05_nn_dense_baseline_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-dense-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Training dynamics for the MLP dense baseline architecture.
+Figure&nbsp;D.1: Training dynamics for the MLP dense baseline architecture.
 </figcaption>
 </figure>
 </div>
 <div id="fig-nn-embedding-baseline" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-embedding-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/05_nn_embedding_baseline_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Training dynamics for the embedding-based MLP architecture."><img src="../artifacts/figures/05_nn_embedding_baseline_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/05_nn_embedding_baseline_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;D.2: Training dynamics for the embedding-based MLP architecture."><img src="../artifacts/figures/05_nn_embedding_baseline_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-embedding-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Training dynamics for the embedding-based MLP architecture.
+Figure&nbsp;D.2: Training dynamics for the embedding-based MLP architecture.
 </figcaption>
 </figure>
 </div>
 <div id="fig-nn-wide-deep" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-wide-deep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/05_nn_wide_and_deep_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Training dynamics for the Wide &amp; Deep architecture with BCE loss."><img src="../artifacts/figures/05_nn_wide_and_deep_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/05_nn_wide_and_deep_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;D.3: Training dynamics for the Wide &amp; Deep architecture with BCE loss."><img src="../artifacts/figures/05_nn_wide_and_deep_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-wide-deep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Training dynamics for the Wide &amp; Deep architecture with BCE loss.
+Figure&nbsp;D.3: Training dynamics for the Wide &amp; Deep architecture with BCE loss.
 </figcaption>
 </figure>
 </div>
 <div id="fig-nn-wide-deep-deeper" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-wide-deep-deeper-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Training dynamics for the deeper Wide &amp; Deep architecture variant."><img src="../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;D.4: Training dynamics for the deeper Wide &amp; Deep architecture variant."><img src="../artifacts/figures/05_nn_wide_and_deep_deeper_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-wide-deep-deeper-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Training dynamics for the deeper Wide &amp; Deep architecture variant.
+Figure&nbsp;D.4: Training dynamics for the deeper Wide &amp; Deep architecture variant.
 </figcaption>
 </figure>
 </div>
 <div id="fig-nn-embedding-focal" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-embedding-focal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/05_nn_embedding_focal_loss_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Training dynamics for embedding MLP with focal loss."><img src="../artifacts/figures/05_nn_embedding_focal_loss_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/05_nn_embedding_focal_loss_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;D.5: Training dynamics for embedding MLP with focal loss."><img src="../artifacts/figures/05_nn_embedding_focal_loss_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-embedding-focal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Training dynamics for embedding MLP with focal loss.
+Figure&nbsp;D.5: Training dynamics for embedding MLP with focal loss.
 </figcaption>
 </figure>
 </div>
 <div id="fig-nn-embedding-weight" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nn-embedding-weight-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/05_nn_embedding_strong_weight_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;6: Training dynamics for embedding MLP with strong class weight."><img src="../artifacts/figures/05_nn_embedding_strong_weight_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/05_nn_embedding_strong_weight_curves.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Figure&nbsp;D.6: Training dynamics for embedding MLP with strong class weight."><img src="../artifacts/figures/05_nn_embedding_strong_weight_curves.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nn-embedding-weight-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Training dynamics for embedding MLP with strong class weight.
+Figure&nbsp;D.6: Training dynamics for embedding MLP with strong class weight.
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="sec-appendix-d3" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-d3">Architecture Specifications</h3>
+<section id="sec-appendix-d3" class="level3" data-number="D.1.3">
+<h3 data-number="D.1.3" class="anchored" data-anchor-id="sec-appendix-d3"><span class="header-section-number">D.1.3</span> Architecture Specifications</h3>
 <div id="tbl-nn-architecture-specs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-nn-architecture-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Neural network architecture specifications. Parameter counts are from actual training artifacts (n_params field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs.
+Table&nbsp;D.2: Neural network architecture specifications. Parameter counts are from actual training artifacts (n_params field in config files). Embedding MLP and Embedding Strong Weight share the same architecture; only the class-weight multiplier differs.
 </figcaption>
 <div aria-describedby="tbl-nn-architecture-specs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -903,12 +903,12 @@ Table&nbsp;2: Neural network architecture specifications. Parameter counts are f
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../report/99c-appendix-baseline-tree.html" class="pagination-link" aria-label="Baseline and Tree Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Baseline and Tree Models</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Baseline and Tree Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../report/99e-appendix-unsupervised.html" class="pagination-link" aria-label="Unsupervised and Semi-Supervised">
-        <span class="nav-page-text">Unsupervised and Semi-Supervised</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

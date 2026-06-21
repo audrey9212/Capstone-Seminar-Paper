@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Deep Learning {.unnumbered}
+# Deep Learning
 
 ## Deep Learning Training Dynamics {#sec-appendix-d}
 

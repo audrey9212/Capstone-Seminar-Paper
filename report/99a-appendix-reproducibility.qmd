@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Reproducibility and Environment {.unnumbered}
+# Reproducibility and Environment
 
 ## Reproducibility Statement {#sec-repro}
 

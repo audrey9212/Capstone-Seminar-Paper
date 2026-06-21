@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Baseline and Tree Models {.unnumbered}
+# Baseline and Tree Models
 
 ## Baseline Model Details (Logistic Regression) {#sec-appendix-b}
 

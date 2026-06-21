@@ -4,7 +4,7 @@ format:
     fig-pos: "H"
 ---
 
-# Ensemble Methods and SHAP Analysis {.unnumbered}
+# Ensemble Methods and SHAP Analysis
 
 ## Ensemble Diversity and Weights {#sec-appendix-f}
 

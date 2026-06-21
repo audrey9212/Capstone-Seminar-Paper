@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Ensemble Methods and SHAP Analysis – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<title>Appendix F — Ensemble Methods and SHAP Analysis – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -88,7 +88,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99f-appendix-ensemble-shap.html">Ensemble Methods and SHAP Analysis</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99f-appendix-ensemble-shap.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -185,49 +185,49 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99a-appendix-reproducibility.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reproducibility and Environment</span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Reproducibility and Environment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99b-appendix-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Documentation</span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data Documentation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99c-appendix-baseline-tree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Baseline and Tree Models</span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Baseline and Tree Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99d-appendix-deep-learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deep Learning</span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99e-appendix-unsupervised.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Unsupervised and Semi-Supervised</span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99f-appendix-ensemble-shap.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Ensemble Methods and SHAP Analysis</span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99g-appendix-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Final Model Evaluation</span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99h-appendix-error-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Error Case Studies</span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Error Case Studies</span></span></a>
   </div>
 </li>
       </ul>
@@ -242,17 +242,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-appendix-f" id="toc-sec-appendix-f" class="nav-link active" data-scroll-target="#sec-appendix-f">Ensemble Diversity and Weights</a>
+  <li><a href="#sec-appendix-f" id="toc-sec-appendix-f" class="nav-link active" data-scroll-target="#sec-appendix-f"><span class="header-section-number">F.1</span> Ensemble Diversity and Weights</a>
   <ul class="collapse">
-  <li><a href="#sec-appendix-f1" id="toc-sec-appendix-f1" class="nav-link" data-scroll-target="#sec-appendix-f1">Base Model Prediction Correlation Matrix</a></li>
-  <li><a href="#sec-appendix-f2" id="toc-sec-appendix-f2" class="nav-link" data-scroll-target="#sec-appendix-f2">Ensemble Blending Weights</a></li>
-  <li><a href="#sec-appendix-f3" id="toc-sec-appendix-f3" class="nav-link" data-scroll-target="#sec-appendix-f3">Stacking Meta-Learner Coefficients</a></li>
-  <li><a href="#sec-appendix-f4" id="toc-sec-appendix-f4" class="nav-link" data-scroll-target="#sec-appendix-f4">Ensemble Performance Comparison</a></li>
+  <li><a href="#sec-appendix-f1" id="toc-sec-appendix-f1" class="nav-link" data-scroll-target="#sec-appendix-f1"><span class="header-section-number">F.1.1</span> Base Model Prediction Correlation Matrix</a></li>
+  <li><a href="#sec-appendix-f2" id="toc-sec-appendix-f2" class="nav-link" data-scroll-target="#sec-appendix-f2"><span class="header-section-number">F.1.2</span> Ensemble Blending Weights</a></li>
+  <li><a href="#sec-appendix-f3" id="toc-sec-appendix-f3" class="nav-link" data-scroll-target="#sec-appendix-f3"><span class="header-section-number">F.1.3</span> Stacking Meta-Learner Coefficients</a></li>
+  <li><a href="#sec-appendix-f4" id="toc-sec-appendix-f4" class="nav-link" data-scroll-target="#sec-appendix-f4"><span class="header-section-number">F.1.4</span> Ensemble Performance Comparison</a></li>
   </ul></li>
-  <li><a href="#sec-appendix-g" id="toc-sec-appendix-g" class="nav-link" data-scroll-target="#sec-appendix-g">Supplementary SHAP Analysis</a>
+  <li><a href="#sec-appendix-g" id="toc-sec-appendix-g" class="nav-link" data-scroll-target="#sec-appendix-g"><span class="header-section-number">F.2</span> Supplementary SHAP Analysis</a>
   <ul class="collapse">
-  <li><a href="#sec-appendix-g1" id="toc-sec-appendix-g1" class="nav-link" data-scroll-target="#sec-appendix-g1">SHAP Feature Importance Bar Plot</a></li>
-  <li><a href="#sec-appendix-g3" id="toc-sec-appendix-g3" class="nav-link" data-scroll-target="#sec-appendix-g3">Semi-Supervised Learning SHAP Analysis</a></li>
+  <li><a href="#sec-appendix-g1" id="toc-sec-appendix-g1" class="nav-link" data-scroll-target="#sec-appendix-g1"><span class="header-section-number">F.2.1</span> SHAP Feature Importance Bar Plot</a></li>
+  <li><a href="#sec-appendix-g3" id="toc-sec-appendix-g3" class="nav-link" data-scroll-target="#sec-appendix-g3"><span class="header-section-number">F.2.2</span> Semi-Supervised Learning SHAP Analysis</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -260,9 +260,9 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99f-appendix-ensemble-shap.html">Ensemble Methods and SHAP Analysis</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99f-appendix-ensemble-shap.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Ensemble Methods and SHAP Analysis</h1>
+<h1 class="title">Appendix F — Ensemble Methods and SHAP Analysis</h1>
 </div>
 
 
@@ -279,14 +279,14 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="sec-appendix-f" class="level2">
-<h2 class="anchored" data-anchor-id="sec-appendix-f">Ensemble Diversity and Weights</h2>
-<section id="sec-appendix-f1" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-f1">Base Model Prediction Correlation Matrix</h3>
+<section id="sec-appendix-f" class="level2" data-number="F.1">
+<h2 data-number="F.1" class="anchored" data-anchor-id="sec-appendix-f"><span class="header-section-number">F.1</span> Ensemble Diversity and Weights</h2>
+<section id="sec-appendix-f1" class="level3" data-number="F.1.1">
+<h3 data-number="F.1.1" class="anchored" data-anchor-id="sec-appendix-f1"><span class="header-section-number">F.1.1</span> Base Model Prediction Correlation Matrix</h3>
 <div id="tbl-correlation-matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-correlation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Pearson correlation of predicted probabilities on the validation set across all five base models
+Table&nbsp;F.1: Pearson correlation of predicted probabilities on the validation set across all five base models
 </figcaption>
 <div aria-describedby="tbl-correlation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -348,12 +348,12 @@ Table&nbsp;1: Pearson correlation of predicted probabilities on the validation s
 </div>
 <p><strong>Insight:</strong> Tree-based models are highly correlated with each other (0.8691–0.9313). Logistic Regression is least correlated with all others (0.4685–0.5840), providing the most complementary signal. Wide &amp; Deep correlates moderately with the tree models (0.8038–0.8341) and more strongly with Logistic (0.5840) than the tree models do, indicating it occupies a distinct region of model space.</p>
 </section>
-<section id="sec-appendix-f2" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-f2">Ensemble Blending Weights</h3>
+<section id="sec-appendix-f2" class="level3" data-number="F.1.2">
+<h3 data-number="F.1.2" class="anchored" data-anchor-id="sec-appendix-f2"><span class="header-section-number">F.1.2</span> Ensemble Blending Weights</h3>
 <div id="tbl-ensemble-weights" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Blending weights under different weighting schemes across all five base models. AUC-weighted assigns weight proportional to validation AUC minus 0.5; NNLS-optimized solves a non-negative least squares problem on validation predictions.
+Table&nbsp;F.2: Blending weights under different weighting schemes across all five base models. AUC-weighted assigns weight proportional to validation AUC minus 0.5; NNLS-optimized solves a non-negative least squares problem on validation predictions.
 </figcaption>
 <div aria-describedby="tbl-ensemble-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -402,15 +402,15 @@ Table&nbsp;2: Blending weights under different weighting schemes across all five
 </figure>
 </div>
 </section>
-<section id="sec-appendix-f3" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-f3">Stacking Meta-Learner Coefficients</h3>
+<section id="sec-appendix-f3" class="level3" data-number="F.1.3">
+<h3 data-number="F.1.3" class="anchored" data-anchor-id="sec-appendix-f3"><span class="header-section-number">F.1.3</span> Stacking Meta-Learner Coefficients</h3>
 <p>Out-of-fold (OOF) predictions were used to train a logistic regression meta-learner:</p>
 <p>Two OOF stacking variants were trained, each using a logistic regression meta-learner (L2 regularization, max_iter=2000) fitted on out-of-fold predictions to prevent leakage. Real coefficients are serialized in <code>artifacts/meta/07_stacking_coefs.json</code>.</p>
 <p><strong>Stacking_OOF (4 base models):</strong></p>
 <div id="tbl-stacking-oof4-coefs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stacking-oof4-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Stacking_OOF meta-learner logistic regression coefficients.
+Table&nbsp;F.3: Stacking_OOF meta-learner logistic regression coefficients.
 </figcaption>
 <div aria-describedby="tbl-stacking-oof4-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -450,7 +450,7 @@ Table&nbsp;3: Stacking_OOF meta-learner logistic regression coefficients.
 <div id="tbl-stacking-oof5-coefs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stacking-oof5-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;4: Stacking_OOF_5 meta-learner logistic regression coefficients.
+Table&nbsp;F.4: Stacking_OOF_5 meta-learner logistic regression coefficients.
 </figcaption>
 <div aria-describedby="tbl-stacking-oof5-coefs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -492,12 +492,12 @@ Table&nbsp;4: Stacking_OOF_5 meta-learner logistic regression coefficients.
 </div>
 <p>XGBoost dominates the 4-model variant (coefficient 1.967), consistent with its highest individual validation ROC-AUC. In the 5-model variant, Wide &amp; Deep receives the largest coefficient (3.473) because its OOF predictions are on a compressed probability scale from focal loss, so the meta-learner up-weights it substantially to recover its discriminative signal. Logistic Regression receives a small negative coefficient (−0.181) in the 5-model variant, indicating that the other four base models collectively subsume its information content once WideDeep is included.</p>
 </section>
-<section id="sec-appendix-f4" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-f4">Ensemble Performance Comparison</h3>
+<section id="sec-appendix-f4" class="level3" data-number="F.1.4">
+<h3 data-number="F.1.4" class="anchored" data-anchor-id="sec-appendix-f4"><span class="header-section-number">F.1.4</span> Ensemble Performance Comparison</h3>
 <div id="tbl-ensemble-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Ensemble method comparison. The five-model OOF stacking adds Wide &amp; Deep as a fifth base learner trained via proper K-fold OOF to prevent leakage.
+Table&nbsp;F.5: Ensemble method comparison. The five-model OOF stacking adds Wide &amp; Deep as a fifth base learner trained via proper K-fold OOF to prevent leakage.
 </figcaption>
 <div aria-describedby="tbl-ensemble-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -561,30 +561,30 @@ Table&nbsp;5: Ensemble method comparison. The five-model OOF stacking adds Wide 
 <hr>
 </section>
 </section>
-<section id="sec-appendix-g" class="level2">
-<h2 class="anchored" data-anchor-id="sec-appendix-g">Supplementary SHAP Analysis</h2>
-<section id="sec-appendix-g1" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-g1">SHAP Feature Importance Bar Plot</h3>
+<section id="sec-appendix-g" class="level2" data-number="F.2">
+<h2 data-number="F.2" class="anchored" data-anchor-id="sec-appendix-g"><span class="header-section-number">F.2</span> Supplementary SHAP Analysis</h2>
+<section id="sec-appendix-g1" class="level3" data-number="F.2.1">
+<h3 data-number="F.2.1" class="anchored" data-anchor-id="sec-appendix-g1"><span class="header-section-number">F.2.1</span> SHAP Feature Importance Bar Plot</h3>
 <div id="fig-shap-importance-appendix" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-shap-importance-appendix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/08_shap_importance.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Mean absolute SHAP values showing global feature importance ranking."><img src="../artifacts/figures/08_shap_importance.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/08_shap_importance.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;F.1: Mean absolute SHAP values showing global feature importance ranking."><img src="../artifacts/figures/08_shap_importance.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap-importance-appendix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Mean absolute SHAP values showing global feature importance ranking.
+Figure&nbsp;F.1: Mean absolute SHAP values showing global feature importance ranking.
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="sec-appendix-g3" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-g3">Semi-Supervised Learning SHAP Analysis</h3>
+<section id="sec-appendix-g3" class="level3" data-number="F.2.2">
+<h3 data-number="F.2.2" class="anchored" data-anchor-id="sec-appendix-g3"><span class="header-section-number">F.2.2</span> Semi-Supervised Learning SHAP Analysis</h3>
 <div id="fig-ssl-summary" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ssl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/08_ssl_summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: Summary of semi-supervised learning experiments with pseudo-labeling."><img src="../artifacts/figures/08_ssl_summary.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/08_ssl_summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;F.2: Summary of semi-supervised learning experiments with pseudo-labeling."><img src="../artifacts/figures/08_ssl_summary.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ssl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Summary of semi-supervised learning experiments with pseudo-labeling.
+Figure&nbsp;F.2: Summary of semi-supervised learning experiments with pseudo-labeling.
 </figcaption>
 </figure>
 </div>
@@ -997,12 +997,12 @@ Figure&nbsp;2: Summary of semi-supervised learning experiments with pseudo-label
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../report/99e-appendix-unsupervised.html" class="pagination-link" aria-label="Unsupervised and Semi-Supervised">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Unsupervised and Semi-Supervised</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../report/99g-appendix-evaluation.html" class="pagination-link" aria-label="Final Model Evaluation">
-        <span class="nav-page-text">Final Model Evaluation</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

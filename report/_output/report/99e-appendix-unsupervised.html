@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Unsupervised and Semi-Supervised – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
+<title>Appendix E — Unsupervised and Semi-Supervised – Predicting Telecom Customer Churn with Explainable Machine Learning</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99e-appendix-unsupervised.html">Unsupervised and Semi-Supervised</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99e-appendix-unsupervised.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -220,49 +220,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99a-appendix-reproducibility.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reproducibility and Environment</span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Reproducibility and Environment</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99b-appendix-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Data Documentation</span></a>
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Data Documentation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99c-appendix-baseline-tree.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Baseline and Tree Models</span></a>
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">Baseline and Tree Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99d-appendix-deep-learning.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Deep Learning</span></a>
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99e-appendix-unsupervised.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Unsupervised and Semi-Supervised</span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99f-appendix-ensemble-shap.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Ensemble Methods and SHAP Analysis</span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99g-appendix-evaluation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Final Model Evaluation</span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">Final Model Evaluation</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../report/99h-appendix-error-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Error Case Studies</span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">Error Case Studies</span></span></a>
   </div>
 </li>
       </ul>
@@ -277,13 +277,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-appendix-e" id="toc-sec-appendix-e" class="nav-link active" data-scroll-target="#sec-appendix-e">Unsupervised and Semi-Supervised Diagnostics</a>
+  <li><a href="#sec-appendix-e" id="toc-sec-appendix-e" class="nav-link active" data-scroll-target="#sec-appendix-e"><span class="header-section-number">E.1</span> Unsupervised and Semi-Supervised Diagnostics</a>
   <ul class="collapse">
-  <li><a href="#sec-appendix-e1" id="toc-sec-appendix-e1" class="nav-link" data-scroll-target="#sec-appendix-e1">Autoencoder Reconstruction Error Distribution</a></li>
-  <li><a href="#sec-appendix-e2" id="toc-sec-appendix-e2" class="nav-link" data-scroll-target="#sec-appendix-e2">Latent Space Visualization</a></li>
-  <li><a href="#sec-appendix-e3" id="toc-sec-appendix-e3" class="nav-link" data-scroll-target="#sec-appendix-e3">Autoencoder Ablation Study</a></li>
-  <li><a href="#sec-appendix-e4" id="toc-sec-appendix-e4" class="nav-link" data-scroll-target="#sec-appendix-e4">Pseudo-Labeling Performance Summary</a></li>
-  <li><a href="#sec-appendix-e5" id="toc-sec-appendix-e5" class="nav-link" data-scroll-target="#sec-appendix-e5">Denoising Autoencoder Configuration</a></li>
+  <li><a href="#sec-appendix-e1" id="toc-sec-appendix-e1" class="nav-link" data-scroll-target="#sec-appendix-e1"><span class="header-section-number">E.1.1</span> Autoencoder Reconstruction Error Distribution</a></li>
+  <li><a href="#sec-appendix-e2" id="toc-sec-appendix-e2" class="nav-link" data-scroll-target="#sec-appendix-e2"><span class="header-section-number">E.1.2</span> Latent Space Visualization</a></li>
+  <li><a href="#sec-appendix-e3" id="toc-sec-appendix-e3" class="nav-link" data-scroll-target="#sec-appendix-e3"><span class="header-section-number">E.1.3</span> Autoencoder Ablation Study</a></li>
+  <li><a href="#sec-appendix-e4" id="toc-sec-appendix-e4" class="nav-link" data-scroll-target="#sec-appendix-e4"><span class="header-section-number">E.1.4</span> Pseudo-Labeling Performance Summary</a></li>
+  <li><a href="#sec-appendix-e5" id="toc-sec-appendix-e5" class="nav-link" data-scroll-target="#sec-appendix-e5"><span class="header-section-number">E.1.5</span> Denoising Autoencoder Configuration</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -291,9 +291,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99e-appendix-unsupervised.html">Unsupervised and Semi-Supervised</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../report/99a-appendix-reproducibility.html">Appendices</a></li><li class="breadcrumb-item"><a href="../report/99e-appendix-unsupervised.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">Unsupervised and Semi-Supervised</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Unsupervised and Semi-Supervised</h1>
+<h1 class="title">Appendix E — Unsupervised and Semi-Supervised</h1>
 </div>
 
 
@@ -310,53 +310,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="sec-appendix-e" class="level2">
-<h2 class="anchored" data-anchor-id="sec-appendix-e">Unsupervised and Semi-Supervised Diagnostics</h2>
-<section id="sec-appendix-e1" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-e1">Autoencoder Reconstruction Error Distribution</h3>
+<section id="sec-appendix-e" class="level2" data-number="E.1">
+<h2 data-number="E.1" class="anchored" data-anchor-id="sec-appendix-e"><span class="header-section-number">E.1</span> Unsupervised and Semi-Supervised Diagnostics</h2>
+<section id="sec-appendix-e1" class="level3" data-number="E.1.1">
+<h3 data-number="E.1.1" class="anchored" data-anchor-id="sec-appendix-e1"><span class="header-section-number">E.1.1</span> Autoencoder Reconstruction Error Distribution</h3>
 <div id="fig-recon-error" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-recon-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/06_recon_error_by_label.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Distribution of autoencoder reconstruction errors for churners vs.&nbsp;non-churners, showing modest separation."><img src="../artifacts/figures/06_recon_error_by_label.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/06_recon_error_by_label.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;E.1: Distribution of autoencoder reconstruction errors for churners vs.&nbsp;non-churners, showing modest separation."><img src="../artifacts/figures/06_recon_error_by_label.png" class="img-fluid figure-img" style="width:80.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recon-error-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Distribution of autoencoder reconstruction errors for churners vs.&nbsp;non-churners, showing modest separation.
+Figure&nbsp;E.1: Distribution of autoencoder reconstruction errors for churners vs.&nbsp;non-churners, showing modest separation.
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="sec-appendix-e2" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-e2">Latent Space Visualization</h3>
+<section id="sec-appendix-e2" class="level3" data-number="E.1.2">
+<h3 data-number="E.1.2" class="anchored" data-anchor-id="sec-appendix-e2"><span class="header-section-number">E.1.2</span> Latent Space Visualization</h3>
 <div id="fig-latent-tsne" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-latent-tsne-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/06_latent_tsne.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;2: t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label."><img src="../artifacts/figures/06_latent_tsne.png" class="img-fluid figure-img" style="width:62.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/06_latent_tsne.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figure&nbsp;E.2: t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label."><img src="../artifacts/figures/06_latent_tsne.png" class="img-fluid figure-img" style="width:62.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-latent-tsne-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label.
+Figure&nbsp;E.2: t-SNE projection of 32-dimensional autoencoder latent representations colored by churn label.
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="sec-appendix-e3" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-e3">Autoencoder Ablation Study</h3>
+<section id="sec-appendix-e3" class="level3" data-number="E.1.3">
+<h3 data-number="E.1.3" class="anchored" data-anchor-id="sec-appendix-e3"><span class="header-section-number">E.1.3</span> Autoencoder Ablation Study</h3>
 <div id="fig-ablation" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="../artifacts/figures/06_ablation_comparison.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;3: Comparison of autoencoder variants and their impact on downstream model performance."><img src="../artifacts/figures/06_ablation_comparison.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
+<a href="../artifacts/figures/06_ablation_comparison.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figure&nbsp;E.3: Comparison of autoencoder variants and their impact on downstream model performance."><img src="../artifacts/figures/06_ablation_comparison.png" class="img-fluid figure-img" style="width:100.0%" data-fig-pos="H"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ablation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Comparison of autoencoder variants and their impact on downstream model performance.
+Figure&nbsp;E.3: Comparison of autoencoder variants and their impact on downstream model performance.
 </figcaption>
 </figure>
 </div>
 </section>
-<section id="sec-appendix-e4" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-e4">Pseudo-Labeling Performance Summary</h3>
+<section id="sec-appendix-e4" class="level3" data-number="E.1.4">
+<h3 data-number="E.1.4" class="anchored" data-anchor-id="sec-appendix-e4"><span class="header-section-number">E.1.4</span> Pseudo-Labeling Performance Summary</h3>
 <div id="tbl-pseudo-label-summary" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pseudo-label-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Pseudo-labeling experiment outcome. Conservative confidence thresholds produced near-zero coverage, making semi-supervised retraining infeasible at this stage.
+Table&nbsp;E.1: Pseudo-labeling experiment outcome. Conservative confidence thresholds produced near-zero coverage, making semi-supervised retraining infeasible at this stage.
 </figcaption>
 <div aria-describedby="tbl-pseudo-label-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -396,10 +396,10 @@ Table&nbsp;1: Pseudo-labeling experiment outcome. Conservative confidence thresh
 </div>
 </figure>
 </div>
-<p><strong>Interpretation:</strong> The XGBoost teacher model assigned very few unlabeled samples to either the high-confidence churn or non-churn regions. The overwhelming majority of predictions clustered in the uncertain range (mean probability 0.287, std 0.110), consistent with the inherent ambiguity of churn prediction from static snapshot features. This highlights that confidence calibration and threshold relaxation are prerequisites for viable pseudo-labeling (see <a href="07-conclusion.html#sec-future-ssl" class="quarto-xref"><span>Incorporating Semi-Supervised Learning</span></a>).</p>
+<p><strong>Interpretation:</strong> The XGBoost teacher model assigned very few unlabeled samples to either the high-confidence churn or non-churn regions. The overwhelming majority of predictions clustered in the uncertain range (mean probability 0.287, std 0.110), consistent with the inherent ambiguity of churn prediction from static snapshot features. This highlights that confidence calibration and threshold relaxation are prerequisites for viable pseudo-labeling (see <a href="07-conclusion.html#sec-future-ssl" class="quarto-xref"><span>Section 8.2.1</span></a>).</p>
 </section>
-<section id="sec-appendix-e5" class="level3">
-<h3 class="anchored" data-anchor-id="sec-appendix-e5">Denoising Autoencoder Configuration</h3>
+<section id="sec-appendix-e5" class="level3" data-number="E.1.5">
+<h3 data-number="E.1.5" class="anchored" data-anchor-id="sec-appendix-e5"><span class="header-section-number">E.1.5</span> Denoising Autoencoder Configuration</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>DAE_CONFIG <span class="op">=</span> {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'encoder_dims'</span>: [<span class="dv">128</span>, <span class="dv">64</span>, <span class="dv">32</span>],</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'decoder_dims'</span>: [<span class="dv">32</span>, <span class="dv">64</span>, <span class="dv">128</span>],</span>
@@ -821,12 +821,12 @@ Table&nbsp;1: Pseudo-labeling experiment outcome. Conservative confidence thresh
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../report/99d-appendix-deep-learning.html" class="pagination-link" aria-label="Deep Learning">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Deep Learning</span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">Deep Learning</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../report/99f-appendix-ensemble-shap.html" class="pagination-link" aria-label="Ensemble Methods and SHAP Analysis">
-        <span class="nav-page-text">Ensemble Methods and SHAP Analysis</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">Ensemble Methods and SHAP Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
