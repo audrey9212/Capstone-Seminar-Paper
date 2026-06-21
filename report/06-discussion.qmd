@@ -187,15 +187,15 @@ Under these assumptions, two strategies were compared: using the model to target
 
 ### Model-Driven Targeting
 
-Imagine a telecom subscriber base where about 10% are truly going to churn in the near term (this is a conservative illustrative scenario; the actual Cell2Cell dataset has a 28.8% churn rate, which would amplify the following figures proportionally). If the churn model is used to pick a top-decile segment of 1,000 customers most likely to churn, that segment will be enriched with real churners; for example, the model's precision for the top decile is 30%, meaning about 300 of those 1,000 are actual impending churners (a threefold improvement over the base rate).
+Applying the champion XGBoost model to the Cell2Cell subscriber base (28.8% churn rate), if the top-decile segment of 1,000 highest-risk customers is targeted, the model's precision at the top decile is approximately 53.5% — nearly double the population base rate. This means roughly 535 of the 1,000 flagged customers are actual churners.
 
-The retention campaign would contact all 1,000, costing \$10,000. Out of the approximately 300 true churners in this group, at a 20% save rate, approximately 60 customers who would have left would be successfully retained. Those 60 saved customers represent an avoided revenue loss of approximately \$12,000 (60 × \$200 LTV each). Subtracting the \$10,000 cost, the **net gain is about \$2,000** for this intervention.
+The retention campaign would contact all 1,000, costing \$10,000. Out of the approximately 535 true churners in this group, at a 20% save rate, approximately 107 customers who would have left would be successfully retained. Those 107 saved customers represent an avoided revenue loss of approximately \$21,400 (107 × \$200 LTV each). Subtracting the \$10,000 cost, the **net gain is approximately \$11,400** for this intervention.
 
 ### Random Targeting (Baseline)
 
-Compare this to random targeting of 1,000 customers. With no model, the expected churners in any random group of 1,000 (at 10% base churn in this illustrative scenario) would be about 100. Using the same 20% success rate, only 20 customers would be saved (recovering \$4,000 of value) while still spending \$10,000, resulting in a **net loss of \$6,000**.
+Compare this to random targeting of 1,000 customers. With no model, the expected churners in any random group of 1,000 at the 28.8% base rate would be about 288. Using the same 20% success rate, only 58 customers would be saved (recovering \$11,600 of value) while still spending \$10,000, resulting in a **net gain of only \$1,600**.
 
-This stark difference in outcomes (a positive ROI with model-driven targeting vs. a negative ROI with blind targeting) demonstrates the business value of the churn model. Even if the exact numbers are adjusted for actual churn rates and costs, the direction is clear: **focusing retention efforts on the highest-risk customers yields a significantly higher return on investment (ROI)**.
+This stark difference in outcomes — **\$11,400 net gain with model-driven targeting versus \$1,600 with random targeting** — represents approximately a sevenfold improvement in retention ROI. The direction is unambiguous: **focusing retention efforts on the highest-risk customers yields dramatically higher return on investment (ROI)**, even when cost parameters are conservative.
 
 
 ### Tiered Retention Playbook

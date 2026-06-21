@@ -162,12 +162,12 @@ A systematic leakage scan was conducted to identify features that could leak fut
 
 | Feature | Leakage Risk Score | Status | Rationale |
 |---------|-------------------|--------|-----------|
-| MadeCallToRetentionTeam | 0.9500 | **EXCLUDED** | Post-decision: Customer called retention team after deciding to churn |
-| RetentionCalls | 0.9200 | **EXCLUDED** | Post-decision: Retention outreach triggered by churn indicators |
-| RetentionOffersAccepted | 0.9000 | **EXCLUDED** | Post-decision: Offers made only to at-risk customers |
-| CustomerCareCalls | 0.3500 | Monitored | May include pre-churn complaints but also routine inquiries |
-| PercChangeMinutes | 0.2500 | Retained | Behavioral trend, not post-decision action |
-| PercChangeRevenues | 0.2500 | Retained | Behavioral trend, not post-decision action |
+| MadeCallToRetentionTeam | 0.95 | **EXCLUDED** | Post-decision: Customer called retention team after deciding to churn |
+| RetentionCalls | 0.92 | **EXCLUDED** | Post-decision: Retention outreach triggered by churn indicators |
+| RetentionOffersAccepted | 0.90 | **EXCLUDED** | Post-decision: Offers made only to at-risk customers |
+| CustomerCareCalls | 0.35 | Monitored | May include pre-churn complaints but also routine inquiries |
+| PercChangeMinutes | 0.25 | Retained | Behavioral trend, not post-decision action |
+| PercChangeRevenues | 0.25 | Retained | Behavioral trend, not post-decision action |
 
 : Leakage risk assessment for retention-related features {#tbl-leakage-risk}
 
@@ -181,15 +181,15 @@ Exhaustive grid search was performed over regularization strength (C) and penalt
 
 | C | Penalty | CV ROC-AUC (mean) | CV ROC-AUC (std) | Rank |
 |---|---------|-------------------|------------------|------|
-| 0.0010 | L2 | 0.5821 | 0.0089 | 8 |
-| 0.0100 | L2 | 0.5867 | 0.0082 | 4 |
-| **0.1000** | **L2** | **0.5883** | **0.0078** | **1** |
-| 1.0 | L2 | 0.5878 | 0.0081 | 2 |
-| 10.0 | L2 | 0.5872 | 0.0083 | 3 |
-| 0.0010 | L1 | 0.5798 | 0.0095 | 9 |
-| 0.0100 | L1 | 0.5856 | 0.0086 | 6 |
-| 0.1000 | L1 | 0.5864 | 0.0084 | 5 |
-| 1.0 | L1 | 0.5851 | 0.0088 | 7 |
+| 0.00 | L2 | 0.58 | 0.01 | 8 |
+| 0.01 | L2 | 0.59 | 0.01 | 4 |
+| **0.10** | **L2** | **0.59** | **0.01** | **1** |
+| 1.0 | L2 | 0.59 | 0.01 | 2 |
+| 10.0 | L2 | 0.59 | 0.01 | 3 |
+| 0.00 | L1 | 0.58 | 0.01 | 9 |
+| 0.01 | L1 | 0.59 | 0.01 | 6 |
+| 0.10 | L1 | 0.59 | 0.01 | 5 |
+| 1.0 | L1 | 0.59 | 0.01 | 7 |
 
 : Logistic Regression Grid Search Results (5-fold Stratified CV) {#tbl-logreg-gridsearch}
 
@@ -201,13 +201,13 @@ Classification thresholds were swept from 0.1000 to 0.5000 on the validation set
 
 | Threshold | Precision | Recall | F1 |
 |-----------|-----------|--------|-----|
-| 0.1000 | 0.2882 | 1.0000 | 0.4474 |
-| 0.2000 | 0.2925 | 0.9980 | 0.4525 |
-| 0.3000 | 0.3125 | 0.9293 | 0.4677 |
-| 0.3500 | 0.3286 | 0.8899 | 0.4800 |
-| 0.4000 | 0.3408 | 0.8300 | 0.4832 |
-| **0.4400** | **0.3536** | **0.7757** | **0.4857** |
-| 0.5000 | 0.3821 | 0.6587 | 0.4837 |
+| 0.10 | 0.29 | 1.00 | 0.45 |
+| 0.20 | 0.29 | 1.00 | 0.45 |
+| 0.30 | 0.31 | 0.93 | 0.47 |
+| 0.35 | 0.33 | 0.89 | 0.48 |
+| 0.40 | 0.34 | 0.83 | 0.48 |
+| **0.44** | **0.35** | **0.78** | **0.49** |
+| 0.50 | 0.38 | 0.66 | 0.48 |
 
 : Logistic Regression threshold sweep on the validation set (representative rows). {#tbl-logreg-threshold-sweep}
 
@@ -249,15 +249,15 @@ The following table documents the hyperparameter search space used for tree-base
 | | min_samples_leaf | [1, 2, 4] | 2 |
 | **XGBoost** | n_estimators | [100, 500] | 312 |
 | | max_depth | [3, 6, 9] | 6 |
-| | learning_rate | [0.01, 0.3] | 0.0847 |
-| | subsample | [0.6, 1.0] | 0.8234 |
-| | colsample_bytree | [0.6, 1.0] | 0.7891 |
+| | learning_rate | [0.01, 0.3] | 0.08 |
+| | subsample | [0.6, 1.0] | 0.82 |
+| | colsample_bytree | [0.6, 1.0] | 0.79 |
 | | min_child_weight | [1, 7] | 3 |
-| | reg_alpha | [0, 1] | 0.0123 |
-| | reg_lambda | [0, 3] | 1.2456 |
+| | reg_alpha | [0, 1] | 0.01 |
+| | reg_lambda | [0, 3] | 1.25 |
 | **LightGBM** | n_estimators | [100, 500] | 280 |
 | | max_depth | [3, 9] | 7 |
-| | learning_rate | [0.01, 0.3] | 0.0756 |
+| | learning_rate | [0.01, 0.3] | 0.08 |
 | | num_leaves | [20, 100] | 64 |
 | | min_child_samples | [10, 50] | 25 |
 
@@ -267,9 +267,9 @@ The following table documents the hyperparameter search space used for tree-base
 
 | Model | Val ROC-AUC | Test ROC-AUC | Test Precision | Test Recall | Test F1 | Threshold |
 |-------|-------------|--------------|----------------|-------------|---------|-----------|
-| Random Forest | 0.6490 | 0.6534 | 0.3428 | 0.8042 | 0.4807 | 0.4400 |
-| XGBoost | 0.6571 | 0.6637 | 0.3670 | 0.7390 | 0.4904 | 0.4400 |
-| LightGBM | 0.6502 | 0.6700 | 0.3764 | 0.7308 | 0.4969 | 0.4400 |
+| Random Forest | 0.65 | 0.65 | 0.34 | 0.80 | 0.48 | 0.44 |
+| XGBoost | 0.66 | 0.66 | 0.37 | 0.74 | 0.49 | 0.44 |
+| LightGBM | 0.65 | 0.67 | 0.38 | 0.73 | 0.50 | 0.44 |
 
 : Tree model performance at the fixed operational threshold τ = 0.4400. All three models use the same threshold for direct comparability. {#tbl-tree-threshold-sweep}
 
@@ -288,12 +288,12 @@ Bayesian hyperparameter optimization was conducted using Optuna with 100 trials 
 
 | Hyperparameter | Importance Score | Description |
 |----------------|------------------|-------------|
-| learning_rate | 0.4200 | Step size shrinkage |
-| max_depth | 0.1800 | Maximum tree depth |
-| n_estimators | 0.1400 | Number of boosting rounds |
-| min_child_weight | 0.1100 | Minimum sum of instance weight |
-| subsample | 0.0800 | Row sampling ratio |
-| colsample_bytree | 0.0700 | Column sampling ratio |
+| learning_rate | 0.42 | Step size shrinkage |
+| max_depth | 0.18 | Maximum tree depth |
+| n_estimators | 0.14 | Number of boosting rounds |
+| min_child_weight | 0.11 | Minimum sum of instance weight |
+| subsample | 0.08 | Row sampling ratio |
+| colsample_bytree | 0.07 | Column sampling ratio |
 
 : Optuna hyperparameter importance for XGBoost optimization {#tbl-optuna-importance-table}
 
@@ -335,13 +335,13 @@ All neural network experiments tracked via MLflow with systematic architecture v
 
 | Experiment | Architecture | Loss | Test ROC-AUC | Test PR-AUC | Brier Score |
 |------------|--------------|------|--------------|-------------|-------------|
-| **wide_deep_focal** | **Wide & Deep** | **Focal (γ=2)** | **0.6615** | **0.4356** | **0.1970** |
-| embedding_focal_loss | Embedding MLP | Focal (γ=2) | 0.6612 | 0.4345 | 0.1976 |
-| dense_baseline | Dense MLP | Weighted BCE | 0.6553 | 0.4219 | 0.2343 |
-| wide_and_deep | Wide & Deep | Weighted BCE | 0.6496 | 0.4208 | 0.2364 |
-| embedding_baseline | Embedding MLP | Weighted BCE | 0.6489 | 0.4192 | 0.2329 |
-| wide_and_deep_deeper | Wide & Deep (Deeper) | Weighted BCE | 0.6475 | 0.4110 | 0.2328 |
-| embedding_strong_weight | Embedding MLP | Weighted BCE (×1.5) | 0.6442 | 0.4081 | 0.2718 |
+| **wide_deep_focal** | **Wide & Deep** | **Focal (γ=2)** | **0.66** | **0.44** | **0.20** |
+| embedding_focal_loss | Embedding MLP | Focal (γ=2) | 0.66 | 0.43 | 0.20 |
+| dense_baseline | Dense MLP | Weighted BCE | 0.66 | 0.42 | 0.23 |
+| wide_and_deep | Wide & Deep | Weighted BCE | 0.65 | 0.42 | 0.24 |
+| embedding_baseline | Embedding MLP | Weighted BCE | 0.65 | 0.42 | 0.23 |
+| wide_and_deep_deeper | Wide & Deep (Deeper) | Weighted BCE | 0.65 | 0.41 | 0.23 |
+| embedding_strong_weight | Embedding MLP | Weighted BCE (×1.5) | 0.64 | 0.41 | 0.27 |
 
 : Neural network experiment leaderboard sorted by Test ROC-AUC (descending). All experiments use early stopping (patience = 15) with the same train/validation/test split. {#tbl-nn-experiment-leaderboard}
 
@@ -402,7 +402,7 @@ All neural network experiments tracked via MLflow with systematic architecture v
 | Unlabeled pool size | 20,000 |
 | Confidence thresholds applied | p < 0.05 (non-churn) or p > 0.95 (churn) |
 | Samples meeting threshold | **2** (0.01% coverage) |
-| Teacher model test AUC | 0.6451 |
+| Teacher model test AUC | 0.65 |
 | Student model improvement | None (insufficient pseudo-labels for retraining) |
 
 : Pseudo-labeling experiment outcome. Conservative confidence thresholds produced near-zero coverage, making semi-supervised retraining infeasible at this stage. {#tbl-pseudo-label-summary}
@@ -434,11 +434,11 @@ DAE_CONFIG = {
 
 | | Logistic | XGBoost | LightGBM | RF | WideDeep |
 |----------|----------|---------|----------|----|----------|
-| Logistic | 1.0000 | 0.4778 | 0.4685 | 0.4739 | 0.5840 |
-| XGBoost | 0.4778 | 1.0000 | 0.9313 | 0.8786 | 0.8341 |
-| LightGBM | 0.4685 | 0.9313 | 1.0000 | 0.8691 | 0.8241 |
-| RF | 0.4739 | 0.8786 | 0.8691 | 1.0000 | 0.8038 |
-| WideDeep | 0.5840 | 0.8341 | 0.8241 | 0.8038 | 1.0000 |
+| Logistic | 1.00 | 0.48 | 0.47 | 0.47 | 0.58 |
+| XGBoost | 0.48 | 1.00 | 0.93 | 0.88 | 0.83 |
+| LightGBM | 0.47 | 0.93 | 1.00 | 0.87 | 0.82 |
+| RF | 0.47 | 0.88 | 0.87 | 1.00 | 0.80 |
+| WideDeep | 0.58 | 0.83 | 0.82 | 0.80 | 1.00 |
 
 : Pearson correlation of predicted probabilities on the validation set across all five base models {#tbl-correlation-matrix}
 
@@ -448,11 +448,11 @@ DAE_CONFIG = {
 
 | Model | AUC-Weighted | NNLS-Optimized | Equal Weight |
 |-------|--------------|----------------|--------------|
-| Logistic | 0.0883 | 0.0000 | 0.2000 |
-| XGBoost | 0.1571 | 0.2497 | 0.2000 |
-| LightGBM | 0.1502 | 0.0462 | 0.2000 |
-| RandomForest | 0.1490 | 0.0225 | 0.2000 |
-| WideDeep | 0.1531 | 0.6816 | 0.2000 |
+| Logistic | 0.09 | 0.00 | 0.20 |
+| XGBoost | 0.16 | 0.25 | 0.20 |
+| LightGBM | 0.15 | 0.05 | 0.20 |
+| RandomForest | 0.15 | 0.02 | 0.20 |
+| WideDeep | 0.15 | 0.68 | 0.20 |
 
 : Blending weights under different weighting schemes across all five base models. AUC-weighted assigns weight proportional to validation AUC minus 0.5; NNLS-optimized solves a non-negative least squares problem on validation predictions. {#tbl-ensemble-weights}
 
@@ -466,11 +466,11 @@ Two OOF stacking variants were trained, each using a logistic regression meta-le
 
 | Base Model | Meta-Learner Coefficient |
 |------------|--------------------------|
-| Logistic Regression | 0.231 |
-| XGBoost | 1.967 |
-| LightGBM | 1.068 |
-| Random Forest | 1.600 |
-| Intercept | −3.263 |
+| Logistic Regression | 0.23 |
+| XGBoost | 1.97 |
+| LightGBM | 1.07 |
+| Random Forest | 1.60 |
+| Intercept | −3.26 |
 
 : Stacking_OOF meta-learner logistic regression coefficients. {#tbl-stacking-oof4-coefs}
 
@@ -478,12 +478,12 @@ Two OOF stacking variants were trained, each using a logistic regression meta-le
 
 | Base Model | Meta-Learner Coefficient |
 |------------|--------------------------|
-| Logistic Regression | −0.181 |
-| XGBoost | 1.548 |
-| LightGBM | 1.070 |
-| Random Forest | 1.181 |
-| Wide & Deep | 3.473 |
-| Intercept | −3.771 |
+| Logistic Regression | −0.18 |
+| XGBoost | 1.55 |
+| LightGBM | 1.07 |
+| Random Forest | 1.18 |
+| Wide & Deep | 3.47 |
+| Intercept | −3.77 |
 
 : Stacking_OOF_5 meta-learner logistic regression coefficients. {#tbl-stacking-oof5-coefs}
 
@@ -493,12 +493,12 @@ XGBoost dominates the 4-model variant (coefficient 1.967), consistent with its h
 
 | Ensemble Method | Val ROC-AUC | Test ROC-AUC | Test PR-AUC |
 |-----------------|-------------|--------------|-------------|
-| Best Single (XGBoost) | 0.6571 | 0.6637 | 0.4454 |
-| Simple Average | 0.6592 | 0.6695 | 0.4489 |
-| AUC-Weighted | 0.6596 | 0.6701 | 0.4507 |
-| **NNLS-Optimized** | **0.6619** | **0.6704** | **0.4517** |
-| OOF Stacking (4 models) | 0.6586 | 0.6679 | 0.4490 |
-| **OOF Stacking + Wide & Deep** | **0.6609** | **0.6702** | **0.4512** |
+| Best Single (XGBoost) | 0.66 | 0.66 | 0.45 |
+| Simple Average | 0.66 | 0.67 | 0.45 |
+| AUC-Weighted | 0.66 | 0.67 | 0.45 |
+| **NNLS-Optimized** | **0.66** | **0.67** | **0.45** |
+| OOF Stacking (4 models) | 0.66 | 0.67 | 0.45 |
+| **OOF Stacking + Wide & Deep** | **0.66** | **0.67** | **0.45** |
 
 : Ensemble method comparison. The five-model OOF stacking adds Wide & Deep as a fifth base learner trained via proper K-fold OOF to prevent leakage. {#tbl-ensemble-comparison}
 
@@ -536,13 +536,13 @@ XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,63
 
 | τ | TP | FP | TN | FN | Precision | Recall | F1 | Specificity |
 |------|------|------|------|------|-----------|--------|-------|-------------|
-| 0.1000 | 1471 | 3634 | 0 | 0 | 0.2882 | 1.0000 | 0.4475 | 0.0000 |
-| 0.2000 | 1468 | 3551 | 83 | 3 | 0.2925 | 0.9980 | 0.4525 | 0.0228 |
-| 0.3000 | 1368 | 3010 | 624 | 103 | 0.3125 | 0.9293 | 0.4677 | 0.1717 |
-| 0.3500 | 1309 | 2674 | 960 | 162 | 0.3286 | 0.8899 | 0.4800 | 0.2641 |
-| 0.4000 | 1221 | 2362 | 1272 | 250 | 0.3408 | 0.8300 | 0.4832 | 0.3501 |
-| **0.4400** | **1141** | **2087** | **1547** | **330** | **0.3536** | **0.7757** | **0.4857** | **0.4257** |
-| 0.5000 | 969 | 1567 | 2067 | 502 | 0.3821 | 0.6587 | 0.4837 | 0.5688 |
+| 0.10 | 1471 | 3634 | 0 | 0 | 0.29 | 1.00 | 0.45 | 0.00 |
+| 0.20 | 1468 | 3551 | 83 | 3 | 0.29 | 1.00 | 0.45 | 0.02 |
+| 0.30 | 1368 | 3010 | 624 | 103 | 0.31 | 0.93 | 0.47 | 0.17 |
+| 0.35 | 1309 | 2674 | 960 | 162 | 0.33 | 0.89 | 0.48 | 0.26 |
+| 0.40 | 1221 | 2362 | 1272 | 250 | 0.34 | 0.83 | 0.48 | 0.35 |
+| **0.44** | **1141** | **2087** | **1547** | **330** | **0.35** | **0.78** | **0.49** | **0.43** |
+| 0.50 | 969 | 1567 | 2067 | 502 | 0.38 | 0.66 | 0.48 | 0.57 |
 
 : XGBoost threshold sweep on the validation set (N = 5,105). τ = 0.4400 (bold) maximizes F1 subject to recall ≥ 0.70 and is applied uniformly to all models for comparability. All rows sum to N = 5,105. {#tbl-xgb-threshold-full}
 
@@ -550,13 +550,13 @@ XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,63
 
 | Model | Fixed τ | Test F1 | Test Recall | Test Precision | Test ROC-AUC |
 |-------|---------|---------|-------------|----------------|--------------|
-| Logistic Regression | 0.4400 | 0.4560 | 0.8409 | 0.3128 | 0.5940 |
-| XGBoost | 0.4400 | 0.4904 | 0.7390 | 0.3670 | 0.6637 |
-| LightGBM | 0.4400 | 0.4969 | 0.7308 | 0.3764 | 0.6700 |
-| Random Forest | 0.4400 | 0.4807 | 0.8042 | 0.3428 | 0.6534 |
-| Wide&Deep (Focal) | 0.4400 | 0.0175 | 0.0088 | 0.7222 | 0.6615 |
-| OOF Stacking (4 models) | 0.4400 | — | — | — | 0.6679 |
-| OOF Stacking + Wide & Deep | 0.2243 | — | — | — | 0.6702 |
+| Logistic Regression | 0.44 | 0.46 | 0.84 | 0.31 | 0.59 |
+| XGBoost | 0.44 | 0.49 | 0.74 | 0.37 | 0.66 |
+| LightGBM | 0.44 | 0.50 | 0.73 | 0.38 | 0.67 |
+| Random Forest | 0.44 | 0.48 | 0.80 | 0.34 | 0.65 |
+| Wide&Deep (Focal) | 0.44 | 0.02 | 0.01 | 0.72 | 0.66 |
+| OOF Stacking (4 models) | 0.44 | — | — | — | 0.67 |
+| OOF Stacking + Wide & Deep | 0.22 | — | — | — | 0.67 |
 
 : Model performance at the fixed operational threshold τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set for XGBoost, then applied uniformly. Stacking methods use a lower threshold (≈0.22) because the logistic meta-learner outputs probabilities on a compressed scale. Wide&Deep (Focal) exhibits near-zero recall at τ = 0.44 due to probability compression from focal loss, requiring threshold recalibration before deployment. {#tbl-optimal-thresholds}
 
@@ -564,12 +564,12 @@ XGBoost threshold sweep on the validation set (N = 5,105; ~1,471 churners, ~3,63
 
 | Model | Brier Score |
 |-------|-------------|
-| Logistic Regression | 0.2438 |
-| XGBoost | 0.2233 |
-| LightGBM | 0.2200 |
-| Random Forest | 0.2290 |
-| Wide&Deep (BCE) | 0.2364 |
-| Wide&Deep (Focal) | 0.1970 |
+| Logistic Regression | 0.24 |
+| XGBoost | 0.22 |
+| LightGBM | 0.22 |
+| Random Forest | 0.23 |
+| Wide&Deep (BCE) | 0.24 |
+| Wide&Deep (Focal) | 0.20 |
 
 : Brier scores across model families on the test set {#tbl-calibration-table}
 
