@@ -113,13 +113,13 @@ plt.tight_layout()
 
 ### Feature Interaction Insights
 
-The SHAP interaction analysis reveals that the top feature pairs with meaningful interaction effects are:
+Visual inspection of the SHAP dependence plots suggests several meaningful pairwise interaction effects:
 
-1. **CurrentEquipmentDays × MonthsInService**: Customers with both old equipment and short tenure show elevated churn risk beyond what either feature alone would predict, suggesting a "new customer with outdated device" risk profile.
+1. **CurrentEquipmentDays × HandsetRefurbished_Yes** (@fig-shap-dependence-equipment): Customers with refurbished handsets cluster at lower equipment-days values yet display similar elevated SHAP contributions, indicating that device condition amplifies the equipment-age risk signal beyond what either variable captures alone.
 
-2. **MonthlyMinutes × PercChangeMinutes**: The combination of low current usage and declining trend creates a compounding effect, with the interaction term contributing additional risk beyond the main effects.
+2. **MonthlyMinutes × PercChangeMinutes** (@fig-shap-dependence-minutes): Among low-usage customers, those with declining usage trends (negative PercChangeMinutes) show the highest SHAP values, suggesting a compounding disengagement effect beyond the main effect of low usage alone.
 
-3. **OverageMinutes × MonthlyRevenue**: High overage charges relative to base revenue may signal billing dissatisfaction, with the interaction capturing customers who feel "nickel-and-dimed."
+3. **OverageMinutes × MonthlyRevenue**: High overage charges relative to base revenue may signal billing dissatisfaction; this interaction is consistent with domain intuition but was not formally computed via SHAP interaction values.
 
 These interaction patterns align with domain intuition and suggest that the model is capturing meaningful behavioral combinations rather than spurious correlations.
 
