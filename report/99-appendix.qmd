@@ -502,7 +502,7 @@ XGBoost dominates the 4-model variant (coefficient 1.967), consistent with its h
 
 : Ensemble method comparison. The five-model OOF stacking adds Wide & Deep as a fifth base learner trained via proper K-fold OOF to prevent leakage. {#tbl-ensemble-comparison}
 
-**Observation:** NNLS-optimized blending achieves the highest test ROC-AUC (0.6704). Adding Wide & Deep as a fifth base learner improves OOF stacking from 0.6679 to 0.6702, nearly matching NNLS blending. All heterogeneous ensembles substantially outperform any single model.
+**Observation:** NNLS-optimized blending achieves the highest test ROC-AUC (0.6704). Adding Wide & Deep as a fifth base learner improves OOF stacking from 0.6679 to 0.6702, nearly matching NNLS blending. Heterogeneous ensembles marginally improve over the validation-selected XGBoost champion and are essentially tied with the strongest single-model test performer, LightGBM (test ROC-AUC 0.6700 vs. NNLS 0.6704, a gap of 0.0004).
 
 ---
 
@@ -605,8 +605,20 @@ table_dir = root / "artifacts" / "tables"
 candidates = list(table_dir.glob("08_model_leaderboard*.csv")) if table_dir.exists() else []
 if candidates:
     df = pd.read_csv(candidates[0])
-    from IPython.display import Markdown
-    display(Markdown(df.to_markdown(index=False)))
+    # Part 1: Ranking metrics
+    df1 = df[['model', 'val_roc_auc', 'val_pr_auc', 'test_roc_auc', 'test_pr_auc', 'test_brier']].copy()
+    df1.columns = ['Model', 'Val ROC-AUC', 'Val PR-AUC', 'Test ROC-AUC', 'Test PR-AUC', 'Brier']
+    for col in df1.columns[1:]:
+        df1[col] = df1[col].apply(lambda x: f'{float(x):.4f}')
+    # Part 2: Decision metrics
+    df2 = df[['model', 'test_f1', 'test_recall', 'test_precision', 'threshold']].copy()
+    df2.columns = ['Model', 'F1', 'Recall', 'Precision', 'τ']
+    for col in ['F1', 'Recall', 'Precision']:
+        df2[col] = df2[col].apply(lambda x: f'{float(x):.4f}')
+    df2['τ'] = df2['τ'].apply(lambda x: f'{float(x):.2f}')
+    from IPython.display import Markdown, display
+    display(Markdown("**Ranking metrics:**\n\n" + df1.to_markdown(index=False)))
+    display(Markdown("**Decision metrics at τ = 0.44:**\n\n" + df2.to_markdown(index=False)))
 else:
     print("Model leaderboard table not found. Expected: artifacts/tables/08_model_leaderboard.csv")
 ```

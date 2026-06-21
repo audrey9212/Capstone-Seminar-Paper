@@ -1,0 +1,137 @@
+---
+format:
+  pdf:
+    fig-pos: "H"
+---
+
+## Reproducibility Statement {#sec-repro}
+
+This project uses a **script-based pipeline**. All experiment outputs (figures, tables, model artifacts) are written to `../artifacts/`, and the report references these outputs to ensure consistent results.
+
+### Quick Reproduce (Fast Mode)
+
+The commands below complete the full pipeline in about 10-15 minutes (using `--fast` to skip full hyperparameter search):
+
+```bash
+# Set project root
+export CAPSTONE_ROOT="$(pwd)"
+
+# Run full pipeline
+python scripts/02_preprocess.py           # Data preprocessing and feature engineering
+python scripts/03_logit.py                # Baseline: Logistic Regression
+python scripts/04_trees_gbm.py --fast     # Tree-based models (XGBoost, LightGBM)
+python scripts/05_nn.py --fast            # Deep learning (PyTorch Wide and Deep)
+python scripts/07_stacking.py             # Ensemble stacking
+python scripts/08_interpretation.py --fast # SHAP interpretation
+
+# Render the PDF
+quarto render
+```
+
+### Full Reproduce (Complete Mode)
+
+Full run (including Optuna hyperparameter optimization, about 2-4 hours):
+
+```bash
+export CAPSTONE_ROOT="$(pwd)"
+
+python scripts/02_preprocess.py
+python scripts/03_logit.py
+python scripts/04_trees_gbm.py            # Full Optuna tuning (100 trials)
+python scripts/05_nn.py                   # Full NN experiments
+python scripts/06_autoencoder.py          # Semi-supervised learning
+python scripts/07_stacking.py
+python scripts/08_interpretation.py
+
+quarto render
+```
+
+### Output Directory Structure
+
+```
+../artifacts/
+├── figures/          # All visualizations (PNG)
+│   └── optuna/       # Optuna diagnostics
+├── tables/           # All result tables (CSV)
+└── data/             # Intermediate outputs
+```
+
+---
+
+## Reproducibility Information {#sec-appendix-i}
+
+### Software Environment {#sec-appendix-i1}
+
+```
+# Core ML Stack
+python==3.9.6
+numpy==2.0.2
+pandas==2.3.3
+scikit-learn==1.6.1
+
+# Deep Learning
+torch==2.8.0
+
+# Gradient Boosting
+xgboost==2.1.4
+lightgbm==4.6.0
+
+# Visualization
+matplotlib==3.9.4
+```
+
+### Random Seeds {#sec-appendix-i2}
+
+```python
+SEED_CONFIG = {
+    'global_seed': 42,
+    'train_test_split': 42,
+    'cv_shuffle': 42,
+    'numpy_seed': 42,
+    'torch_seed': 42,
+    'optuna_sampler': 42
+}
+
+# Seed initialization function
+def set_all_seeds(seed: int = 42):
+    import random
+    import numpy as np
+    import torch
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+```
+
+### Data Split Statistics {#sec-appendix-i3}
+
+| Split | N Samples | Churn Rate | % of Total |
+|-------|-----------|------------|------------|
+| Training | 40,837 | 28.8% | 80% |
+| Validation | 5,105 | 28.8% | 10% |
+| Test | 5,105 | 28.8% | 10% |
+| **Total** | **51,047** | **28.8%** | **100%** |
+| Holdout (unlabeled) | 20,000 | – | – |
+
+: Data split statistics with class distribution {#tbl-split-statistics}
+
+**Stratification:** All splits stratified by Churn label to maintain class balance.
+
+### Artifact Manifest {#sec-appendix-i4}
+
+| Artifact | Location | Description |
+|----------|----------|-------------|
+| T0_feature_registry.csv | ../artifacts/tables/ | Feature decision registry |
+| preprocessor_fitted.pkl | models/ | Fitted sklearn preprocessor |
+| xgb_best_model.json | models/ | Best XGBoost model |
+| lgb_best_model.txt | models/ | Best LightGBM model |
+| nn_wide_deep_focal.pt | models/ | Best PyTorch model weights |
+| stacking_meta_learner.pkl | models/ | OOF stacking meta-learner |
+| shap_explainer.pkl | models/ | SHAP TreeExplainer object |
+| mlflow_experiment_*.db | mlruns/ | MLflow experiment database |
+| optuna_study_*.db | optuna/ | Optuna study database |
+
+: Complete artifact manifest for reproducibility {#tbl-artifact-list}

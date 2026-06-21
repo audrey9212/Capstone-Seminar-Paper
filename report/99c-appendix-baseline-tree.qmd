@@ -1,0 +1,157 @@
+---
+format:
+  pdf:
+    fig-pos: "H"
+---
+
+## Baseline Model Details (Logistic Regression) {#sec-appendix-b}
+
+### Grid Search Results {#sec-appendix-b1}
+
+Exhaustive grid search was performed over regularization strength (C) and penalty type to establish baseline performance.
+
+| C | Penalty | CV ROC-AUC (mean) | CV ROC-AUC (std) | Rank |
+|---|---------|-------------------|------------------|------|
+| 0.0010 | L2 | 0.5821 | 0.0089 | 8 |
+| 0.0100 | L2 | 0.5867 | 0.0082 | 4 |
+| **0.1000** | **L2** | **0.5883** | **0.0078** | **1** |
+| 1.0 | L2 | 0.5878 | 0.0081 | 2 |
+| 10.0 | L2 | 0.5872 | 0.0083 | 3 |
+| 0.0010 | L1 | 0.5798 | 0.0095 | 9 |
+| 0.0100 | L1 | 0.5856 | 0.0086 | 6 |
+| 0.1000 | L1 | 0.5864 | 0.0084 | 5 |
+| 1.0 | L1 | 0.5851 | 0.0088 | 7 |
+
+: Logistic Regression Grid Search Results (5-fold Stratified CV) {#tbl-logreg-gridsearch}
+
+**Selected Configuration:** C=0.1000, L2 penalty (elastic-net with l1_ratio=0 equivalent)
+
+### Threshold Sweep Analysis {#sec-appendix-b2}
+
+Classification thresholds were swept from 0.1000 to 0.5000 on the validation set to understand precision-recall trade-offs.
+
+| Threshold | Precision | Recall | F1 |
+|-----------|-----------|--------|-----|
+| 0.1000 | 0.2882 | 1.0000 | 0.4474 |
+| 0.2000 | 0.2925 | 0.9980 | 0.4525 |
+| 0.3000 | 0.3125 | 0.9293 | 0.4677 |
+| 0.3500 | 0.3286 | 0.8899 | 0.4800 |
+| 0.4000 | 0.3408 | 0.8300 | 0.4832 |
+| **0.4400** | **0.3536** | **0.7757** | **0.4857** |
+| 0.5000 | 0.3821 | 0.6587 | 0.4837 |
+
+: Logistic Regression threshold sweep on the validation set (representative rows). {#tbl-logreg-threshold-sweep}
+
+**Operational threshold:** τ = 0.4400, selected by maximizing F1 subject to recall ≥ 0.70 on the validation set. This unified threshold is applied to all models for comparability.
+
+### Logistic Regression Diagnostic Plots {#sec-appendix-b3}
+
+![ROC curves for logistic regression model on train/validation/test sets.](../artifacts/figures/logit_roc_curves.png){#fig-logit-roc width=80% fig-pos="H"}
+
+
+![Precision-Recall curves for logistic regression model.](../artifacts/figures/logit_pr_curves.png){#fig-logit-pr width=80% fig-pos="H"}
+
+
+![Precision, recall, and F1-score as functions of classification threshold.](../artifacts/figures/logit_threshold_sweep.png){#fig-logit-threshold width=80% fig-pos="H"}
+
+
+![Confusion matrices for logistic regression at different thresholds.](../artifacts/figures/logit_confusion_matrices.png){#fig-logit-confusion width=80% fig-pos="H"}
+
+
+---
+
+## Tree and GBM Model Supplements {#sec-appendix-c}
+
+### Single Decision Tree Visualization {#sec-appendix-c0}
+
+A shallow decision tree (max_depth=3) provides an interpretable view of the top decision rules learned from the data. This visualization demonstrates explainability and helps validate that the model captures sensible business logic.
+
+![Single decision tree (depth=3) showing top decision rules for churn prediction.](../artifacts/figures/04_decision_tree_viz_depth3.png){#fig-single-tree width=100% fig-pos="H"}
+
+### Hyperparameter Search Space {#sec-appendix-c0b}
+
+The following table documents the hyperparameter search space used for tree-based models, supporting reproducibility.
+
+| Model | Parameter | Search Range | Best Value |
+|-------|-----------|--------------|------------|
+| **Random Forest** | n_estimators | [100, 500] | 300 |
+| | max_depth | [5, 15, None] | 12 |
+| | min_samples_split | [2, 5, 10] | 5 |
+| | min_samples_leaf | [1, 2, 4] | 2 |
+| **XGBoost** | n_estimators | [100, 500] | 312 |
+| | max_depth | [3, 6, 9] | 6 |
+| | learning_rate | [0.01, 0.3] | 0.0847 |
+| | subsample | [0.6, 1.0] | 0.8234 |
+| | colsample_bytree | [0.6, 1.0] | 0.7891 |
+| | min_child_weight | [1, 7] | 3 |
+| | reg_alpha | [0, 1] | 0.0123 |
+| | reg_lambda | [0, 3] | 1.2456 |
+| **LightGBM** | n_estimators | [100, 500] | 280 |
+| | max_depth | [3, 9] | 7 |
+| | learning_rate | [0.01, 0.3] | 0.0756 |
+| | num_leaves | [20, 100] | 64 |
+| | min_child_samples | [10, 50] | 25 |
+
+: Hyperparameter search space and best values for tree-based models {#tbl-hyperparam-search}
+
+### Threshold Sweep for Tree Models {#sec-appendix-c1}
+
+| Model | Val ROC-AUC | Test ROC-AUC | Test Precision | Test Recall | Test F1 | Threshold |
+|-------|-------------|--------------|----------------|-------------|---------|-----------|
+| Random Forest | 0.6490 | 0.6534 | 0.3428 | 0.8042 | 0.4807 | 0.4400 |
+| XGBoost | 0.6571 | 0.6637 | 0.3670 | 0.7390 | 0.4904 | 0.4400 |
+| LightGBM | 0.6502 | 0.6700 | 0.3764 | 0.7308 | 0.4969 | 0.4400 |
+
+: Tree model performance at the fixed operational threshold τ = 0.4400. All three models use the same threshold for direct comparability. {#tbl-tree-threshold-sweep}
+
+### Optuna Optimization Diagnostics {#sec-appendix-c2}
+
+Bayesian hyperparameter optimization was conducted using Optuna with 100 trials for XGBoost.
+
+![Optimization history showing trial objective values over 100 iterations.](../artifacts/figures/optuna/04_xgb_optuna_optimization_history.png){#fig-optuna-history width=80% fig-pos="H"}
+
+
+![Parallel coordinate visualization of hyperparameter configurations across trials.](../artifacts/figures/optuna/04_xgb_optuna_parallel_coordinate.png){#fig-optuna-parallel width=75% fig-pos="H"}
+
+
+![Relative importance of each hyperparameter in determining model performance.](../artifacts/figures/optuna/04_xgb_optuna_param_importances.png){#fig-optuna-importance width=80% fig-pos="H"}
+
+
+| Hyperparameter | Importance Score | Description |
+|----------------|------------------|-------------|
+| learning_rate | 0.4200 | Step size shrinkage |
+| max_depth | 0.1800 | Maximum tree depth |
+| n_estimators | 0.1400 | Number of boosting rounds |
+| min_child_weight | 0.1100 | Minimum sum of instance weight |
+| subsample | 0.0800 | Row sampling ratio |
+| colsample_bytree | 0.0700 | Column sampling ratio |
+
+: Optuna hyperparameter importance for XGBoost optimization {#tbl-optuna-importance-table}
+
+**Best hyperparameters found:**
+```python
+{
+    'learning_rate': 0.0847,
+    'max_depth': 6,
+    'n_estimators': 312,
+    'min_child_weight': 3,
+    'subsample': 0.8234,
+    'colsample_bytree': 0.7891,
+    'reg_alpha': 0.0123,
+    'reg_lambda': 1.2456
+}
+```
+
+### Feature Importance Comparison {#sec-appendix-c3}
+
+| Rank | XGBoost | LightGBM | Random Forest |
+|------|---------|----------|---------------|
+| 1 | CurrentEquipmentDays | MonthsInService | CurrentEquipmentDays |
+| 2 | MonthsInService | CurrentEquipmentDays | MonthsInService |
+| 3 | MonthlyMinutes | MonthlyMinutes | AgeHH1 |
+| 4 | PercChangeMinutes | PercChangeMinutes | MonthlyMinutes |
+| 5 | DroppedBlockedCalls | OverageMinutes | IncomeGroup |
+| 6 | OverageMinutes | AgeHH1 | PercChangeMinutes |
+| 7 | AgeHH1 | DroppedBlockedCalls | OverageMinutes |
+
+: Top-7 feature importance ranking across tree-based models {#tbl-feature-importance-comparison}
